@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FaUserCircle } from 'react-icons/fa';
+import { Link } from "react-router-dom"
+import { FaBars, FaRegUser } from "react-icons/fa";
 import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
@@ -41,15 +42,24 @@ function ProfileButton() {
 
   return (
     <>
-      <button onClick={toggleMenu}>
-        <FaUserCircle />
+      <button className={showMenu ? "profile-active profile-button" : "profile-button"} onClick={toggleMenu}>
+        <FaBars />
+        <div className="profile-img-div">
+          {user ? <img src={user?.profileImage} alt="" /> : <FaRegUser />}
+        </div>
       </button>
       {showMenu && (
         <ul className={"profile-dropdown"} ref={ulRef}>
           {user ? (
             <>
-              <li>{user.username}</li>
-              <li>{user.email}</li>
+                <Link to={`/users/${user.id}/favorites`}><li>Favorites</li></Link>
+                <Link to={`/users/${user.id}/trips`}><li>Trips</li></Link>
+              <li>
+                <Link to={`/users/${user.id}/notifications`}>Notifications</Link></li>
+              <li>
+                <Link to={`/users/${user.id}`}>Profile</Link></li>
+              <li>
+                <Link to={`/users/${user.id}/account`}>Account</Link></li>
               <li>
                 <button onClick={logout}>Log Out</button>
               </li>

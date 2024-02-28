@@ -2,90 +2,185 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { thunkSignup } from "../../redux/session";
-import "./SignupForm.css";
+import "../LoginFormModal/LoginForm.css";
+// import "./SignupForm.css";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [profileImg, setProfileImg] = useState(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [fileName, setFilename] = useState("");
+  const [imageURL, setImageURL] = useState("");
   const { closeModal } = useModal();
+  const maxFileError = "Image exceeds the maximum file size of 5Mb";
+
+  const fileWrap = (e) => {
+    e.stopPropagation();
+
+    const tempFile = e.target.files[0];
+
+    // Check for max image size of 5Mb
+    if (tempFile.size > 5000000) {
+      setFilename(maxFileError);
+      return;
+    }
+
+    const newImageURL = URL.createObjectURL(tempFile); // Generate a local URL to render the image file inside of the <img> tag.
+    setImageURL(newImageURL);
+    setProfileImg(tempFile);
+    setFilename(tempFile.name);
+    // setOptional("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
 
-    if (password !== confirmPassword) {
-      return setErrors({
-        confirmPassword:
-          "Confirm Password field must be the same as the Password field",
-      });
-    }
+    const validRegex =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const validationErrors = {};
+    if (!email) validationErrors.email = "Email is required";
+    if (!email.match(validRegex))
+      validationErrors.email = "Must be valid email";
+    if (!firstName) validationErrors.firstName = "First name is required";
+    if (!lastName) validationErrors.lastName = "Last name is required";
+    if (!password) validationErrors.password = "Password is required";
+    if (!confirmPassword)
+      validationErrors.confirmPassword = "Confirmation password is required";
+    if (password.length < 6)
+      validationErrors.password = "Password must be at least 6 characters";
+    if (password !== confirmPassword)
+      validationErrors.confirmPassword = "Passwords must match";
+    if (!profileImg)
+      validationErrors.profileImg = "A profile image is required";
 
-    const serverResponse = await dispatch(
-      thunkSignup({
-        email,
-        username,
-        password,
-      })
-    );
-
-    if (serverResponse) {
-      setErrors(serverResponse);
+    if (Object.values(validationErrors).length) {
+      setErrors(validationErrors);
     } else {
-      closeModal();
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("first_name", firstName);
+      formData.append("last_name", lastName);
+      formData.append("profile_image", profileImg);
+      formData.append("password", password);
+
+      const serverResponse = await dispatch(thunkSignup(formData));
+
+      if (serverResponse) {
+        setErrors(serverResponse);
+      } else {
+        closeModal();
+      }
     }
   };
 
   return (
-    <>
+    <div className="signup-div">
       <h1>Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Email
+      <form className="login-signup-form" onSubmit={handleSubmit}>
+        <label>Email</label>
+        <input
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          // required
+        />
+        <div className="errors">{errors.email && <p>{errors.email}</p>}</div>
+        <label>First Name</label>
+        <input
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          // required
+        />
+        <div className="errors">
+          {errors.firstName && <p>{errors.firstName}</p>}
+        </div>
+        <label>Last Name</label>
+        <input
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          // required
+        />
+        <div className="errors">
+          {errors.lastName && <p>{errors.lastName}</p>}
+        </div>
+        <label>Password</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          // required
+        />
+        <div className="errors">
+          {errors.password && <p>{errors.password}</p>}
+        </div>
+        <label>Confirm Password</label>
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          // required
+        />
+        <div className="errors">
+          {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
+        </div>
+        {/* <label>
+          Profile Image
+          </label>
           <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            type="file"
+            accept="image/*"
+            onChange={(e) => setProfileImg(e.target.files[0])}
           />
+        <div className="errors">
+          {errors.profileImg && <p>{errors.profileImg}</p>}
+        </div> */}
+
+        <label htmlFor="post-image-input" className="file-input-labels">
+          Profile Image
         </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label>
-          Username
+
+
+
+        <div className="file-inputs-container">
           <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
+            type="file"
+            accept="image/png, image/jpeg, image/jpg"
+            id="post-image-input"
+            onChange={fileWrap}
           />
-        </label>
-        {errors.username && <p>{errors.username}</p>}
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.password && <p>{errors.password}</p>}
-        <label>
-          Confirm Password
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </label>
-        {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-        <button type="submit">Sign Up</button>
+          {/* <div
+            className="file-inputs-filename"
+            style={{ color: fileName === maxFileError ? "red" : "#B7BBBF",
+          fontSize: "12px" }}
+          >
+            {fileName !== maxFileError && fileName}
+          </div> */}
+          {/* <div style={{ position: "absolute", top: "-34px", left: "39px" }}>
+            <img src={imageURL} className="thumbnails"></img>
+          </div> */}
+
+        </div>
+        <div className="errors">
+          {!fileName && errors.profileImg && <p>{errors.profileImg}</p>}
+          {fileName === maxFileError && <p>{fileName}</p>}
+          {fileName !== maxFileError && <p style={{color: "#B7BBBF"}}>{fileName.length < 45 ? fileName : fileName.slice(0, 45) + "..."}</p>}
+        </div>
+
+
+        <button className="submit-btn" type="submit">
+          Sign Up
+        </button>
       </form>
-    </>
+    </div>
   );
 }
 

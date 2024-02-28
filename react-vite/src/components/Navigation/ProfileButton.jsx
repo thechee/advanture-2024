@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom";
 import { FaBars, FaRegUser } from "react-icons/fa";
 import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
@@ -42,7 +42,12 @@ function ProfileButton() {
 
   return (
     <>
-      <button className={showMenu ? "profile-active profile-button" : "profile-button"} onClick={toggleMenu}>
+      <button
+        className={
+          showMenu ? "profile-active profile-button" : "profile-button"
+        }
+        onClick={toggleMenu}
+      >
         <FaBars />
         <div className="profile-img-div">
           {user ? <img src={user?.profileImage} alt="" /> : <FaRegUser />}
@@ -52,17 +57,31 @@ function ProfileButton() {
         <ul className={"profile-dropdown"} ref={ulRef}>
           {user ? (
             <>
-                <Link to={`/users/${user.id}/favorites`}><li>Favorites</li></Link>
-                <Link to={`/users/${user.id}/trips`}><li>Trips</li></Link>
-              <li>
-                <Link to={`/users/${user.id}/notifications`}>Notifications</Link></li>
-              <li>
-                <Link to={`/users/${user.id}`}>Profile</Link></li>
-              <li>
-                <Link to={`/users/${user.id}/account`}>Account</Link></li>
-              <li>
-                <button onClick={logout}>Log Out</button>
-              </li>
+            <div className="profile-dropdown-links-div">
+              <NavLink to={`/users/${user.id}/favorites`}>
+                <li>Favorites</li>
+              </NavLink>
+              <NavLink to={`/users/${user.id}/trips`}>
+                <li>Trips</li>
+              </NavLink>
+              <NavLink to={`/users/${user.id}/notifications`}>
+                <li>Notifications</li>
+              </NavLink>
+            </div>
+            <div className="profile-dropdown-user-div">
+              <NavLink to={`/users/${user.id}`}>
+                <li id='profile-navlink'>Profile</li>
+              </NavLink>
+              <NavLink to={`/users/${user.id}/account`}>
+                <li>Account</li>
+              </NavLink>
+              <NavLink to={`/vans/new`}>
+                <li>Become a host</li>
+              </NavLink>
+            </div>
+            <div className="profile-dropdown-logout-div">
+              <li id='logout-li' onClick={logout}>Log Out</li>
+            </div>
             </>
           ) : (
             <>

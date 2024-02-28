@@ -1,20 +1,28 @@
 import { Link } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import "./Navigation.css";
+import { useSelector } from "react-redux";
 
 function Navigation() {
-  return (
-    <ul className="nav-bar">
-      <Link to="/">
-      <li id="logo">
-          ADVANTURE
-      </li>
-      </Link>
+  const user = useSelector(state => state.session.user)
 
-      <li>
+  return (
+    <header className="nav-bar">
+      <Link id='logo' to="/">
+          <span>ADVANTURE</span>
+
+      </Link>
+      <div id="empty-header">
+      </div>
+      {user && <Link to='/vans/new'>
+      <div id="host-div">
+        <span>Become a host</span>
+      </div>
+      </Link>}
+      <div className="profile-button-div">
         <ProfileButton />
-      </li>
-    </ul>
+      </div>
+    </header>
   );
 }
 

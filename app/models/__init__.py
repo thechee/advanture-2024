@@ -1,3 +1,6 @@
-from .db import db
+from .db import db, environment, SCHEMA
 from .user import User
-from .db import environment, SCHEMA
+from .feature import Feature
+from .fuel_type import FuelType
+from .van_image import VanImage
+from .van import Van

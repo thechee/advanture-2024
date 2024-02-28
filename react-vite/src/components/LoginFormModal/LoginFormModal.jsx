@@ -28,6 +28,23 @@ function LoginFormModal() {
     }
   };
 
+  const handleDemoSubmit = async (e) => {
+    e.preventDefault();
+
+    const serverResponse = await dispatch(
+      thunkLogin({
+        email: "demo@aa.io",
+        password: "password"
+      })
+    );
+
+    if (serverResponse) {
+      setErrors(serverResponse);
+    } else {
+      closeModal();
+    }
+  };
+
   return (
     <div id="login-div">
       <h1>Log In</h1>
@@ -56,7 +73,8 @@ function LoginFormModal() {
         <div className="errors">
           {errors.password && <p>{errors.password}</p>}
         </div>
-        <button className='submit-btn' type="submit">Log In</button>
+        <button id='login-btn' className='submit-btn' type="submit">Log In</button>
+        <button className="submit-btn" onClick={handleDemoSubmit} >Demo User</button>
       </form>
     </div>
   );

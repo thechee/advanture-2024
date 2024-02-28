@@ -25,6 +25,10 @@
   padding: .75rem;
   border-radius: 5px;
 }
+ 
+#login-btn {
+  margin-bottom: .5rem;
+}
 
 .login-signup-form button:hover {
   cursor: pointer;

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { thunkSignup } from "../../redux/session";
 import "../LoginFormModal/LoginForm.css";
-import "./SignupForm.css";
+// import "./SignupForm.css";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ function SignupFormModal() {
   const [fileName, setFilename] = useState("");
   const [imageURL, setImageURL] = useState("");
   const { closeModal } = useModal();
-  const maxFileError = "Selected image exceeds the maximum file size of 5Mb";
+  const maxFileError = "Image exceeds the maximum file size of 5Mb";
 
   const fileWrap = (e) => {
     e.stopPropagation();
@@ -157,24 +157,22 @@ function SignupFormModal() {
             id="post-image-input"
             onChange={fileWrap}
           />
-          <div
+          {/* <div
             className="file-inputs-filename"
-            style={{ color: fileName === maxFileError ? "red" : "#B7BBBF" }}
+            style={{ color: fileName === maxFileError ? "red" : "#B7BBBF",
+          fontSize: "12px" }}
           >
-            {fileName}
-          </div>
-          <div style={{ position: "absolute", top: "-34px", left: "39px" }}>
+            {fileName !== maxFileError && fileName}
+          </div> */}
+          {/* <div style={{ position: "absolute", top: "-34px", left: "39px" }}>
             <img src={imageURL} className="thumbnails"></img>
-          </div>
-
-
-
-
-
+          </div> */}
 
         </div>
         <div className="errors">
-          {errors.profileImg && <p>{errors.profileImg}</p>}
+          {!fileName && errors.profileImg && <p>{errors.profileImg}</p>}
+          {fileName === maxFileError && <p>{fileName}</p>}
+          {fileName !== maxFileError && <p style={{color: "#B7BBBF"}}>{fileName.length < 45 ? fileName : fileName.slice(0, 45) + "..."}</p>}
         </div>
 
 

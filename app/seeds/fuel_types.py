@@ -2,11 +2,11 @@ from app.models import db, FuelType, environment, SCHEMA
 from sqlalchemy.sql import text
 
 def seed_fuel_types():
-  db.session.add(FuelType(name="Gasoline"))
-  db.session.add(FuelType(name="Diesel"))
-  db.session.add(FuelType(name="Bio-Diesel"))
-  db.session.add(FuelType(name="Electric"))
-  db.session.add(FuelType(name="Hybrid"))
+  db.session.add(FuelType(fuel_type="Gasoline"))
+  db.session.add(FuelType(fuel_type="Diesel"))
+  db.session.add(FuelType(fuel_type="Bio-Diesel"))
+  db.session.add(FuelType(fuel_type="Electric"))
+  db.session.add(FuelType(fuel_type="Hybrid"))
 
   db.session.commit()
 

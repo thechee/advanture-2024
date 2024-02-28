@@ -1,5 +1,6 @@
 vans = [
   {
+    "id": 1,
     "user_id": 1,
     "year": 2005,
     "make": "Dodge",
@@ -28,6 +29,7 @@ vans = [
     "fuel_type_id": 2
   },
   {
+    "id": 2,
     "user_id": 2,
     "year": 2023,
     "make": "Ram",
@@ -58,6 +60,7 @@ vans = [
     "fuel_type_id": 1
   },
   {
+    "id": 3,
     "user_id": 3,
     "year": 2020,
     "make": "Ram",
@@ -88,6 +91,7 @@ vans = [
     "fuel_type_id": 1
   },
   {
+    "id": 4,
     "user_id": 1,
     "year": 1983,
     "make": "Volkswagen",
@@ -118,6 +122,7 @@ vans = [
     "fuel_type_id": 1
   },
   {
+    "id": 5,
     "user_id": 1,
     "year": 2019,
     "make": "Ford",
@@ -142,6 +147,7 @@ vans = [
       Experience the future of travel with the 2019 Ford Transit electric. Reserve it now and be a part of the sustainable movement while enjoying the beauty of the Pacific Northwest!
       """,
     "distance_allowed": 2000,
+    "mpg": None,
     "doors": 4,
     "seats": 4,
     "fuel_type_id": 4

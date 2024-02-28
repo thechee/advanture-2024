@@ -1,0 +1,79 @@
+
+.file-inputs-container {
+  position: relative; /* This allows the elements within it to be positioned without taking this element out of the document flow. As it's parent is NOT positioned, it only effects the children. */
+  margin-bottom: 32px;
+}
+
+#post-image-input {
+  visibility: hidden;
+  /* Here we make the default file input button invisible on the page.
+     As the label for this input is connected to it using the htmlFor property, we can style the label as a button instead, and have it behave the same as the <input type="file" />
+     This extra step is necessary as the default <input type="file" /> CANNOT be styled with CSS!!
+  */
+}
+
+/*
+  Important note here is that the element is positioned "absolute".
+  You will need to adjust the top and left properties to get the label to appear where you want it on your page.
+ */
+
+.file-inputs-filename {
+  position: absolute;
+  top: 40px;
+  left: 144px;
+  z-index: 2;
+  color: var(--minimal-border);
+  background-color: var(--minimal-background);
+  font-size: 14px;
+  min-width: 90px;
+  padding-bottom: 2px;
+}
+
+/*
+  This label was added to clarify for the user that uploading an image is OPTIONAL.
+  Feel free to implement this anyway that makes sense for you. Including NOT doing it!!
+*/
+
+.file-inputs-optional {
+  position: absolute;
+  font-size: 14px;
+  color: red;
+  top: 41px;
+  left: 240px;
+}
+
+/*
+  Here we set fixed dimensions for the thumbnail. Size it to your liking!
+  Positioning for this element has been done inline, in the hopes of making this class more re-usable.
+  Feel free to position it in the CSS file if it suits your aims.
+*/
+
+.thumbnails {
+  width: 50px;
+  height: 50px;
+  outline: none;
+}
+
+/*
+  The 2 directives below style our label like a button and give it a nice on hover effect.
+*/
+
+.file-input-labels {
+  display: block;
+  border: 2px solid var(--minimal-border);
+  border-radius: 4px;
+  color: var(--minimal-border);
+  background-color: var(--minimal-background);
+  width: 124px;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  padding-top: 7px;
+  transition: all 0.3s ease-in-out;
+}
+
+.file-input-labels:hover {
+  color: white;
+  border-color: white;
+  cursor: pointer;
+} 

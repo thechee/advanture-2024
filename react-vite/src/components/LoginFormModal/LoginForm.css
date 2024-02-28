@@ -1,0 +1,31 @@
+#login-div {
+  width: 250px;
+}
+
+.login-signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-signup-form label {
+  font-size: small;
+  margin-bottom: .2rem;
+  font-weight: 500;
+}
+
+.login-signup-form input {
+  padding: .3rem .5rem;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
+
+.login-signup-form button {
+  border: none;
+  color: white;
+  padding: .75rem;
+  border-radius: 5px;
+}
+
+.login-signup-form button:hover {
+  cursor: pointer;
+}

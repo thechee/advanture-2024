@@ -4,6 +4,7 @@ from .fuel_types import seed_fuel_types, undo_fuel_types
 from .vans import seed_vans, undo_vans
 from .features import seed_features, undo_features
 from .van_features import seed_van_features, undo_van_features
+from .van_images import seed_van_images, undo_van_images
 
 from app.models.db import db, environment, SCHEMA
 
@@ -25,11 +26,13 @@ def seed():
         undo_features()
         undo_vans()
         undo_van_features()
+        undo_van_images()
     seed_users()
     seed_fuel_types()
     seed_features()
     seed_vans()
     seed_van_features()
+    seed_van_images()
     # Add other seed functions here
 
 
@@ -41,4 +44,5 @@ def undo():
     undo_features()
     undo_vans()
     undo_van_features()
+    undo_van_images()
     # Add other undo functions here

@@ -56,6 +56,8 @@ def seed_van_features():
 def undo_van_features():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.van_features RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.vans RESTART IDENTITY CASCADE;")
+        db.session.execute(f"TRUNCATE table {SCHEMA}.features RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM van_features"))
         db.session.execute(text("DELETE FROM vans"))

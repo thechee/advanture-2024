@@ -23,14 +23,14 @@ def seed():
         # Make sure to add all your other model's undo functions below
         undo_users()
         undo_fuel_types()
-        undo_features()
-        undo_vans()
+        # undo_features()
+        # undo_vans()
         undo_van_features()
         undo_van_images()
     seed_users()
     seed_fuel_types()
-    seed_features()
-    seed_vans()
+    # seed_features()
+    # seed_vans()
     seed_van_features()
     seed_van_images()
     # Add other seed functions here
@@ -41,8 +41,8 @@ def seed():
 def undo():
     undo_users()
     undo_fuel_types()
-    undo_features()
-    undo_vans()
+    # undo_features()
+    # undo_vans()
     undo_van_features()
     undo_van_images()
     # Add other undo functions here

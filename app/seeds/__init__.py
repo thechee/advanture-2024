@@ -1,8 +1,8 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .fuel_types import seed_fuel_types, undo_fuel_types
-from .vans import seed_vans, undo_vans
-from .features import seed_features, undo_features
+from .DEPRECATED_vans import seed_vans, undo_vans
+from .DEPRECATED_features import seed_features, undo_features
 from .van_features import seed_van_features, undo_van_features
 from .van_images import seed_van_images, undo_van_images
 

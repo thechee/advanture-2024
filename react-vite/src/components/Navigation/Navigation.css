@@ -43,6 +43,8 @@
 .profile-button-div {
   margin-left: auto;
   height: 40px;
+  display: flex;
+  align-items: center;
 }
 
 .profile-button {
@@ -51,6 +53,7 @@
   border: none;
   background-color: white;
   border-radius: .5rem;
+  height: 100%;
   font-size: large;
   font-weight: 200;
   padding: .3rem .75rem;
@@ -59,9 +62,15 @@
 
 .profile-img-div {
   width: 2rem;
+  height: 2rem;
   margin-left: .25rem;
   display: flex;
   align-items: center;
+}
+
+.profile-img-div svg {
+  padding-left: .5rem;
+  height: 100%;
 }
 
 .profile-button img {
@@ -83,6 +92,7 @@
   padding: 1rem;
   position: absolute;
   right: 1rem;
+  top: 3.5rem;
   width: 250px;
 }
 

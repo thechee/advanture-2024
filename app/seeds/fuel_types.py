@@ -15,6 +15,6 @@ def undo_fuel_types():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.fuel_types RESTART IDENTITY CASCADE;")
     else:
-        db.session.execute(text("DELETE FROM vans"))
+        db.session.execute(text("DELETE FROM fuel_types"))
         
     db.session.commit()

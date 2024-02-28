@@ -1,6 +1,7 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
 from .fuel_types import seed_fuel_types, undo_fuel_types
+from .vans import seed_vans, undo_vans
 
 from app.models.db import db, environment, SCHEMA
 
@@ -19,8 +20,10 @@ def seed():
         # Make sure to add all your other model's undo functions below
         undo_users()
         undo_fuel_types()
+        undo_vans()
     seed_users()
     seed_fuel_types()
+    seed_vans
     # Add other seed functions here
 
 
@@ -29,4 +32,5 @@ def seed():
 def undo():
     undo_users()
     undo_fuel_types()
+    undo_vans()
     # Add other undo functions here

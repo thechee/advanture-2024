@@ -7,18 +7,18 @@ class Van(db.Model):
   __tablename__ = "vans"
 
   if environment == "production":
-    __table_args = {"schema": SCHEMA}
+    __table_args__ = {"schema": SCHEMA}
 
   id = db.Column(db.Integer, primary_key=True)
   user_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
-  year = db.Column(db.Intger, nullable=False)
+  year = db.Column(db.Integer, nullable=False)
   make = db.Column(db.String(30), nullable=False)
   model = db.Column(db.String(30), nullable=False)
   miles = db.Column(db.Integer, nullable=False)
   address = db.Column(db.String(100), nullable=False)
   city = db.Column(db.String(30), nullable=False)
   state = db.Column(db.String(30), nullable=False)
-  zip_code = db.Column(db.Integer, nullable=False)
+  zip_code = db.Column(db.String(5), nullable=False)
   rental_rate = db.Column(db.Integer, nullable=False)
   description = db.Column(db.Text, nullable=False)
   distance_allowed = db.Column(db.Integer)

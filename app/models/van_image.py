@@ -10,7 +10,7 @@ class VanImage(db.Model):
 
   id = db.Column(db.Integer, primary_key=True)
   van_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("vans.id")), nullable=False)
-  image_url = db.Column(db.Text, nullabe=False)
+  image_url = db.Column(db.Text, nullable=False)
   preview = db.Column(db.Boolean, nullable=False)
   created_at = db.Column(db.DateTime, default=datetime.now)
   updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)

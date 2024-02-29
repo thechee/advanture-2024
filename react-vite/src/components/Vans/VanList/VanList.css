@@ -1,0 +1,14 @@
+.van-list-ul {
+  margin-top: 0;
+  margin-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  overflow: scroll;
+  height: 100vh;
+}
+
+.van-list-ul a {
+  display: flex;
+  width: fit-content;
+}

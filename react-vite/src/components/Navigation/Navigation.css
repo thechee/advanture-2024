@@ -94,6 +94,8 @@
   right: 1rem;
   top: 3.5rem;
   width: 250px;
+  background-color: white;
+  z-index: 1;
 }
 
 .profile-dropdown li {

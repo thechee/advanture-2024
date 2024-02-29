@@ -24,7 +24,7 @@ export const VanDetail = () => {
   }
 
   function favoriteHandler() {
-    
+
   }
 
   const previewImage = van.images.find(image => image.preview == true).imageUrl
@@ -46,7 +46,7 @@ export const VanDetail = () => {
         </div>
         <div className='van-detail-details'>
           <ul className='details-ul'>
-            {van.mpg && <li>{van.mpg}</li>}
+            {van.mpg && <li>{van.mpg} MPG</li>}
             <li>{van.fuelType}</li>
             <li>{van.doors} doors</li>
             <li>{van.seats} seats</li>
@@ -59,11 +59,11 @@ export const VanDetail = () => {
           </div>
           <div className='van-detail-host-info'>
             <h3>{van.owner.firstName}</h3>
-            <p>Joined {joinedDate}</p>
+            <span>Joined {joinedDate}</span>
           </div>
         </div>
         <h4>DESCRIPTION</h4>
-        <p>{van.description}</p>
+        <p className='van-description'>{van.description}</p>
         <h4>FEATURES</h4>
         <div className='van-details-features'>
           <ul className='feature-ul'>
@@ -81,6 +81,19 @@ export const VanDetail = () => {
         <div className='van-detail-right-div'>
           <div>
             <p><span className='van-detail-price'>${van.rentalRate}</span> / day</p>
+          </div>
+          <div className='van-detail-trip-div'>
+            <label>Trip Start</label>
+            <input type="date" />
+            <label>Trip End</label>
+            <input type="date" />
+            <button className='submit-btn'>Continue</button>
+          </div>
+          <div className='van-detail-distance-div'>
+            <span>Distance included</span><span>{van.distanceAllowed} miles</span>
+          </div>
+          <div>
+            <button className='add-to-favorites btn'><span><FaRegHeart /></span>Add to Favorites</button>
           </div>
         </div>
       </div>

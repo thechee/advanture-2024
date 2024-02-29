@@ -5,12 +5,12 @@ from datetime import datetime
 
 current_year = datetime.now().year
 makes = ["Ford", "Dodge", "Ram", "Volkswagen", "Mercedes", "Toyota"]
-fuel_types = [(1, "Gasoline", (2, "Diesel"), (3, "Bio-Diesel"), (4, "Electric"), (5, "Hybrid"))]
+fuel_types = [(1, "Gasoline"), (2, "Diesel"), (3, "Bio-Diesel"), (4, "Electric"), (5, "Hybrid")]
 
 class VanForm(FlaskForm):
   year = IntegerField('year', validators=[DataRequired(), NumberRange(min=1950, max=current_year)])
   make = SelectField('make', validators=[DataRequired()], choices=makes)
-  model = SelectField('model', validators=[DataRequired()])
+  model = StringField('model', validators=[DataRequired()])
   miles = IntegerField('miles', validators=[DataRequired(), NumberRange(min=0, max=500000)])
   address = StringField('address', validators=[DataRequired()])
   city = StringField('city', validators=[DataRequired(), Length(min=3, max=30, message="City name must be between 3 and 30 characters")])

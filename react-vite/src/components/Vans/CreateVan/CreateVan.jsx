@@ -2,18 +2,19 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import "./CreateVan.css";
-import { states } from "../../../../states";
+import { thunkAddVan } from "../../../redux/van";
+// import { states } from "../../../../states";
 
 export const CreateVan = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [year, setYear] = useState("")
-  const [make, setMake] = useState("")
+  const [make, setMake] = useState("placeholder")
   const [model, setModel] = useState("")
   const [miles, setMiles] = useState("")
   const [address, setAddress] = useState("")
   const [city, setCity] = useState("")
-  const [state, setState] = useState("")
+  const [state, setState] = useState("placeholder")
   const [zipCode, setZipCode] = useState("")
   const [rentalRate, setRentalRate] = useState("")
   const [description, setDescription] = useState("")
@@ -22,7 +23,7 @@ export const CreateVan = () => {
   const [mpg, setMpg] = useState("")
   const [doors, setDoors] = useState("")
   const [seats, setSeats] = useState("")
-  const [fuelTypeId, setFuelTypeId] = useState("")
+  const [fuelTypeId, setFuelTypeId] = useState("placeholder")
   const [validationErrors, setValidationErrors] = useState({})
 
   const automotiveYear = new Date().getFullYear() + 1
@@ -59,10 +60,10 @@ export const CreateVan = () => {
     setValidationErrors({})
     const errors = {}
     if (!year) errors.year = "Van year is required"
-    if (year > automotiveYear) errors.year = "Van year can not be after the current automotive year"
+    if (year > automotiveYear) errors.year = "Year can not be after the current automotive year"
     if (year && year < 1950) errors.year = "We do not accept vans this old on Advanture"
-    if (!make) errors.make = "Van make is required"
-    if (!makes.includes(make)) errors.make = "YOU ARE UP TO NO GOOD!"
+    if (make == "placeholder") errors.make = "Van make is required"
+    if (!makes.includes(make) && make !== "placeholder") errors.make = "YOU ARE UP TO NO GOOD!"
     if (!model) errors.model = "Van model is required"
     if (model.length > 30) errors.model = "Van model must be shorter than 30 characters"
     if (!miles) errors.miles = "Milage is required"
@@ -72,8 +73,8 @@ export const CreateVan = () => {
     if (!city) errors.city = "City is required"
     if (city.length < 3) errors.city = "City name must be at least 3 characters"
     if (city.length > 30) errors.city = "City name must less than 30 characters"
-    if (!state) errors.state = "State is required"
-    if (!states.includes(state)) errors.state = "YOU ARE UP TO NO GOOD!"
+    if (state == "placeholder") errors.state = "State is required"
+    // if (!states.includes(state) && state !== 'placeholder') errors.state = "YOU ARE UP TO NO GOOD!"
     if (!zipCode) errors.zipCode = "Zip code is required"
     if (!zipCodeRegex.test(zipCode)) errors.zipCode = "Must be a valid zip code"
     if (!rentalRate) errors.rentalRate = "Daily rental rate is required"
@@ -85,18 +86,36 @@ export const CreateVan = () => {
     if (!distanceIncluded && unlimited == false) errors.distanceIncluded = "Distance included is required"
     if (!mpg && fuelTypeId !== 4) errors.mpg = "MPG is required for non-electric vehicles"
     if (!doors) errors.doors = "Doors is required"
-    if (doors < 1) errors.doors = "Van must have at least 1 door!"
+    if (doors < 1) errors.doors = "Van must have at least 1 door"
     if (doors > 9) errors.doors = "Your van has too many doors"
     if (!seats) errors.seats = "Seats is required"
     if (seats < 1) errors.seats = "Van must have at least 1 seat"
     if (seats > 30) errors.seats = "This is a website for vans, not buses"
-    if (!fuelTypeId) errors.fuelTypeId = "Fuel type is required"
-    if (fuelTypeId > 5) errors.fuelTypeId = "YOU ARE UP TO NO GOOD!"
+    if (fuelTypeId == "placeholder") errors.fuelTypeId = "Fuel type is required"
+    if (fuelTypeId > 5 || fuelTypeId < 1) errors.fuelTypeId = "YOU ARE UP TO NO GOOD!"
 
     if (Object.values(errors).length) {
       setValidationErrors(errors)
     } else {
-      dispatch()
+      const newVan = dispatch(thunkAddVan({
+        year,
+        make,
+        model,
+        miles,
+        address,
+        city,
+        state,
+        zip_code: zipCode,
+        rental_rate: rentalRate,
+        description,
+        distance_allowed: distanceIncluded,
+        mpg,
+        doors,
+        seats,
+        fuel_type_id: fuelTypeId
+      }))
+
+      console.log(newVan)
     }
   };
 
@@ -117,6 +136,9 @@ export const CreateVan = () => {
 
       <label>Make</label>
       <select value={make} onChange={e => setMake(e.target.value)}>
+      <option disabled value={"placeholder"}>
+          Select your van&apos;s make
+        </option>
         <option value="Ford">Ford</option>
         <option value="Dodge">Dodge</option>
         <option value="Ram">Ram</option>
@@ -160,7 +182,7 @@ export const CreateVan = () => {
         onChange={(e) => setState(e.target.value)}
       >
         <option disabled value={"placeholder"}>
-          State
+          Select your state
         </option>
         <option value="AL">Alabama</option>
         <option value="AK">Alaska</option>
@@ -240,6 +262,7 @@ export const CreateVan = () => {
       
       <label>Fuel type</label>
       <select value={fuelTypeId} onChange={(e) => setFuelTypeId(e.target.value)}>
+        <option disabled value={"placeholder"}>Select a fuel type</option>
         <option value="1">Gasoline</option>
         <option value="2">Diesel</option>
         <option value="3">Bio-Diesel</option>

@@ -1,7 +1,7 @@
 .nav-bar {
   display: flex;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid #F3F3F3;
 }
 
@@ -32,7 +32,7 @@
 }
 
 #host-div:hover {
-  background-color: #F3F3F3
+  background-color: var(--hover)
 }
 
 #host-div span {
@@ -83,7 +83,7 @@
 
 .profile-active,
 .profile-button:hover {
-  background-color: #F3F3F3;
+  background-color: var(--hover);
 }
 
 .profile-dropdown {
@@ -117,5 +117,5 @@
 }
 
 .profile-dropdown li:hover {
-  background-color: #F3F3F3
+  background-color: var(--hover)
 }

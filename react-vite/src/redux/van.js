@@ -6,7 +6,7 @@ const getVans = (vans) => ({
 })
 
 export const thunkGetVans = () => async dispatch => {
-  const response = await fetch('/api/vans')
+  const response = await fetch('/api/vans/')
 
   if (response.ok) {
     const vans = await response.json()

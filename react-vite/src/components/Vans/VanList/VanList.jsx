@@ -1,6 +1,8 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { thunkGetVans } from "../../redux/van"
+import { thunkGetVans } from "../../../redux/van"
+import { VanListItem } from "../VanListItem/VanListItem"
+import './VanList.css'
 
 
 export const VanList = () => {
@@ -16,9 +18,9 @@ export const VanList = () => {
   console.log(vans)
   
   return (
-    <ul>
+    <ul className="van-list-ul">
       {vans.map(van => (
-        van.model
+        <VanListItem key={van.id} van={van}/>
       ))}
     </ul>
   )

@@ -39,6 +39,6 @@ class User(db.Model, UserMixin):
             'lastName': self.last_name,
             'email': self.email,
             'profileImage': self.profile_image_url,
-            'created_at': self.created_at,
-            'updated_at': self.updated_at
+            'createdAt': self.created_at,
+            'updatedAt': self.updated_at
         }

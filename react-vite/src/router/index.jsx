@@ -1,8 +1,9 @@
 import { Outlet, createBrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
-import { HomePage } from '../components/HomePage/HomePAge';
+import { HomePage } from '../components/HomePage/HomePage';
 import { VanList } from '../components/Vans/VanList/VanList';
 import { VanDetail } from '../components/Vans/VanDetail/VanDetail';
+import { CreateVan } from '../components/Vans/CreateVan/CreateVan';
 
 
 export const router = createBrowserRouter([
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
           {
             path: ":vanId",
             element: <VanDetail />
+          },
+          {
+            path: "new",
+            element: <CreateVan />
           }
         ]
       },

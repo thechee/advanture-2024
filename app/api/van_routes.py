@@ -26,8 +26,9 @@ def van(vanId):
   else:
     return {"errors": {"message": "Van not found"}}
 
-@login_required  
-@van.routes.route('/', methods=["POST"])
+
+@login_required
+@van_routes.route('/new', methods=["POST"])
 def new_van():
   form = VanForm()
   form['csrf_token'].data = request.cookies['csrf_token']

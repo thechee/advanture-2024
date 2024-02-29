@@ -35,7 +35,7 @@ def new_van():
 
   if form.validate_on_submit():
     new_van = Van(
-      used_id = current_user.id,
+      user_id = current_user.id,
       year = form.data['year'],
       make = form.data['make'],
       model = form.data['model'],

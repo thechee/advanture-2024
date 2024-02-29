@@ -15,7 +15,6 @@ export const VanList = () => {
   
   if (!vansObj) return null
   const vans = Object.values(vansObj)
-  console.log(vans)
   
   return (
     <ul className="van-list-ul">

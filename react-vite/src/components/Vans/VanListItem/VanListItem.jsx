@@ -5,7 +5,6 @@ import { FaRegHeart } from "react-icons/fa";
 
 export const VanListItem = ({ van }) => {
   const previewImage = van.images.find(image => image.preview == true).imageUrl
-  console.log(previewImage)
 
   return (
     <Link to={`/vans/${van.id}`}>

@@ -11,3 +11,16 @@ def vans():
   """
   vans = Van.query.all()
   return [van.to_dict() for van in vans]
+
+@van_routes.route('/<int:vanId>')
+def van(vanId):
+  """
+  Query for the van from the params and return a dict of that van
+  """
+  van = Van.query.get(vanId)
+
+  if van:
+    return van.to_dict()
+  else:
+    return {"errors": {"message": "Van not found"}}
+  

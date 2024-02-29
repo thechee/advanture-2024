@@ -1,8 +1,8 @@
-import { createBrowserRouter } from 'react-router-dom';
-import LoginFormPage from '../components/LoginFormPage';
-import SignupFormPage from '../components/SignupFormPage';
+import { Outlet, createBrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
 import { HomePage } from '../components/HomePage/HomePAge';
+import { VanList } from '../components/VanList/VanList';
+
 
 export const router = createBrowserRouter([
   {
@@ -13,12 +13,14 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "login",
-        element: <LoginFormPage />,
-      },
-      {
-        path: "signup",
-        element: <SignupFormPage />,
+        path: "vans",
+        element: <Outlet />,
+        children: [
+          {
+            index: true,
+            element: <VanList />
+          }
+        ]
       },
     ],
   },

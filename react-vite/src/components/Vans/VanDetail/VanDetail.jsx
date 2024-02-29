@@ -23,6 +23,10 @@ export const VanDetail = () => {
     return `${month} ${year}`; 
   }
 
+  function favoriteHandler() {
+    
+  }
+
   const previewImage = van.images.find(image => image.preview == true).imageUrl
   const joinedDate = formatDate(van.owner.createdAt)
 
@@ -31,9 +35,9 @@ export const VanDetail = () => {
       <div className='van-images-div'>
         <img src={previewImage} alt="" />
       </div>
-      <div className='van-detail-heart-div'>
+      <div onClick={favoriteHandler} className='van-detail-heart-div'>
         <FaRegHeart />
-        </div>
+      </div>
       <div className='van-detail-content'>
         <div className='van-detail-left-div'>
           <h1>{van.make} {van.model} {van.year}</h1>

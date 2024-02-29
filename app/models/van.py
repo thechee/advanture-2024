@@ -36,7 +36,9 @@ class Van(db.Model):
 
   def to_dict(self):
     owner = self.owner.to_dict()
-    features = [feature.feature for feature in self.features]
+    features = [feature.name for feature in self.features]
+    fuel_type = self.fuel_type.fuel_type
+    images = [image.to_dict() for image in self.images]
 
     return {
       "id": self.id,
@@ -55,8 +57,9 @@ class Van(db.Model):
       "mpg": self.mpg,
       "doors": self.doors,
       "seats": self.seats,
-      "fuelType": self.fuel_type,
+      "fuelType": fuel_type,
       "features": features,
+      "images": images,
       "createdAt": self.created_at,
       "updatedAt": self.updated_at
     }

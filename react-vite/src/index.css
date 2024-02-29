@@ -46,5 +46,10 @@ label {
 }
 
 .submit-btn {
-  background-color: #593CFB;
+  background-color: var(--purple);
+}
+
+:root {
+  --hover: #F3F3F3;
+  --purple: #593CFB
 }

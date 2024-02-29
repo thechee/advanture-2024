@@ -17,6 +17,7 @@ def seed_van_features():
   newVans = []
   for van in vans:
     newVan = Van(
+    id=van['id'],
     user_id=van['user_id'],
     year=van['year'],
     make=van['make'],

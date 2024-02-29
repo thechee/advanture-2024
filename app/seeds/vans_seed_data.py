@@ -8,7 +8,7 @@ vans = [
     "miles": 83000,
     "address": "141 9th Ave",
     "city": "Kirkland",
-    "state": "Washington",
+    "state": "WA",
     "zip_code": "98033",
     "rental_rate": 200,
     "description": """
@@ -68,7 +68,7 @@ vans = [
     "miles": 34000,
     "address": "1221 Fair Meadow Rd",
     "city": "Memphis",
-    "state": "Tennessee",
+    "state": "TN",
     "zip_code": "38117",
     "rental_rate": 150,
     "description": """
@@ -99,7 +99,7 @@ vans = [
     "miles": 153000,
     "address": "23 Brock Ave",
     "city": "Sheridan",
-    "state": "Wyoming",
+    "state": "WY",
     "zip_code": "82801",
     "rental_rate": 225,
     "description": """
@@ -130,7 +130,7 @@ vans = [
     "miles": 42000,
     "address": "2605 SE 66th Ave",
     "city": "Portland",
-    "state": "Oregon",
+    "state": "OR",
     "zip_code": "97206",
     "rental_rate": 155,
     "description": """

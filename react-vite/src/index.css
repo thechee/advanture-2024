@@ -47,9 +47,27 @@ label {
 
 .submit-btn {
   background-color: var(--purple);
+  color: white;
+  border: none;
+  padding: .75rem;
+  border-radius: 5px;
+  width: 100%;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 :root {
   --hover: #F3F3F3;
   --purple: #593CFB
+}
+
+.van-detail-distance-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn {
+  border-radius: 5px;
+  cursor: pointer;
 }

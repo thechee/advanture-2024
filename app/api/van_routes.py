@@ -23,4 +23,8 @@ def van(vanId):
     return van.to_dict()
   else:
     return {"errors": {"message": "Van not found"}}
-  
+
+@login_required  
+@van.routes.route('/new', methods=["POST"])
+def new_van():
+  form = 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import "../CreateVan/CreateVan.css";
-import { thunkAddVanImage, thunkGetOneVan, thunkUpdateVan } from "../../../redux/van";
+import { thunkAddVanImage, thunkGetOneVan, thunkUpdateVan, thunkUpdateVanImage } from "../../../redux/van";
 
 export const UpdateVan = () => {
   const dispatch = useDispatch();
@@ -190,15 +190,15 @@ export const UpdateVan = () => {
           fuel_type_id: fuelTypeId,
         }, vanId)
       )
-        .then(async (newVan) => {
+        .then(async (updatedVan) => {
           const formData = new FormData();
 
-          formData.append("van_id", newVan.id);
+          formData.append("van_id", updatedVan.id);
           formData.append("image", image);
           formData.append("preview", true);
 
-          await dispatch(thunkAddVanImage(formData, newVan.id));
-          navigate(`/vans/${newVan.id}`);
+          await dispatch(thunkUpdateVanImage(formData, updatedVan.id));
+          navigate(`/vans/${updatedVan.id}`);
         })
         .catch(async (response) => {
           setValidationErrors(response);

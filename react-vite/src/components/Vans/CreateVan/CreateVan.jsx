@@ -156,13 +156,7 @@ export const CreateVan = () => {
       onSubmit={handleSubmit}
       encType="multipart/form-data"
     >
-      <label>Year</label>
-      <div>
-        <input value={year} onChange={e => setYear(e.target.value)} type="number" />
-      </div>
-      <div className="errors">
-        {validationErrors.year && <p>{validationErrors.year}</p>}
-      </div>
+      <div className="create-van-left-div">
 
       <label>Make</label>
       <select value={make} onChange={e => setMake(e.target.value)}>
@@ -186,12 +180,54 @@ export const CreateVan = () => {
         {validationErrors.model && <p>{validationErrors.model}</p>}
       </div>
 
+      <label>Year</label>
+      <div>
+        <input value={year} onChange={e => setYear(e.target.value)} type="number" />
+      </div>
+      <div className="errors">
+        {validationErrors.year && <p>{validationErrors.year}</p>}
+      </div>
+
       <label>Miles</label>
       <input type="number" value={miles} onChange={e => setMiles(e.target.value)}/>
       <div className="errors">
         {validationErrors.miles && <p>{validationErrors.miles}</p>}
       </div>
 
+      <label>Doors</label>
+      <input type="number" value={doors} min={1} onChange={e => setDoors(e.target.value)}/>
+      <div className="errors">
+        {validationErrors.doors && <p>{validationErrors.doors}</p>}
+      </div>
+
+      <label>Seats</label>
+      <input type="number" value={seats} min={1} onChange={e => setSeats(e.target.value)}/>
+      <div className="errors">
+        {validationErrors.seats && <p>{validationErrors.seats}</p>}
+      </div>
+            
+      <label>Fuel type</label>
+      <select value={fuelTypeId} onChange={(e) => setFuelTypeId(e.target.value)}>
+        <option disabled value={"placeholder"}>Select a fuel type</option>
+        <option value="1">Gasoline</option>
+        <option value="2">Diesel</option>
+        <option value="3">Bio-Diesel</option>
+        <option value="4">Electric</option>
+        <option value="5">Hybrid</option>
+      </select>
+      <div className="errors">
+        {validationErrors.fuelTypeId || validationErrors.fuel_type_id && <p>{validationErrors.fuelTypeId}</p>}
+      </div>
+
+      <label>MPG <span>(leave blank for electric vehicles)</span></label>
+      <input type="number" id="MPG-input" min={1} value={mpg} onChange={e => setMpg(e.target.value)}/>
+      <div className="errors">
+        {validationErrors.mpg && <p>{validationErrors.mpg}</p>}
+      </div>
+
+      </div>
+
+      <div className="create-van-middle-div">
       <label>Address</label>
       <input type="text" value={address} onChange={e => setAddress(e.target.value)}/>
       <div className="errors">
@@ -284,45 +320,18 @@ export const CreateVan = () => {
 
       <label>Distance included</label>
       <input type="number" id="distance-input" value={distanceIncluded} onChange={e => setDistanceIncluded(e.target.value)}/>
-      <label>Unlimited</label>
-      <input type="checkbox" checked={unlimited} onChange={() => setUnlimited(!unlimited)}></input>
+      <label id="unlimited-label" >Unlimited
+      <input id="unlimited-checkbox" type="checkbox" checked={unlimited} onChange={() => setUnlimited(!unlimited)}></input>
+      </label>
       <div className="errors">
         {validationErrors.distanceIncluded || validationErrors.distance_allowed && <p>{validationErrors.distanceIncluded}</p>}
       </div>
-      
-      <label>Fuel type</label>
-      <select value={fuelTypeId} onChange={(e) => setFuelTypeId(e.target.value)}>
-        <option disabled value={"placeholder"}>Select a fuel type</option>
-        <option value="1">Gasoline</option>
-        <option value="2">Diesel</option>
-        <option value="3">Bio-Diesel</option>
-        <option value="4">Electric</option>
-        <option value="5">Hybrid</option>
-      </select>
-      <div className="errors">
-        {validationErrors.fuelTypeId || validationErrors.fuel_type_id && <p>{validationErrors.fuelTypeId}</p>}
       </div>
 
-      <label>MPG <span>(leave blank for electric vehicles)</span></label>
-      <input type="number" id="MPG-input" min={1} value={mpg} onChange={e => setMpg(e.target.value)}/>
-      <div className="errors">
-        {validationErrors.mpg && <p>{validationErrors.mpg}</p>}
-      </div>
 
-      <label>Doors</label>
-      <input type="number" value={doors} min={1} onChange={e => setDoors(e.target.value)}/>
-      <div className="errors">
-        {validationErrors.doors && <p>{validationErrors.doors}</p>}
-      </div>
-
-      <label>Seats</label>
-      <input type="number" value={seats} min={1} onChange={e => setSeats(e.target.value)}/>
-      <div className="errors">
-        {validationErrors.seats && <p>{validationErrors.seats}</p>}
-      </div>
-
+      <div className="create-van-right-div">
       <label>Description</label>
-      <textarea name="" id="" cols="30" rows="10" 
+      <textarea
       value={description} 
       onChange={e => setDescription(e.target.value)}
       />
@@ -337,7 +346,8 @@ export const CreateVan = () => {
       <div className="errors">
         {validationErrors.image && <p>{validationErrors.image}</p>}
       </div>
-      <button className="submit-btn btn">Add van</button>
+      </div>
+      <button className="submit-btn">Add van</button>
     </form>
   );
 };

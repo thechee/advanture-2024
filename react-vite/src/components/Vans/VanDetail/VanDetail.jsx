@@ -90,7 +90,7 @@ export const VanDetail = () => {
             <button className='submit-btn'>Continue</button>
           </div>
           <div className='van-detail-distance-div'>
-            <span>Distance included</span><span>{van.distanceAllowed} miles</span>
+            <span>Distance included</span><span>{van.distanceAllowed ? van.distanceAllowed + " miles" : "Unlimited"}</span>
           </div>
           <div>
             <button className='add-to-favorites btn'><span><FaRegHeart /></span>Add to Favorites</button>

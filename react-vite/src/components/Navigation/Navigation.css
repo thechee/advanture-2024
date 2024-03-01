@@ -114,8 +114,13 @@
   border-bottom: 1px solid lightgray;
 }
 
+.profile-dropdown-manage-div {
+  padding: 1rem 0;
+}
+
 .profile-dropdown-logout-div {
   padding-top: 1rem;
+  border-top: 1px solid lightgray;
 }
 
 .profile-dropdown li:hover {

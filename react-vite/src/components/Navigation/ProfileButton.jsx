@@ -76,7 +76,15 @@ function ProfileButton() {
                 <li>Account</li>
               </NavLink>
               <NavLink to={`/vans/new`}>
-                <li>Become a host</li>
+                <li>Add a van</li>
+              </NavLink>
+            </div>
+            <div className="profile-dropdown-manage-div">
+              <NavLink to={'/vans/manage'}>
+                <li>Manage vans</li>
+              </NavLink>
+              <NavLink to={'/reviews/manage'}>
+                <li>Manage reviews</li>
               </NavLink>
             </div>
             <div className="profile-dropdown-logout-div">

@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import "./CreateVan.css";
-import { thunkAddVan } from "../../../redux/van";
-// import { states } from "../../../../states";
+import { thunkAddVan, thunkAddVanImage } from "../../../redux/van";
 
 export const CreateVan = () => {
   const dispatch = useDispatch()
@@ -21,7 +20,7 @@ export const CreateVan = () => {
   const [description, setDescription] = useState("")
   const [distanceIncluded, setDistanceIncluded] = useState("")
   const [unlimited, setUnlimited] = useState(false)
-  const [mpg, setMpg] = useState()
+  const [mpg, setMpg] = useState("")
   const [doors, setDoors] = useState("")
   const [seats, setSeats] = useState("")
   const [fuelTypeId, setFuelTypeId] = useState("placeholder")
@@ -51,9 +50,8 @@ export const CreateVan = () => {
   }, [unlimited])
 
   useEffect(() => {
-    if (!image) {
-      validationErrors.image = "Image is required";
-    } else if (typeof image === 'object' && image.name) {
+
+    if (image && typeof image === 'object' && image.name) {
       if (!image.name.endsWith('.jpeg') && !image.name.endsWith('.jpg') && !image.name.endsWith('.png')) {
           validationErrors.image = 'Image must be in .jpeg, .jpg, or .png format';
       }
@@ -113,6 +111,7 @@ export const CreateVan = () => {
     if (seats > 30) errors.seats = "This is a website for vans, not buses"
     if (fuelTypeId == "placeholder") errors.fuelTypeId = "Fuel type is required"
     if (fuelTypeId > 5 || fuelTypeId < 1) errors.fuelTypeId = "YOU ARE UP TO NO GOOD!"
+    if (!image) errors.image = "Image is required";
 
     if (Object.values(errors).length) {
       setValidationErrors(errors)
@@ -141,9 +140,8 @@ export const CreateVan = () => {
         formData.append("image", image)
         formData.append("preview", true)
 
-        await dispatch(thunkAddVanImage(formData))
-        .then(() => navigate(`/vans/${newVan.id}`))
-        .catch(async (response) => setValidationErrors(response))
+        await dispatch(thunkAddVanImage(formData, newVan.id))
+        navigate(`/vans/${newVan.id}`)
       })
       .catch(async (response) => {
         setValidationErrors(response)
@@ -273,7 +271,7 @@ export const CreateVan = () => {
       </div>
 
       <label>Zip code</label>
-      <input type="text" value={zipCode} onChange={e => setZipCode(e.target.value)}/>
+      <input type="text" value={zipCode} minLength={5} maxLength={5} onChange={e => setZipCode(e.target.value)}/>
       <div className="errors">
         {validationErrors.zipCode || validationErrors.zip_code && <p>{validationErrors.zipCode}</p>}
       </div>

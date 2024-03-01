@@ -58,32 +58,33 @@ function ProfileButton() {
           {user ? (
             <>
             <div className="profile-dropdown-links-div">
-              <NavLink to={`/users/${user.id}/favorites`}>
+              <NavLink to={`/users/${user.id}/favorites`}
+              onClick={toggleMenu}>
                 <li>Favorites</li>
               </NavLink>
-              <NavLink to={`/users/${user.id}/trips`}>
+              <NavLink to={`/users/${user.id}/trips`} onClick={toggleMenu}>
                 <li>Trips</li>
               </NavLink>
-              <NavLink to={`/users/${user.id}/notifications`}>
+              <NavLink to={`/users/${user.id}/notifications`} onClick={toggleMenu}>
                 <li>Notifications</li>
               </NavLink>
             </div>
             <div className="profile-dropdown-user-div">
-              <NavLink to={`/users/${user.id}`}>
+              <NavLink to={`/users/${user.id}`} onClick={toggleMenu}>
                 <li id='profile-navlink'>Profile</li>
               </NavLink>
-              <NavLink to={`/users/${user.id}/account`}>
+              <NavLink to={`/users/${user.id}/account`} onClick={toggleMenu}>
                 <li>Account</li>
               </NavLink>
-              <NavLink to={`/vans/new`}>
+              <NavLink to={`/vans/new`} onClick={toggleMenu}>
                 <li>Add a van</li>
               </NavLink>
             </div>
             <div className="profile-dropdown-manage-div">
-              <NavLink to={'/vans/manage'}>
+              <NavLink to={'/vans/manage'} onClick={toggleMenu}>
                 <li>Manage vans</li>
               </NavLink>
-              <NavLink to={'/reviews/manage'}>
+              <NavLink to={'/reviews/manage'} onClick={toggleMenu}>
                 <li>Manage reviews</li>
               </NavLink>
             </div>

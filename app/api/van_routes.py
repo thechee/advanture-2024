@@ -26,6 +26,15 @@ def van(vanId):
   else:
     return {"errors": {"message": "Van not found"}}
 
+@login_required
+@van_routes.route('/manage')
+def user_vans():
+  vans = Van.query.filter(current_user.id == Van.user_id).all()
+  if vans:
+    return [van.to_dict() for van in vans]
+  else:
+    return []
+
 
 @login_required
 @van_routes.route('/new', methods=["POST"])

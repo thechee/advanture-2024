@@ -12,7 +12,7 @@
   padding: .5rem;
   font-size: 15px;
   box-sizing: border-box;
-  margin-bottom: 1rem;
+
 }
 
 .create-van-form label span {
@@ -26,7 +26,12 @@
 
 .create-van-form textarea {
   width: 100%;
-  height: 20rem;
+  height: 15rem;
+  box-sizing: border-box;
+}
+
+.create-van-bottom-div {
+  width: 100%;
 }
 
 #distance-input {
@@ -42,4 +47,13 @@
   margin: 0 0 0 .5rem;
   width: 10px;
   display: flex;
+}
+ #file-input {
+  padding-left: 0;
+ }
+
+.van-upload-thumbnail {
+  width: 100%;
+  aspect-ratio: 2.2;
+  object-fit: cover;
 }

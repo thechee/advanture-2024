@@ -16,7 +16,7 @@ function Navigation() {
       </div>
       {user && <Link to='/vans/new'>
       <div id="host-div">
-        <span>Become a host</span>
+        <span>Add a van</span>
       </div>
       </Link>}
       <div className="profile-button-div">

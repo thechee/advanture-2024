@@ -11,13 +11,14 @@
 
 .van-detail-content {
   display: flex;
+  justify-content: center;
   margin: 3rem auto;
   width: 950px;
 }
 
 .van-detail-left-div {
-  width: 66%;
-  margin-right: 1rem;
+  width: 550px;
+  margin-right: 2rem;
   display: flex;
   flex-direction: column;
 }
@@ -26,10 +27,29 @@
   margin: 0;
 }
 
+.van-description {
+  font-size: 14px;
+  margin: 0;
+  line-height: 22px;
+}
+
 .van-detail-right-div {
-  width: 33%;
+  width: 275px;
   display: flex;
   flex-direction: column;
+}
+
+.van-detail-right-div label {
+  color: var(--purple);
+  font-size: 14px;
+}
+
+.van-detail-right-div input {
+  width: 100%;
+  padding: .5rem;
+  font-size: 15px;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
 }
 
 .van-detail-right-div p {
@@ -50,22 +70,33 @@
 
 .feature-ul li,
 .van-detail-details li {
-  width: 300px;
+  width: 50%;
   padding: .5rem 0;
   font-size: 14px;
 }
 
 .van-detail-host-div {
   display: flex;
+  align-items: center;
 }
 
 .van-detail-host-info {
   display: flex;
   flex-direction: column;
+  align-self: flex-start;
+}
+
+.van-detail-host-div h3 {
+  margin-top: 0;
+}
+
+.van-detail-host-info span {
+  font-size: 14px;
 }
 
 .van-detail-host-img-div {
   width: 5rem;
+  margin-right: 1rem;
 }
 
 .van-detail-host-img-div img {
@@ -85,4 +116,47 @@
   height: 20px;
   top: 100px;
   right: 30px;
+  cursor: pointer;
+}
+
+h4 {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.van-detail-trip-div {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 1.5rem;
+}
+
+.van-detail-distance-div {
+  margin-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid lightgray;
+}
+
+.delete-div button {
+  width: 100%;
+  padding: .75rem;
+  color: white;
+  background-color: var(--purple);
+  border: none;
+  border-radius: 10px;
+  margin-top: 1.5rem;
+  cursor: pointer;
+}
+
+.add-to-favorites {
+  width: 100%;
+  padding: .75rem;
+  background-color: white;
+  border: 1px solid lightgray;
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-to-favorites span {
+  margin-right: .5rem;
 }

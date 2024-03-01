@@ -1,6 +1,8 @@
-from flask import Blueprint
-from flask_login import login_required
-from app.models import Van
+from flask import Blueprint, request
+from flask_login import current_user, login_required
+from app.models import Van, VanImage, db
+from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_from_s3
+from app.forms import VanForm, VanImageForm
 
 van_routes = Blueprint('vans', __name__)
 
@@ -23,4 +25,85 @@ def van(vanId):
     return van.to_dict()
   else:
     return {"errors": {"message": "Van not found"}}
+
+
+@login_required
+@van_routes.route('/new', methods=["POST"])
+def new_van():
+  form = VanForm()
+  form['csrf_token'].data = request.cookies['csrf_token']
+
+  if form.validate_on_submit():
+    new_van = Van(
+      user_id = current_user.id,
+      year = form.data['year'],
+      make = form.data['make'],
+      model = form.data['model'],
+      miles = form.data['miles'],
+      address = form.data['address'],
+      city = form.data['city'],
+      state = form.data['state'],
+      zip_code = form.data['zip_code'],
+      rental_rate = form.data['rental_rate'],
+      description = form.data['description'],
+      distance_allowed = form.data['distance_allowed'],
+      mpg = form.data['mpg'],
+      doors = form.data['doors'],
+      seats = form.data['seats'],
+      fuel_type_id = form.data['fuel_type_id']
+    )
+
+    db.session.add(new_van)
+    db.session.commit()
+    return new_van.to_dict()
+  return form.errors, 401
+
+@login_required
+@van_routes.route('/<int:vanId>/images', methods=["POST"])
+def new_van_image(vanId):
+  form = VanImageForm()
+
+  form['csrf_token'].data = request.cookies['csrf_token']
+
+  if form.validate_on_submit():
+    image = form.data["image"]
+    image.filename = get_unique_filename(image.filename)
+    upload = upload_file_to_s3(image)
+    print(upload)
+
+    if "url" not in upload:
+      return upload
+    
+    new_van_image = VanImage(
+      van_id = form.data["van_id"],
+      image_url = upload["url"],
+      preview = form.data["preview"]
+    )
+
+    db.session.add(new_van_image)
+    db.session.commit()
+    return new_van_image.to_dict()
+  return form.errors, 401
+
+@login_required
+@van_routes.route('/<int:vanId>', methods=["DELETE"])
+def delete_van(vanId):
+  """
+  Query for the van and delete it from the database
+
+  Returns 401 Unauthorized if the current user's id does not match the van's user id
+
+  Returns 404 Not Found if the van is not in the database
+  """
+  van = Van.query.get(vanId)
+
+  if current_user.id is not van.user_id:
+    return {'errors': {'message': "Unauthorized"}}, 401
   
+  if not van:
+    return {"errors": {"message": "Van not found"}}, 404
+
+  db.session.delete(van)
+  db.session.commit()
+
+  return {"message": "Van successfully deleted"}

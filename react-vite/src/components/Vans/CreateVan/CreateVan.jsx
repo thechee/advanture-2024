@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import "./CreateVan.css";
 import { thunkAddVan } from "../../../redux/van";
@@ -8,6 +8,7 @@ import { thunkAddVan } from "../../../redux/van";
 export const CreateVan = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const user = useSelector(state => state.session.user)
   const [year, setYear] = useState("")
   const [make, setMake] = useState("placeholder")
   const [model, setModel] = useState("")
@@ -20,10 +21,11 @@ export const CreateVan = () => {
   const [description, setDescription] = useState("")
   const [distanceIncluded, setDistanceIncluded] = useState("")
   const [unlimited, setUnlimited] = useState(false)
-  const [mpg, setMpg] = useState("")
+  const [mpg, setMpg] = useState()
   const [doors, setDoors] = useState("")
   const [seats, setSeats] = useState("")
   const [fuelTypeId, setFuelTypeId] = useState("placeholder")
+  const [image, setImage] = useState(null)
   const [validationErrors, setValidationErrors] = useState({})
 
   const automotiveYear = new Date().getFullYear() + 1
@@ -48,13 +50,29 @@ export const CreateVan = () => {
     }
   }, [unlimited])
 
+  useEffect(() => {
+    if (!image) {
+      validationErrors.image = "Image is required";
+    } else if (typeof image === 'object' && image.name) {
+      if (!image.name.endsWith('.jpeg') && !image.name.endsWith('.jpg') && !image.name.endsWith('.png')) {
+          validationErrors.image = 'Image must be in .jpeg, .jpg, or .png format';
+      }
+    }
+  }, [validationErrors, image])
+
+  if (!user) {
+    return (
+      <h1>You must be logged in to add a van!</h1>
+    )
+  }
+
   // useEffect(() => {
   //   if (typeof image === 'object' && image.name) {
   //     if (!image.name.endsWith('.jpeg') && !image.name.endsWith('.jpg') && !image.name.endsWith('.png') && !image.name.endsWith('.gif')) {
   //         validationErrors.image = 'Image must be in .jpeg, .jpg, .png, or .gif format';
   // }, [])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setValidationErrors({})
@@ -84,7 +102,9 @@ export const CreateVan = () => {
     if (description.length < 50) errors.description = "Description must be at least 50 characters"
     if (description.length > 9999) errors.description = "Description must not be a book"
     if (!distanceIncluded && unlimited == false) errors.distanceIncluded = "Distance included is required"
-    if (!mpg && fuelTypeId !== 4) errors.mpg = "MPG is required for non-electric vehicles"
+    if (!mpg && fuelTypeId != 4) errors.mpg = "MPG is required for non-electric vehicles"
+    if (mpg < 1 && fuelTypeId != 4) errors.mpg = "MPG is must be a positive number"
+    if (mpg > 150 && fuelTypeId != 4) errors.mpg = "MPG can not be over 150"
     if (!doors) errors.doors = "Doors is required"
     if (doors < 1) errors.doors = "Van must have at least 1 door"
     if (doors > 9) errors.doors = "Your van has too many doors"
@@ -97,7 +117,7 @@ export const CreateVan = () => {
     if (Object.values(errors).length) {
       setValidationErrors(errors)
     } else {
-      const newVan = dispatch(thunkAddVan({
+      await dispatch(thunkAddVan({
         year,
         make,
         model,
@@ -114,11 +134,23 @@ export const CreateVan = () => {
         seats,
         fuel_type_id: fuelTypeId
       }))
+      .then(async (newVan) => {
+        const formData = new FormData()
 
-      console.log(newVan)
+        formData.append("van_id", newVan.id)
+        formData.append("image", image)
+        formData.append("preview", true)
+
+        await dispatch(thunkAddVanImage(formData))
+        .then(() => navigate(`/vans/${newVan.id}`))
+        .catch(async (response) => setValidationErrors(response))
+      })
+      .catch(async (response) => {
+        setValidationErrors(response)
+      })
+
     }
   };
-
 
   return (
     <form
@@ -243,13 +275,13 @@ export const CreateVan = () => {
       <label>Zip code</label>
       <input type="text" value={zipCode} onChange={e => setZipCode(e.target.value)}/>
       <div className="errors">
-        {validationErrors.zipCode && <p>{validationErrors.zipCode}</p>}
+        {validationErrors.zipCode || validationErrors.zip_code && <p>{validationErrors.zipCode}</p>}
       </div>
 
       <label>Daily rental rate</label>
       <input type="number" value={rentalRate} onChange={e => setRentalRate(e.target.value)}/>
       <div className="errors">
-        {validationErrors.rentalRate && <p>{validationErrors.rentalRate}</p>}
+        {validationErrors.rentalRate || validationErrors.rental_rate && <p>{validationErrors.rentalRate}</p>}
       </div>      
 
       <label>Distance included</label>
@@ -257,7 +289,7 @@ export const CreateVan = () => {
       <label>Unlimited</label>
       <input type="checkbox" checked={unlimited} onChange={() => setUnlimited(!unlimited)}></input>
       <div className="errors">
-        {validationErrors.distanceIncluded && <p>{validationErrors.distanceIncluded}</p>}
+        {validationErrors.distanceIncluded || validationErrors.distance_allowed && <p>{validationErrors.distanceIncluded}</p>}
       </div>
       
       <label>Fuel type</label>
@@ -270,23 +302,23 @@ export const CreateVan = () => {
         <option value="5">Hybrid</option>
       </select>
       <div className="errors">
-        {validationErrors.fuelTypeId && <p>{validationErrors.fuelTypeId}</p>}
+        {validationErrors.fuelTypeId || validationErrors.fuel_type_id && <p>{validationErrors.fuelTypeId}</p>}
       </div>
 
       <label>MPG <span>(leave blank for electric vehicles)</span></label>
-      <input type="number" id="MPG-input" value={mpg} onChange={e => setMpg(e.target.value)}/>
+      <input type="number" id="MPG-input" min={1} value={mpg} onChange={e => setMpg(e.target.value)}/>
       <div className="errors">
         {validationErrors.mpg && <p>{validationErrors.mpg}</p>}
       </div>
 
       <label>Doors</label>
-      <input type="number" value={doors} onChange={e => setDoors(e.target.value)}/>
+      <input type="number" value={doors} min={1} onChange={e => setDoors(e.target.value)}/>
       <div className="errors">
         {validationErrors.doors && <p>{validationErrors.doors}</p>}
       </div>
 
       <label>Seats</label>
-      <input type="number" value={seats} onChange={e => setSeats(e.target.value)}/>
+      <input type="number" value={seats} min={1} onChange={e => setSeats(e.target.value)}/>
       <div className="errors">
         {validationErrors.seats && <p>{validationErrors.seats}</p>}
       </div>
@@ -300,6 +332,13 @@ export const CreateVan = () => {
         {validationErrors.description && <p>{validationErrors.description}</p>}
       </div>
 
+      <div>
+        <label>Main image</label>
+        <input type="file" accept="image/*" onChange={e => setImage(e.target.files[0])}/>
+      </div>
+      <div className="errors">
+        {validationErrors.image && <p>{validationErrors.image}</p>}
+      </div>
       <button className="submit-btn btn">Add van</button>
     </form>
   );

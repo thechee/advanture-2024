@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, IntegerField, TextAreaField
-from wtforms.validators import DataRequired, NumberRange, Length
+from wtforms.validators import DataRequired, NumberRange, Length, Optional
 from datetime import datetime
 
 current_year = datetime.now().year
@@ -18,8 +18,8 @@ class VanForm(FlaskForm):
   zip_code = StringField('zip code', validators=[DataRequired(), Length(min=5, max=5)])
   rental_rate = IntegerField('rental rate', validators=[DataRequired(), NumberRange(min=1, max=500)])
   description = TextAreaField('description', validators=[DataRequired(), Length(min=50, max=9999, message="Please eneter at least 50 characters describing the van")])
-  distance_allowed = IntegerField('distance allowed', validators=[NumberRange(min=0, max=9999)])
-  mpg = IntegerField('mpg', validators=[DataRequired()])
+  distance_allowed = IntegerField('distance allowed', validators=[Optional(), NumberRange(min=0, max=9999)])
+  mpg = IntegerField('mpg', validators=[Optional(), NumberRange(min=1, max=150)])
   doors = IntegerField('doors', validators=[DataRequired(), NumberRange(min=1, max=9)])
   seats = IntegerField('seats', validators=[DataRequired(), NumberRange(min=1, max=30)])
   fuel_type_id = SelectField('fuel type', validators=[DataRequired()], choices=fuel_types)

@@ -59,6 +59,28 @@ def new_van():
   return form.errors, 401
 
 @login_required
-@van_routes.route('/vans/<int:vanId>/images', methods=["POST"])
-def new_van_image():
-  pass
+@van_routes.route('/<int:vanId>/images', methods=["POST"])
+def new_van_image(vanId):
+  form = VanImageForm()
+
+  form['csrf_token'].data = request.cookies['csrf_token']
+
+  if form.validate_on_submit():
+    image = form.data["image"]
+    image.filename = get_unique_filename(image.filename)
+    upload = upload_file_to_s3(image)
+    print(upload)
+
+    if "url" not in upload:
+      return upload
+    
+    new_van_image = VanImage(
+      van_id = form.data["van_id"],
+      image_url = upload["url"],
+      preview = form.data["preview"]
+    )
+
+    db.session.add(new_van_image)
+    db.session.commit()
+    return new_van_image.to_dict()
+  return form.errors, 401

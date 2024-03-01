@@ -18,10 +18,10 @@ const addVan = (van) => ({
   van
 })
 
-const addVanImage = (vanId, imageUrl) => ({
+const addVanImage = (vanId, image) => ({
   type: ADD_VAN_IMAGE,
   vanId,
-  imageUrl
+  image
 })
 
 export const thunkGetVans = () => async dispatch => {
@@ -56,7 +56,7 @@ export const thunkAddVan = (vanData) => async dispatch => {
   })
 
   if (response.ok) {
-    const van = response.json()
+    const van = await response.json()
     dispatch(addVan(van))
     return van
   } else {
@@ -72,9 +72,9 @@ export const thunkAddVanImage = (formData, vanId) => async dispatch => {
   })
 
   if (response.ok) {
-    const imageUrl = await response.json()
-    dispatch(addVanImage(vanId, imageUrl))
-    return imageUrl
+    const image = await response.json()
+    dispatch(addVanImage(vanId, image))
+    return image
   } else {
     const errors = await response.json()
     return errors
@@ -100,6 +100,11 @@ export const vanReducer = (state = initialState, action) => {
     case ADD_VAN: {
       const newState = { ...state }
       newState[action.van.id] = action.van
+      return newState;
+    }
+    case ADD_VAN_IMAGE: {
+      const newState = { ...state }
+      newState[action.vanId].images.push(action.image)
       return newState;
     }
     default:

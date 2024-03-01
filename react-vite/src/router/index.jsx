@@ -29,6 +29,10 @@ export const router = createBrowserRouter([
           {
             path: "new",
             element: <CreateVan />
+          },
+          {
+            path: "manage",
+            element: <h1>Feature Coming Soon</h1>
           }
         ]
       },

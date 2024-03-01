@@ -84,3 +84,26 @@ def new_van_image(vanId):
     db.session.commit()
     return new_van_image.to_dict()
   return form.errors, 401
+
+@login_required
+@van_routes.route('/<int:vanId>', methods=["DELETE"])
+def delete_van(vanId):
+  """
+  Query for the van and delete it from the database
+
+  Returns 401 Unauthorized if the current user's id does not match the van's user id
+
+  Returns 404 Not Found if the van is not in the database
+  """
+  van = Van.query.get(vanId)
+
+  if current_user.id is not van.user_id:
+    return {'errors': {'message': "Unauthorized"}}, 401
+  
+  if not van:
+    return {"errors": {"message": "Van not found"}}, 404
+
+  db.session.delete(van)
+  db.session.commit()
+
+  return {"message": "Van successfully deleted"}

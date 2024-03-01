@@ -110,7 +110,7 @@ export const VanDetail = () => {
             <div className="delete-div">
               <OpenModalButton
                 buttonText="Remove Van"
-                modalComponent={<DeleteVanModal vanId={vanId} />}
+                modalComponent={<DeleteVanModal van={van} />}
               />
             </div>
           ) : (

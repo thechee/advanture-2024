@@ -2,6 +2,7 @@ const GET_VANS = 'van/GET_VANS'
 const GET_ONE_VAN = 'van/GET_ONE_VAN'
 const ADD_VAN = 'van/ADD_VAN'
 const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE'
+const UPDATE_VAN = 'van/UPDATE_VAN'
 const DELETE_VAN = 'van/DELETE_VAN'
 
 const getVans = (vans) => ({
@@ -23,6 +24,11 @@ const addVanImage = (vanId, image) => ({
   type: ADD_VAN_IMAGE,
   vanId,
   image
+})
+
+const updateVan = (van) => ({
+  type: UPDATE_VAN,
+  van
 })
 
 const deleteVan = (vanId) => ({
@@ -81,6 +87,23 @@ export const thunkAddVanImage = (formData, vanId) => async dispatch => {
     const image = await response.json()
     dispatch(addVanImage(vanId, image))
     return image
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
+export const thunkUpdateVan = (vanData, vanId) => async dispatch => {
+  const response = await fetch(`/api/vans/${vanId}/update`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(vanData)
+  })
+
+  if (response.ok) {
+    const van = await response.json()
+    dispatch(updateVan(van))
+    return van
   } else {
     const errors = await response.json()
     return errors

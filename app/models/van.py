@@ -58,6 +58,7 @@ class Van(db.Model):
       "doors": self.doors,
       "seats": self.seats,
       "fuelType": fuel_type,
+      "fuelTypeId": self.fuel_type_id,
       "features": features,
       "images": images,
       "createdAt": self.created_at,

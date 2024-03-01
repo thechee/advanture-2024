@@ -81,6 +81,8 @@ def update_van(vanId):
 
   form = VanForm()
 
+  form['csrf_token'].data = request.cookies['csrf_token']
+
   if form.validate_on_submit():
     van.year = form.data["year"] or van.year
     van.make = form.data["make"] or van.make
@@ -154,4 +156,36 @@ def new_van_image(vanId):
   return form.errors, 401
 
 @login_required
-@van_routes.route()
+@van_routes.route('/<int:vanId>/images', methods=["PUT"])
+def update_van_image(vanId):
+  # preview_image = VanImage.query.filter()
+  van = Van.query.get(vanId)
+  preview_image = [image for image in van.images if image.preview==True]
+  print("==========>", preview_image[0].image_url)
+
+  form = VanImageForm()
+
+  form['csrf_token'].data = request.cookies['csrf_token']
+
+  if form.validate_on_submit():
+    image = form.data["image"]
+    image.filename = get_unique_filename(image.filename)
+    upload = upload_file_to_s3(image)
+    print(upload)
+
+    if "url" not in upload:
+      return upload
+
+    remove_file_from_s3(preview_image[0].image_url)
+
+    updated_van_image = VanImage(
+      van_id = vanId,
+      image_url = upload["url"],
+      preview = True
+    )
+
+    db.session.delete(preview_image[0])
+    db.session.add(updated_van_image)
+    db.session.commit()
+    return updated_van_image.to_dict()
+  return form.errors, 401

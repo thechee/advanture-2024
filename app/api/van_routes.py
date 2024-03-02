@@ -158,10 +158,8 @@ def new_van_image(vanId):
 @login_required
 @van_routes.route('/<int:vanId>/images', methods=["PUT"])
 def update_van_image(vanId):
-  # preview_image = VanImage.query.filter()
-  van = Van.query.get(vanId)
-  preview_image = [image for image in van.images if image.preview==True]
-  print("==========>", preview_image[0].image_url)
+  preview_image = VanImage.query.filter(VanImage.van_id == vanId, VanImage.preview == True).one()
+  print("==========>", preview_image)
 
   form = VanImageForm()
 
@@ -176,7 +174,7 @@ def update_van_image(vanId):
     if "url" not in upload:
       return upload
 
-    remove_file_from_s3(preview_image[0].image_url)
+    remove_file_from_s3(preview_image.image_url)
 
     updated_van_image = VanImage(
       van_id = vanId,
@@ -184,8 +182,9 @@ def update_van_image(vanId):
       preview = True
     )
 
-    db.session.delete(preview_image[0])
+    db.session.delete(preview_image)
     db.session.add(updated_van_image)
     db.session.commit()
     return updated_van_image.to_dict()
   return form.errors, 401
+  return "Error"

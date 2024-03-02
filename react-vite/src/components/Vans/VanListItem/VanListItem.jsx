@@ -1,37 +1,63 @@
-import { Link } from 'react-router-dom';
-import './VanListItem.css'
+import { Link, useNavigate } from "react-router-dom";
+import "./VanListItem.css";
 import { FaRegHeart } from "react-icons/fa";
-
+import { useSelector } from "react-redux";
+import OpenModalButton from "../../OpenModalButton";
+import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal";
 
 export const VanListItem = ({ van }) => {
-  const previewImage = van.images.find(image => image.preview == true).imageUrl
+  const navigate = useNavigate()
+  const previewImage = van.images.find(
+    (image) => image.preview == true
+  ).imageUrl;
+  const user = useSelector((state) => state.session.user);
+  const isOwner = user?.id == van.owner.id;
+
+  const handleUpdate = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    navigate(`/vans/${van.id}/update`)
+  }
+
+  const handleRemove = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+  }
 
   return (
     <Link to={`/vans/${van.id}`}>
-    <li className="van-list-item-li">
-      
-      <div className="van-list-item-image-div">
-        <img src={previewImage} alt="" />
-      </div>
-      <div className='van-list-item-info'>
-        <div>
-          <h2>{van.make} {van.model} {van.year}</h2>
+      <li className="van-list-item-li">
+        <div className="van-list-item-image-div">
+          <img src={previewImage} alt="" />
         </div>
-        <div>
-          <span>This is where the rating will go</span>
-        </div>
-        <div>
-          <span className='van-list-item-location'>{van.city}, {van.state}</span>
-        </div>
-        
-        <div className='van-list-item-heart-div'>
-        <FaRegHeart />
-        </div>
-        <div className='van-list-item-price-div'>
+        <div className="van-list-item-info">
+          <div>
+            <h2>
+              {van.make} {van.model} {van.year}
+            </h2>
+          </div>
+          <div>
+            <span>This is where the rating will go</span>
+          </div>
+          <div>
+            <span className="van-list-item-location">
+              {van.city}, {van.state}
+            </span>
+
+          </div>
+
+          <div className="van-list-item-price-div">
+          {isOwner && <button onClick={handleUpdate} className="submit-btn">Update</button>}
+          {isOwner && 
+          <OpenModalButton className={"submit-btn"} buttonText={"Remove"} onButtonClick={handleRemove} modalComponent={<DeleteVanModal van={van} />}/>
+          }
             <span>${van.rentalRate}/day</span>
+          </div>
+          <div className="van-list-item-heart-div">
+            <FaRegHeart />
+          </div>
         </div>
-      </div>
-    </li>
+      </li>
     </Link>
-  )
-}
+  );
+};

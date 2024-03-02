@@ -1,0 +1,38 @@
+.manage-vans-div h1 {
+  margin-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.manage-vans-links {
+  margin-left: 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.manage-vans-link {
+  color: var(--purple);
+  margin-bottom: 1rem;
+}
+.manage-vans-link:hover {
+  text-decoration: underline;
+}
+
+.manage-vans-div p {
+  font-weight: 500;
+}
+
+.manage-vans-ul {
+  margin-top: 0;
+  margin-left: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  overflow: scroll;
+  height: 100vh;
+}
+
+.manage-vans-ul a {
+  display: flex;
+  width: fit-content;
+}

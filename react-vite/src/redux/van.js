@@ -1,8 +1,10 @@
 const GET_VANS = 'van/GET_VANS'
 const GET_ONE_VAN = 'van/GET_ONE_VAN'
 const ADD_VAN = 'van/ADD_VAN'
-const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE'
+const UPDATE_VAN = 'van/UPDATE_VAN'
 const DELETE_VAN = 'van/DELETE_VAN'
+const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE'
+const UPDATE_VAN_IMAGE = 'van/UPDATE_VAN_IMAGE'
 
 const getVans = (vans) => ({
   type: GET_VANS,
@@ -19,15 +21,26 @@ const addVan = (van) => ({
   van
 })
 
+const updateVan = (van) => ({
+  type: UPDATE_VAN,
+  van
+})
+
+const deleteVan = (vanId) => ({
+  type: DELETE_VAN,
+  vanId
+})
+
 const addVanImage = (vanId, image) => ({
   type: ADD_VAN_IMAGE,
   vanId,
   image
 })
 
-const deleteVan = (vanId) => ({
-  type: DELETE_VAN,
-  vanId
+const updateVanImage = (vanId, image) => ({
+  type: UPDATE_VAN_IMAGE,
+  vanId,
+  image
 })
 
 export const thunkGetVans = () => async dispatch => {
@@ -71,6 +84,38 @@ export const thunkAddVan = (vanData) => async dispatch => {
   }  
 }
 
+export const thunkUpdateVan = (vanData, vanId) => async dispatch => {
+  const response = await fetch(`/api/vans/${vanId}/update`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(vanData)
+  })
+
+  if (response.ok) {
+    const van = await response.json()
+    dispatch(updateVan(van))
+    return van
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
+export const thunkDeleteVan = (vanId) => async dispatch => {
+  const response = await fetch(`/api/vans/${vanId}`, {
+    method: "DELETE"
+  })
+
+  if (response.ok) {
+    const message = await response.json()
+    dispatch(deleteVan(vanId))
+    return message
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
 export const thunkAddVanImage = (formData, vanId) => async dispatch => {
   const response = await fetch(`/api/vans/${vanId}/images`, {
     method: "POST",
@@ -87,15 +132,16 @@ export const thunkAddVanImage = (formData, vanId) => async dispatch => {
   }
 }
 
-export const thunkDeleteVan = (vanId) => async dispatch => {
-  const response = await fetch(`/api/vans/${vanId}`, {
-    method: "DELETE"
+export const thunkUpdateVanImage = (formData, vanId) => async dispatch => {
+  const response = await fetch(`/api/vans/${vanId}/images`, {
+    method: "PUT",
+    body: formData,
   })
 
   if (response.ok) {
-    const message = await response.json()
-    dispatch(deleteVan(vanId))
-    return message
+    const image = await response.json()
+    dispatch(updateVanImage(vanId, image))
+    return image
   } else {
     const errors = await response.json()
     return errors

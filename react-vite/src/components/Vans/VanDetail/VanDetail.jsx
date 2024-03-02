@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { thunkGetOneVan } from "../../../redux/van";
@@ -8,6 +8,7 @@ import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import "./VanDetail.css";
 
 export const VanDetail = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { vanId } = useParams();
   const van = useSelector((state) => state.vans[vanId]);
@@ -107,10 +108,11 @@ export const VanDetail = () => {
           </div>
 
           {owner ? (
-            <div className="delete-div">
+            <div className="owner-div">
+              <button onClick={() => navigate(`/vans/${vanId}/update`)}>Update Van</button>
               <OpenModalButton
                 buttonText="Remove Van"
-                modalComponent={<DeleteVanModal vanId={vanId} />}
+                modalComponent={<DeleteVanModal van={van} />}
               />
             </div>
           ) : (

@@ -1,5 +1,6 @@
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
+const ADD_USER_VANS = 'session/ADD_USER_VANS'
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -9,6 +10,11 @@ const setUser = (user) => ({
 const removeUser = () => ({
   type: REMOVE_USER
 });
+
+const addUserVans = (vans) => ({
+  type: ADD_USER_VANS,
+  vans
+})
 
 export const thunkAuthenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/");
@@ -62,6 +68,18 @@ export const thunkLogout = () => async (dispatch) => {
   dispatch(removeUser());
 };
 
+export const thunkAddUserVans = () => async dispatch => {
+  const response = await fetch('/api/vans/manage')
+  
+  if (response.ok) {
+    const vans = await response.json()
+    dispatch(addUserVans(vans))
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
 const initialState = { user: null };
 
 function sessionReducer(state = initialState, action) {
@@ -70,6 +88,12 @@ function sessionReducer(state = initialState, action) {
       return { ...state, user: action.payload };
     case REMOVE_USER:
       return { ...state, user: null };
+    case ADD_USER_VANS: {
+      const newState = { ...state }
+      newState.user.vans = {};
+      action.vans.forEach(van => newState.user.vans[van.id] = van)
+      return newState;
+    }
     default:
       return state;
   }

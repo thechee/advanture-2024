@@ -26,6 +26,15 @@ def van(vanId):
   else:
     return {"errors": {"message": "Van not found"}}
 
+@login_required
+@van_routes.route('/manage')
+def user_vans():
+  vans = Van.query.filter(current_user.id == Van.user_id).all()
+  if vans:
+    return [van.to_dict() for van in vans]
+  else:
+    return []
+
 
 @login_required
 @van_routes.route('/new', methods=["POST"])
@@ -58,6 +67,67 @@ def new_van():
     return new_van.to_dict()
   return form.errors, 401
 
+
+@login_required
+@van_routes.route('/<int:vanId>/update', methods=["PUT"])
+def update_van(vanId):
+  van = Van.query.get(vanId)
+
+  if not van:
+    return {"errors": {"message": "Van not found"}}, 404
+  
+  if current_user.id is not van.user_id:
+    return {"errors": {"message": "Unauthorized"}}, 401
+
+  form = VanForm()
+
+  form['csrf_token'].data = request.cookies['csrf_token']
+
+  if form.validate_on_submit():
+    van.year = form.data["year"] or van.year
+    van.make = form.data["make"] or van.make
+    van.model = form.data["model"] or van.model
+    van.miles = form.data["miles"] or van.miles
+    van.address = form.data["address"] or van.address
+    van.city = form.data["city"] or van.city
+    van.state = form.data["state"] or van.state
+    van.zip_code = form.data["zip_code"] or van.zip_code
+    van.rental_rate = form.data["rental_rate"] or van.rental_rate
+    van.description = form.data["description"] or van.description
+    van.distance_allowed = form.data["distance_allowed"] or van.distance_allowed
+    van.mpg = form.data["mpg"] or van.mpg
+    van.doors = form.data["doors"] or van.doors
+    van.seats = form.data["seats"] or van.seats
+    van.fuel_type_id = form.data["fuel_type_id"] or van.fuel_type_id
+    
+    db.session.commit()
+    return van.to_dict()
+  return form.errors, 401
+
+
+@login_required
+@van_routes.route('/<int:vanId>', methods=["DELETE"])
+def delete_van(vanId):
+  """
+  Query for the van and delete it from the database
+
+  Returns 401 Unauthorized if the current user's id does not match the van's user id
+
+  Returns 404 Not Found if the van is not in the database
+  """
+  van = Van.query.get(vanId)
+
+  if current_user.id is not van.user_id:
+    return {'errors': {'message': "Unauthorized"}}, 401
+  
+  if not van:
+    return {"errors": {"message": "Van not found"}}, 404
+
+  db.session.delete(van)
+  db.session.commit()
+
+  return {"message": "Van successfully deleted"}
+
 @login_required
 @van_routes.route('/<int:vanId>/images', methods=["POST"])
 def new_van_image(vanId):
@@ -86,24 +156,35 @@ def new_van_image(vanId):
   return form.errors, 401
 
 @login_required
-@van_routes.route('/<int:vanId>', methods=["DELETE"])
-def delete_van(vanId):
-  """
-  Query for the van and delete it from the database
+@van_routes.route('/<int:vanId>/images', methods=["PUT"])
+def update_van_image(vanId):
+  preview_image = VanImage.query.filter(VanImage.van_id == vanId, VanImage.preview == True).one()
+  print("==========>", preview_image)
 
-  Returns 401 Unauthorized if the current user's id does not match the van's user id
+  form = VanImageForm()
 
-  Returns 404 Not Found if the van is not in the database
-  """
-  van = Van.query.get(vanId)
+  form['csrf_token'].data = request.cookies['csrf_token']
 
-  if current_user.id is not van.user_id:
-    return {'errors': {'message': "Unauthorized"}}, 401
-  
-  if not van:
-    return {"errors": {"message": "Van not found"}}, 404
+  if form.validate_on_submit():
+    image = form.data["image"]
+    image.filename = get_unique_filename(image.filename)
+    upload = upload_file_to_s3(image)
+    print(upload)
 
-  db.session.delete(van)
-  db.session.commit()
+    if "url" not in upload:
+      return upload
 
-  return {"message": "Van successfully deleted"}
+    remove_file_from_s3(preview_image.image_url)
+
+    updated_van_image = VanImage(
+      van_id = vanId,
+      image_url = upload["url"],
+      preview = True
+    )
+
+    db.session.delete(preview_image)
+    db.session.add(updated_van_image)
+    db.session.commit()
+    return updated_van_image.to_dict()
+  return form.errors, 401
+  return "Error"

@@ -32,7 +32,7 @@ class Van(db.Model):
   owner = db.relationship("User", back_populates="vans")
   fuel_type = db.relationship("FuelType", back_populates="vans")
   features = db.relationship("Feature", secondary=van_features, back_populates="vans")
-  images = db.relationship("VanImage", back_populates="van")
+  images = db.relationship("VanImage", back_populates="van", cascade='all, delete-orphan')
 
   def to_dict(self):
     owner = self.owner.to_dict()
@@ -58,6 +58,7 @@ class Van(db.Model):
       "doors": self.doors,
       "seats": self.seats,
       "fuelType": fuel_type,
+      "fuelTypeId": self.fuel_type_id,
       "features": features,
       "images": images,
       "createdAt": self.created_at,

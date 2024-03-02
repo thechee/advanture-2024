@@ -4,6 +4,8 @@ import { HomePage } from '../components/HomePage/HomePage';
 import { VanList } from '../components/Vans/VanList/VanList';
 import { VanDetail } from '../components/Vans/VanDetail/VanDetail';
 import { CreateVan } from '../components/Vans/CreateVan/CreateVan';
+import { ManageVans } from '../components/Vans/ManageVans/ManageVans';
+import { UpdateVan } from '../components/Vans/UpdateVan/UpdateVan';
 
 
 export const router = createBrowserRouter([
@@ -24,7 +26,17 @@ export const router = createBrowserRouter([
           },
           {
             path: ":vanId",
-            element: <VanDetail />
+            element: <Outlet />,
+            children: [
+              {
+                index: true,
+                element: <VanDetail />
+              },
+              {
+                path: "update",
+                element: <UpdateVan />
+              }
+            ]
           },
           {
             path: "new",
@@ -32,7 +44,7 @@ export const router = createBrowserRouter([
           },
           {
             path: "manage",
-            element: <h1>Feature Coming Soon</h1>
+            element: <ManageVans />
           }
         ]
       },

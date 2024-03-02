@@ -5,8 +5,10 @@ import { RouterProvider } from "react-router-dom";
 import configureStore from "./redux/store";
 import { router } from "./router";
 import * as sessionActions from "./redux/session";
+
 import "./index.css";
 
+// const MAPS_API_KEY = import.meta.env.VITE_MAPS_API_KEY;
 const store = configureStore();
 
 if (import.meta.env.MODE !== "production") {
@@ -15,7 +17,9 @@ if (import.meta.env.MODE !== "production") {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <ReduxProvider store={store}>
+  <ReduxProvider store={store}>
+
       <RouterProvider router={router} />
-    </ReduxProvider>
+
+  </ReduxProvider>
 );

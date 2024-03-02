@@ -5,6 +5,7 @@ const UPDATE_VAN = 'van/UPDATE_VAN'
 const DELETE_VAN = 'van/DELETE_VAN'
 const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE'
 const UPDATE_VAN_IMAGE = 'van/UPDATE_VAN_IMAGE'
+const ADD_VAN_LAT_LNG = 'maps/ADD_VAN_LAT_LNG';
 
 const getVans = (vans) => ({
   type: GET_VANS,
@@ -42,6 +43,14 @@ const updateVanImage = (vanId, image) => ({
   vanId,
   image
 })
+
+const addVanLatLng = (vanId, lat, lng) => ({
+  type: ADD_VAN_LAT_LNG,
+  vanId,
+  lat,
+  lng
+})
+
 
 export const thunkGetVans = () => async dispatch => {
   const response = await fetch('/api/vans/')
@@ -148,6 +157,22 @@ export const thunkUpdateVanImage = (formData, vanId) => async dispatch => {
   }
 }
 
+export const thunkGetGeocode = (vanId, address, apiKey) => async dispatch => {
+  const formattedAddress = address.replace(" ", "%20")
+  const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${formattedAddress}&key=${apiKey}`)
+
+  if (response.ok) {
+    const results = await response.json()
+    console.log(results)
+    const {lat, lng} = results[0].geometry.location
+    console.log(lat, lng)
+    dispatch(addVanLatLng(vanId, lat, lng))
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
 const initialState = {}
 
 export const vanReducer = (state = initialState, action) => {
@@ -178,6 +203,11 @@ export const vanReducer = (state = initialState, action) => {
       const newState = { ...state }
       delete newState[action.vanId]
       return newState;
+    }
+    case ADD_VAN_LAT_LNG: {
+      const newState = { ...state }
+      newState[action.vanId].geometry = {lat: [action.lat], lng: [action.lng]}
+      return newState
     }
     default:
       return state;

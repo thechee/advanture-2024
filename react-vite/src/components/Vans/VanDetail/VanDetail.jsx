@@ -1,22 +1,31 @@
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { thunkGetOneVan } from "../../../redux/van";
+import { thunkGetGeocode, thunkGetOneVan } from "../../../redux/van";
 import { FaRegHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
+import { MapContainer } from "../../Maps"
 import "./VanDetail.css";
 
 export const VanDetail = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const { vanId } = useParams();
+  const key = useSelector((state) => state.maps.key);
   const van = useSelector((state) => state.vans[vanId]);
   const user = useSelector((state) => state.session.user);
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
+
   }, [dispatch, vanId]);
+
+  useEffect(() => {
+    if (van && key) {
+      dispatch(thunkGetGeocode(vanId, `${van.address} ${van.city} ${van.state}`, key))
+    }
+  }, [dispatch, van, vanId, key])
 
   if (!van) return <h1>404! VAN NOT FOUND</h1>;
 
@@ -126,6 +135,9 @@ export const VanDetail = () => {
             </div>
           )}
         </div>
+      </div>
+      <div className="van-detail-map">
+        <MapContainer />
       </div>
     </div>
   );

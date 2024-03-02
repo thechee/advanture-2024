@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import "../CreateVan/CreateVan.css";
-import { thunkAddVanImage, thunkGetOneVan, thunkUpdateVan, thunkUpdateVanImage } from "../../../redux/van";
+import { thunkGetOneVan, thunkUpdateVan, thunkUpdateVanImage } from "../../../redux/van";
 
 export const UpdateVan = () => {
   const dispatch = useDispatch();
@@ -40,7 +40,6 @@ export const UpdateVan = () => {
     dispatch(thunkGetOneVan(vanId))
   }, [dispatch, vanId])
 
-
   useEffect(() => {
     const mpgInput = document.querySelector("#MPG-input");
     if (van && mpgInput) {
@@ -65,7 +64,6 @@ export const UpdateVan = () => {
 
   useEffect(() => {
     if (image && typeof image === "object" && image.name) {
-      console.log(image.name.toLowerCase())
       if (!image.name.toLowerCase().endsWith(".jpeg") &&
         !image.name.toLowerCase().endsWith(".jpg") &&
         !image.name.toLowerCase().endsWith(".png"))
@@ -87,9 +85,12 @@ export const UpdateVan = () => {
       setZipCode(van.zipCode)
       setRentalRate(van.rentalRate)
       setDescription(van.description)
-      setDistanceIncluded(van.distanceAllowed)
-      if (van.distanceAllowed == null) setUnlimited(true)
-      setMpg(van.mpg)
+      if (van.distanceAllowed == null) {
+        setUnlimited(true) 
+      } else {
+        setDistanceIncluded(van.distanceAllowed)
+      }
+      if (van.fuelTypeId != 4) setMpg(van.mpg)
       setDoors(van.doors)
       setSeats(van.seats)
       setFuelTypeId(van.fuelTypeId)
@@ -160,7 +161,7 @@ export const UpdateVan = () => {
     if (fuelTypeId > 5 || fuelTypeId < 1)
       errors.fuelTypeId = "YOU ARE UP TO NO GOOD!";
     if (!image) errors.image = "Image is required";
-    if (
+    if (image && typeof image === "object" && image.name &&
       !image?.name.endsWith(".jpeg") &&
       !image?.name.endsWith(".jpg") &&
       !image?.name.endsWith(".png")
@@ -191,13 +192,15 @@ export const UpdateVan = () => {
         }, vanId)
       )
         .then(async (updatedVan) => {
-          const formData = new FormData();
-
-          formData.append("van_id", updatedVan.id);
-          formData.append("image", image);
-          formData.append("preview", true);
-
-          await dispatch(thunkUpdateVanImage(formData, updatedVan.id));
+          if (image && typeof image === "object" && image.name) {
+            const formData = new FormData();
+  
+            formData.append("van_id", updatedVan.id);
+            formData.append("image", image);
+            formData.append("preview", true);
+  
+            await dispatch(thunkUpdateVanImage(formData, updatedVan.id));
+          }
           navigate(`/vans/${updatedVan.id}`);
         })
         .catch(async (response) => {

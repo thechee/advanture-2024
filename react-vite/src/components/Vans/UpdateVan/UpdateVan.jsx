@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import "./CreateVan.css";
-import { thunkAddVan, thunkAddVanImage } from "../../../redux/van";
+import { useNavigate, useParams } from "react-router";
+import "../CreateVan/CreateVan.css";
+import { thunkGetOneVan, thunkUpdateVan, thunkUpdateVanImage } from "../../../redux/van";
 
-export const CreateVan = () => {
+export const UpdateVan = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {vanId} = useParams()
+  const van = useSelector(state => state.vans[vanId])
   const user = useSelector((state) => state.session.user);
   const [year, setYear] = useState("");
   const [make, setMake] = useState("placeholder");
@@ -24,7 +26,7 @@ export const CreateVan = () => {
   const [doors, setDoors] = useState("");
   const [seats, setSeats] = useState("");
   const [fuelTypeId, setFuelTypeId] = useState("placeholder");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [fileName, setFileName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
@@ -35,26 +37,33 @@ export const CreateVan = () => {
   const zipCodeRegex = /\d{5}/;
 
   useEffect(() => {
+    dispatch(thunkGetOneVan(vanId))
+  }, [dispatch, vanId])
+
+  useEffect(() => {
     const mpgInput = document.querySelector("#MPG-input");
-    if (fuelTypeId == 4) {
-      mpgInput.setAttribute("disabled", "");
-    } else {
-      mpgInput.removeAttribute("disabled");
+    if (van && mpgInput) {
+      if (fuelTypeId == 4) {
+        mpgInput.setAttribute("disabled", "");
+      } else if (mpgInput.hasAttribute("disabled")) {
+        mpgInput.removeAttribute("disabled");
+      }
     }
-  }, [fuelTypeId]);
+  }, [fuelTypeId, van]);
 
   useEffect(() => {
     const distanceInput = document.querySelector("#distance-input");
+    if (van && distanceInput) {
     if (unlimited) {
       distanceInput.setAttribute("disabled", "");
-    } else {
+    } else if (distanceInput.hasAttribute("disabled")) {
       distanceInput.removeAttribute("disabled");
     }
-  }, [unlimited]);
+    }
+  }, [unlimited, van]);
 
   useEffect(() => {
     if (image && typeof image === "object" && image.name) {
-      console.log(image.name.toLowerCase())
       if (!image.name.toLowerCase().endsWith(".jpeg") &&
         !image.name.toLowerCase().endsWith(".jpg") &&
         !image.name.toLowerCase().endsWith(".png"))
@@ -64,10 +73,37 @@ export const CreateVan = () => {
     }
   }, [validationErrors, image]);
 
-  if (!user) {
-    return <h1>You must be logged in to add a van!</h1>;
-  }
+  useEffect(() => {
+    if (van?.id) {
+      setYear(van.year)
+      setMake(van.make)
+      setModel(van.model)
+      setMiles(van.miles)
+      setAddress(van.address)
+      setCity(van.city)
+      setState(van.state)
+      setZipCode(van.zipCode)
+      setRentalRate(van.rentalRate)
+      setDescription(van.description)
+      if (van.distanceAllowed == null) {
+        setUnlimited(true) 
+      } else {
+        setDistanceIncluded(van.distanceAllowed)
+      }
+      if (van.fuelTypeId != 4) setMpg(van.mpg)
+      setDoors(van.doors)
+      setSeats(van.seats)
+      setFuelTypeId(van.fuelTypeId)
+      setImage(van.images.find(image => image.preview == true).imageUrl)
+    }
+  }, [van])
+  
+  if (!van) return null
 
+  if (!user || user.id !== van.owner.id) {
+    return <h1 style={{marginTop: "5rem", textAlign: "center"}}>You are not authorized to update this van!</h1>;
+  }
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -125,7 +161,7 @@ export const CreateVan = () => {
     if (fuelTypeId > 5 || fuelTypeId < 1)
       errors.fuelTypeId = "YOU ARE UP TO NO GOOD!";
     if (!image) errors.image = "Image is required";
-    if (
+    if (image && typeof image === "object" && image.name &&
       !image?.name.endsWith(".jpeg") &&
       !image?.name.endsWith(".jpg") &&
       !image?.name.endsWith(".png")
@@ -137,7 +173,7 @@ export const CreateVan = () => {
       setValidationErrors(errors);
     } else {
       await dispatch(
-        thunkAddVan({
+        thunkUpdateVan({
           year,
           make,
           model,
@@ -153,17 +189,19 @@ export const CreateVan = () => {
           doors,
           seats,
           fuel_type_id: fuelTypeId,
-        })
+        }, vanId)
       )
-        .then(async (newVan) => {
-          const formData = new FormData();
-
-          formData.append("van_id", newVan.id);
-          formData.append("image", image);
-          formData.append("preview", true);
-
-          await dispatch(thunkAddVanImage(formData, newVan.id));
-          navigate(`/vans/${newVan.id}`);
+        .then(async (updatedVan) => {
+          if (image && typeof image === "object" && image.name) {
+            const formData = new FormData();
+  
+            formData.append("van_id", updatedVan.id);
+            formData.append("image", image);
+            formData.append("preview", true);
+  
+            await dispatch(thunkUpdateVanImage(formData, updatedVan.id));
+          }
+          navigate(`/vans/${updatedVan.id}`);
         })
         .catch(async (response) => {
           setValidationErrors(response);
@@ -470,10 +508,11 @@ export const CreateVan = () => {
           {validationErrors.image && <p>{validationErrors.image}</p>}
         </div>
         <div>
-          {imageURL &&<img src={imageURL} className="van-upload-thumbnail"></img>}
+          {image && !imageURL && <img src={image} className="van-upload-thumbnail"></img>}
+          {imageURL && <img src={imageURL} className="van-upload-thumbnail"></img>}
         </div>
       </div>
-      <button className="submit-btn">Add van</button>
+      <button className="submit-btn">Update van</button>
     </form>
   );
 };

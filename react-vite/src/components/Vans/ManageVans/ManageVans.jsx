@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { VanListItem } from "../VanListItem/VanListItem";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import { thunkAddUserVans } from "../../../redux/session";
+import { thunkGetUserVans } from "../../../redux/session";
 import LoginFormModal from "../../LoginFormModal";
 import "./ManageVans.css";
 import { OpenModalLink } from "../../OpenModalLink/OpenModalLink";
@@ -13,7 +13,7 @@ export const ManageVans = () => {
   const vansObj = useSelector((state) => state.session.user?.vans);
 
   useEffect(() => {
-    dispatch(thunkAddUserVans());
+    dispatch(thunkGetUserVans());
   }, [dispatch, user]);
 
   if (!user) {

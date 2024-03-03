@@ -1,10 +1,13 @@
-const GET_VANS = 'van/GET_VANS'
-const GET_ONE_VAN = 'van/GET_ONE_VAN'
-const ADD_VAN = 'van/ADD_VAN'
-const UPDATE_VAN = 'van/UPDATE_VAN'
-const DELETE_VAN = 'van/DELETE_VAN'
-const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE'
-const UPDATE_VAN_IMAGE = 'van/UPDATE_VAN_IMAGE'
+const GET_VANS = 'van/GET_VANS';
+const GET_ONE_VAN = 'van/GET_ONE_VAN';
+const ADD_VAN = 'van/ADD_VAN';
+const UPDATE_VAN = 'van/UPDATE_VAN';
+const DELETE_VAN = 'van/DELETE_VAN';
+const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE';
+const UPDATE_VAN_IMAGE = 'van/UPDATE_VAN_IMAGE';
+const GET_VAN_RATINGS = 'van/GET_VAN_RATINGS';
+
+/* ========== Action Creators ========== */
 
 const getVans = (vans) => ({
   type: GET_VANS,
@@ -42,6 +45,15 @@ const updateVanImage = (vanId, image) => ({
   vanId,
   image
 })
+
+const getVanRatings = (vanId, rating) => ({
+  type: GET_VAN_RATINGS,
+  vanId,
+  rating
+})
+
+
+/* ========== Thunks ========== */
 
 export const thunkGetVans = () => async dispatch => {
   const response = await fetch('/api/vans/')
@@ -148,6 +160,22 @@ export const thunkUpdateVanImage = (formData, vanId) => async dispatch => {
   }
 }
 
+export const thunkGetVanRatings = (vanId) => async dispatch => {
+  const response = await fetch(`/api/vans/${vanId}/ratings`)
+
+  if (response.ok) {
+    const ratings = await response.json()
+    dispatch(getVanRatings(vanId, ratings))
+    return ratings
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
+
+/* ========== Reducer ========== */
+
 const initialState = {}
 
 export const vanReducer = (state = initialState, action) => {
@@ -178,6 +206,12 @@ export const vanReducer = (state = initialState, action) => {
       const newState = { ...state }
       delete newState[action.vanId]
       return newState;
+    }
+    case GET_VAN_RATINGS: {
+      const newState = { ...state }
+      newState[action.vanId].ratings = {}
+      action.ratings.forEach(rating => newState[action.vanId].ratings[rating.id] = rating)
+      return newState
     }
     default:
       return state;

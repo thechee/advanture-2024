@@ -1,11 +1,12 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
-from app.models import Van, VanImage, db
+from app.models import Van, VanImage, Rating, db
 from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 from app.forms import VanForm, VanImageForm
 
 van_routes = Blueprint('vans', __name__)
 
+#! VANS
 @van_routes.route('/')
 def vans():
   """
@@ -24,16 +25,7 @@ def van(vanId):
   if van:
     return van.to_dict()
   else:
-    return {"errors": {"message": "Van not found"}}
-
-@login_required
-@van_routes.route('/manage')
-def user_vans():
-  vans = Van.query.filter(current_user.id == Van.user_id).all()
-  if vans:
-    return [van.to_dict() for van in vans]
-  else:
-    return []
+    return {"errors": {"message": "Van not found"}}, 404
 
 
 @login_required
@@ -128,6 +120,8 @@ def delete_van(vanId):
 
   return {"message": "Van successfully deleted"}
 
+
+#! VAN IMAGES
 @login_required
 @van_routes.route('/<int:vanId>/images', methods=["POST"])
 def new_van_image(vanId):
@@ -187,4 +181,29 @@ def update_van_image(vanId):
     db.session.commit()
     return updated_van_image.to_dict()
   return form.errors, 401
-  return "Error"
+
+#! VAN RATINGS
+@login_required
+@van_routes.route('/vans/<int:vanId>/ratings')
+def get_van_ratings(vanId):
+  """
+  Query for all of the ratings of the van from the URL params
+  """
+
+  ratings = Rating.query.filter(Rating.van_id == vanId).all()
+
+  if ratings:
+    return [rating.to_dict() for rating in ratings]
+  else:
+    return []
+
+#! MANAGE VANS
+@login_required
+@van_routes.route('/manage')
+def user_vans():
+  vans = Van.query.filter(current_user.id == Van.user_id).all()
+  if vans:
+    return [van.to_dict() for van in vans]
+  else:
+    return []
+  

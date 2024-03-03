@@ -5,6 +5,7 @@ import { VanList } from '../components/Vans/VanList/VanList';
 import { VanDetail } from '../components/Vans/VanDetail/VanDetail';
 import { CreateVan } from '../components/Vans/CreateVan/CreateVan';
 import { ManageVans } from '../components/Vans/ManageVans/ManageVans';
+import { ManageRatings } from '../components/Ratings/ManageRatings/ManageRatings';
 import { UpdateVan } from '../components/Vans/UpdateVan/UpdateVan';
 
 
@@ -15,6 +16,16 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <HomePage />,
+      },
+      {
+        path: "reviews",
+        element: <Outlet />,
+        children: [
+          {
+            path: "manage",
+            element: <ManageRatings />
+          },
+        ]
       },
       {
         path: "vans",
@@ -39,13 +50,13 @@ export const router = createBrowserRouter([
             ]
           },
           {
+            path: "manage",
+            element: <ManageVans />
+          },
+          {
             path: "new",
             element: <CreateVan />
           },
-          {
-            path: "manage",
-            element: <ManageVans />
-          }
         ]
       },
     ],

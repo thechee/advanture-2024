@@ -28,7 +28,7 @@ class Rating(db.Model):
 
     return {
       "id": self.id,
-      "rater": self.rater,
+      "rater": self.rater.to_dict(),
       "vanId": self.van_id,
       "review": self.review,
       "overallStars": self.overall_stars,

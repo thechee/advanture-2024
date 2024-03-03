@@ -1,6 +1,7 @@
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
-const ADD_USER_VANS = 'session/ADD_USER_VANS'
+const ADD_USER_VANS = 'session/ADD_USER_VANS';
+const ADD_USER_RATINGS = 'session/ADD_USER_RATINGS';
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -15,6 +16,13 @@ const addUserVans = (vans) => ({
   type: ADD_USER_VANS,
   vans
 })
+
+const addUserRatings = (ratings) => ({
+  type: ADD_USER_RATINGS,
+  ratings
+})
+
+
 
 export const thunkAuthenticate = () => async (dispatch) => {
 	const response = await fetch("/api/auth/");
@@ -68,12 +76,24 @@ export const thunkLogout = () => async (dispatch) => {
   dispatch(removeUser());
 };
 
-export const thunkAddUserVans = () => async dispatch => {
+export const thunkGetUserVans = () => async dispatch => {
   const response = await fetch('/api/vans/manage')
   
   if (response.ok) {
     const vans = await response.json()
     dispatch(addUserVans(vans))
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
+export const thunkGetUserRatings = () => async dispatch => {
+  const response = await fetch('/api/ratings/manage')
+
+  if (response.ok) {
+    const ratings = await response.json()
+    dispatch(addUserRatings(ratings))
   } else {
     const errors = await response.json()
     return errors
@@ -92,6 +112,12 @@ function sessionReducer(state = initialState, action) {
       const newState = { ...state }
       newState.user.vans = {};
       action.vans.forEach(van => newState.user.vans[van.id] = van)
+      return newState;
+    }
+    case ADD_USER_RATINGS: {
+      const newState = { ...state }
+      newState.user.ratings = {};
+      action.ratings.forEach(rating => newState.user.ratings[rating.id] = rating)
       return newState;
     }
     default:

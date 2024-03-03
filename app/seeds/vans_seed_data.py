@@ -180,7 +180,7 @@ vans = [
     "distance_allowed": 2000,
     "mpg": 25, 
     "doors": 5,
-    "seats": 5,
+    "seats": 4,
     "fuel_type_id": 3
 },
  {
@@ -200,7 +200,7 @@ vans = [
 
       The 2020 Chevy Express, with only 35,000 miles on the odometer, promises a balance of reliability and modern design. Conveniently located at 456 Oak Avenue, this van provides easy access to the best of Seattle and its surroundings.
 
-      The Express offers a spacious interior accommodating 4 passengers, making it perfect for family vacations or group outings. Priced at $180 per day, this van provides excellent value for those seeking comfort and affordability in their travels.
+      The Express offers a spacious interior accommodating 12 passengers, making it perfect for big, extended family vacations or group outings. Priced at $180 per day, this van provides excellent value for those seeking comfort and affordability in their travels.
 
       With a distance allowance of 1500 miles, the Chevy Express ensures you can explore the beauty of Washington without any constraints. The van comes with 4 doors for easy access and a well-designed interior that prioritizes your comfort.
 

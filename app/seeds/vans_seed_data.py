@@ -152,312 +152,151 @@ vans = [
     "seats": 4,
     "fuel_type_id": 4
   },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
+ {
+    "id": 6,
+    "user_id": 2,
+    "year": 2022,
+    "make": "Mercedes",
+    "model": "Sprinter",
+    "miles": 25000,
+    "address": "789 Pine Street",
+    "city": "Denver",
+    "state": "CO",
+    "zip_code": "80202",
+    "rental_rate": 220,
+    "description": """
+      Discover luxury on the road with the 2022 Mercedes Sprinter, a van that seamlessly blends comfort and sophistication. This modern marvel is your ticket to a stylish and memorable journey through the scenic landscapes of Colorado.
 
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
+      The 2022 Mercedes Sprinter showcases the pinnacle of automotive engineering, with a mere 25,000 miles on the odometer. Located at 789 Pine Street in the heart of Denver, Colorado, this van is strategically positioned for your exploration of the Rocky Mountains.
 
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
+      Step into a world of elegance as the Sprinter's spacious interior caters to your every comfort. With a seating capacity for 5 passengers, this van ensures a smooth and pleasurable ride through the bustling streets of Denver and the serene beauty of the Colorado wilderness.
 
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
+      Priced at $220 per day, the Sprinter offers a premium experience for those who seek a touch of luxury in their travels. The van comes with a generous distance allowance of 2000 miles, allowing you to traverse the majestic landscapes of Colorado without constraint.
 
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
+      With 4 doors providing easy access and a meticulously designed interior, the Mercedes Sprinter guarantees a seamless and convenient travel experience. Immerse yourself in the opulence of this van and make every moment of your journey a celebration.
 
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
+      Experience travel redefined with the 2022 Mercedes Sprinter. Reserve it now and elevate your road trip to a luxurious and unforgettable adventure!
+      """,
+    "distance_allowed": 2000,
+    "mpg": 25, 
+    "doors": 5,
+    "seats": 5,
+    "fuel_type_id": 3
+},
+ {
+    "id": 7,
+    "user_id": 4,
+    "year": 2020,
+    "make": "Chevy",
+    "model": "Express",
+    "miles": 35000,
+    "address": "456 Oak Avenue",
+    "city": "Seattle",
+    "state": "WA",
+    "zip_code": "98101",
+    "rental_rate": 180,
+    "description": """
+      Experience the versatility of the 2020 Chevy Express, a reliable van designed for both comfort and functionality. This well-maintained van is your ideal companion for exploring the vibrant city of Seattle and the picturesque landscapes of Washington.
 
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
+      The 2020 Chevy Express, with only 35,000 miles on the odometer, promises a balance of reliability and modern design. Conveniently located at 456 Oak Avenue, this van provides easy access to the best of Seattle and its surroundings.
 
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
+      The Express offers a spacious interior accommodating 4 passengers, making it perfect for family vacations or group outings. Priced at $180 per day, this van provides excellent value for those seeking comfort and affordability in their travels.
 
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
+      With a distance allowance of 1500 miles, the Chevy Express ensures you can explore the beauty of Washington without any constraints. The van comes with 4 doors for easy access and a well-designed interior that prioritizes your comfort.
 
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
+      Immerse yourself in the seamless blend of style and functionality with the 2020 Chevy Express. Reserve it now and embark on a memorable journey through the captivating landscapes of the Pacific Northwest!
+      """,
+    "distance_allowed": 1500,
+    "mpg": 16,
+    "doors": 6,
+    "seats": 12,
+    "fuel_type_id": 2
+ },
+{
+  "id": 8,
+    "user_id": 5,
+    "year": 2018,
+    "make": "VW",
+    "model": "Transporter",
+    "miles": 30000,
+    "address": "567 Maple Street",
+    "city": "San Francisco",
+    "state": "CA",
+    "zip_code": "94102",
+    "rental_rate": 200,
+    "description": """
+      Embark on a journey with the 2018 VW Transporter, a van that fuses iconic design with modern comfort. This meticulously maintained van is your ticket to exploring the eclectic city of San Francisco and the scenic beauty of California.
 
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
+      The 2018 VW Transporter, boasting only 30,000 miles, captures the essence of timeless style and functionality. Nestled at 567 Maple Street, this van offers a prime starting point for your exploration of San Francisco's vibrant neighborhoods.
 
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
+      Designed for a group of 4 passengers, the Transporter provides a comfortable and spacious interior. Priced at $200 per day, this van is perfect for those who appreciate a blend of style and convenience in their travels.
 
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
+      With a distance allowance of 1800 miles, the VW Transporter invites you to discover the wonders of California without any limitations. The van features 4 doors for easy access and a thoughtfully crafted interior to enhance your travel experience.
 
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
+      Immerse yourself in the iconic charm of the 2018 VW Transporter. Reserve it now and set out on a memorable journey through the cultural richness and natural splendors of the Golden State!
+      """,
+    "distance_allowed": 1800,
+    "mpg": 22,
+    "doors": 4,
+    "seats": 4,
+    "fuel_type_id": 1
+},
+{
+    "id": 9,
+    "user_id": 3,
+    "year": 2021,
+    "make": "Ram",
+    "model": "ProMaster 1500",
+    "miles": 28000,
+    "address": "789 Redwood Lane",
+    "city": "Austin",
+    "state": "TX",
+    "zip_code": "78701",
+    "rental_rate": 190,
+    "description": """
+      Unleash the power of adventure with the 2021 Ram ProMaster 1500, a van designed to elevate your travel experience. This well-maintained van is your ideal companion for exploring the vibrant city of Austin and the diverse landscapes of Texas.
 
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
+      The 2021 Ram ProMaster 1500, with a modest 28,000 miles, combines power and practicality in a sleek design. Conveniently located at 789 Redwood Lane, this van offers easy access to the cultural heart of Austin.
 
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
+      Designed for versatility, the ProMaster 1500 accommodates 4 passengers comfortably. Priced at $190 per day, this van strikes the perfect balance between affordability and style for your Texas adventures.
 
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
+      With a distance allowance of 1600 miles, the Ram ProMaster 1500 ensures you can explore the vastness of Texas without limitations. Featuring 4 doors for easy access and a thoughtfully designed interior, this van prioritizes your comfort on the road.
 
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
+      Experience the thrill of travel with the 2021 Ram ProMaster 1500. Reserve it now and embark on a journey through the dynamic landscapes and cultural richness of the Lone Star State!
+      """,
+    "distance_allowed": 1600,
+    "mpg": 18,
+    "doors": 5,
+    "seats": 4,
+    "fuel_type_id": 3
+},
+{
+    "id": 10,
+    "user_id": 1,
+    "year": 2017,
+    "make": "Dodge",
+    "model": "Grand Caravan",
+    "miles": 38000,
+    "address": "101 Cedar Avenue",
+    "city": "Miami",
+    "state": "FL",
+    "zip_code": "33101",
+    "rental_rate": 170,
+    "description": """
+      Cruise in comfort with the 2017 Dodge Grand Caravan, a van that combines practicality with a touch of luxury. This meticulously maintained van is your perfect companion for exploring the vibrant city of Miami and the sunny beaches of Florida.
 
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
+      The 2017 Dodge Grand Caravan, with a mere 38,000 miles, provides a smooth and reliable ride. Conveniently located at 101 Cedar Avenue, this van offers easy access to the cultural and tropical delights of Miami.
 
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
+      With a spacious interior accommodating 4 passengers, the Grand Caravan is perfect for family trips or group getaways. Priced at $170 per day, this van strikes the perfect balance between affordability and comfort for your Florida escapades.
 
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
+      Enjoy the freedom to explore with a distance allowance of 1700 miles, allowing you to soak in the sun-drenched beauty of Florida without constraints. Featuring 4 doors for easy access and a thoughtfully designed interior, this van ensures a seamless travel experience.
 
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
-
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
-
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
-
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
-
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
-
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
-
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
-
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
-
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
-
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
-  # {
-  #   "user_id": 1,
-  #   "year": 2005,
-  #   "make": "Dodge",
-  #   "model": "Sprinter Passenger",
-  #   "miles": 83000,
-  #   "address": "141 9th Ave",
-  #   "city": "Kirkland",
-  #   "state": "Washington",
-  #   "zip_code": 98033,
-  #   "rental_rate": 200,
-  #   "description": """
-  #     Introducing the 2005 Dodge Sprinter Passenger van, a reliable and spacious companion for your next adventure! This well-maintained van boasts a classic design and is perfect for group travel, with a seating capacity of 5 passengers across its comfortable interior.
-
-  #     Under the hood, this Sprinter is equipped with a fuel-efficient Diesel engine, ensuring a smooth and economical journey. With only 83,000 miles on the odometer, it offers a perfect balance of reliability and mileage.
-
-  #     Located at 141 9th Ave in Kirkland, Washington, this van is ready to hit the road and explore the beautiful landscapes of the Pacific Northwest. The rental rate is set at $200 per day, providing excellent value for a van that combines both style and functionality.
-        
-  #     This Dodge Sprinter Passenger van comes with 5 doors, offering convenient access for passengers, and a generous distance allowance of 1000 miles, allowing you to embark on an extended road trip without any worries. The van achieves a respectable 20 MPG, making it an eco-friendly choice for your travels.
-
-  #     Whether you're planning a family vacation, a road trip with friends, or any other group outing, the 2005 Dodge Sprinter Passenger van is the perfect choice for a memorable and comfortable journey. Reserve it now and get ready to explore the scenic beauty of Washington and beyond!
-  #     """,
-  #   "distance_allowed": 1000,
-  #   "mpg": 20,
-  #   "doors": 5,
-  #   "seats": 5,
-  #   "fuel_type_id": 2
-  # },
+      Elevate your journey with the 2017 Dodge Grand Caravan. Reserve it now and set out on a memorable road trip through the cultural richness and tropical paradise of the Sunshine State!
+      """,
+    "distance_allowed": 170,
+    "mpg": 20,
+    "doors": 5,
+    "seats": 7,
+    "fuel_type_id": 1
+}
 ]

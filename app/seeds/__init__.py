@@ -5,6 +5,7 @@ from .DEPRECATED_vans import seed_vans, undo_vans
 from .DEPRECATED_features import seed_features, undo_features
 from .van_features import seed_van_features, undo_van_features
 from .van_images import seed_van_images, undo_van_images
+from .ratings import seed_ratings, undo_ratings
 
 from app.models.db import db, environment, SCHEMA
 
@@ -27,13 +28,14 @@ def seed():
         # undo_vans()
         undo_van_features()
         undo_van_images()
+        undo_ratings()
     seed_users()
     seed_fuel_types()
     # seed_features()
     # seed_vans()
     seed_van_features()
     seed_van_images()
-    # Add other seed functions here
+    seed_ratings()
 
 
 # Creates the `flask seed undo` command
@@ -45,4 +47,4 @@ def undo():
     # undo_vans()
     undo_van_features()
     undo_van_images()
-    # Add other undo functions here
+    undo_ratings()

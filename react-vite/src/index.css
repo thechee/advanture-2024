@@ -59,7 +59,8 @@ label {
 
 :root {
   --hover: #F3F3F3;
-  --purple: #593CFB
+  --purple: #593CFB;
+  --light-border: #F3F3F3
 }
 
 .van-detail-distance-div {

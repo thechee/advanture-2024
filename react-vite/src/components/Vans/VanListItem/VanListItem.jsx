@@ -7,11 +7,16 @@ import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal";
 
 export const VanListItem = ({ van }) => {
   const navigate = useNavigate()
-  const previewImage = van.images.find(
-    (image) => image.preview == true
-  ).imageUrl;
   const user = useSelector((state) => state.session.user);
   const isOwner = user?.id == van.owner.id;
+
+  let previewImage;
+  for (const image in van.images) {
+    if (van.images[image].preview == true) {
+      previewImage = van.images[image].imageUrl
+      break;
+    }
+  }
 
   const handleUpdate = (e) => {
     e.preventDefault()

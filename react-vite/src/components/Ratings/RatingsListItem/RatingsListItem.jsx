@@ -1,3 +1,4 @@
+import StarRatings from "react-star-ratings";
 import "./RatingsListItem.css";
 
 export const RatingsListItem = ({ rating }) => {
@@ -21,7 +22,14 @@ export const RatingsListItem = ({ rating }) => {
       </div>
       <div className="review-data-div">
         <div className="review-stars-info-div">
-          <span>STARS GO HERE</span>
+          <StarRatings 
+            starDimension="22px"
+            starSpacing="1px"
+            numberOfStars={5}
+            starRatedColor="rgb(89, 60, 251)"
+            starEmptyColor="#e0e0e0"
+            rating={rating.overallStars}
+          />
           <span className="reviewer-name">
             {rating.rater.firstName} <span className="review-date">{date}</span>
           </span>

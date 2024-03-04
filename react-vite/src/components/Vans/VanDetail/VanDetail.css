@@ -160,3 +160,14 @@ h4 {
 .add-to-favorites span {
   margin-right: .5rem;
 }
+
+.rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: .5rem;
+  justify-content: space-between;
+}
+
+.rating span:first-of-type {
+  width: 135px;
+}

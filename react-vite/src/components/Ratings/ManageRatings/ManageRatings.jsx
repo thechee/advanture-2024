@@ -4,7 +4,7 @@ import { thunkGetUserRatings } from "../../../redux/session"
 
 export const ManageRatings = () => {
   const dispatch = useDispatch()
-  const user = useSelector(state => state.session.user)
+  // const user = useSelector(state => state.session.user)
 
   useEffect(() => {
     dispatch(thunkGetUserRatings())

@@ -23,6 +23,17 @@
   flex-direction: column;
 }
 
+.van-overall-ratings-div {
+  display: flex;
+  align-items: center;
+}
+
+#van-overall-stars {
+  font-size: 20px;
+  font-weight: 700;
+  padding-right: .25rem;
+}
+
 .van-detail-content h1 {
   margin: 0;
 }
@@ -66,6 +77,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  margin: 0;
 }
 
 .feature-ul li,
@@ -120,8 +132,10 @@
 }
 
 h4 {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: .5rem;
 }
 
 .van-detail-trip-div {
@@ -161,6 +175,27 @@ h4 {
   margin-right: .5rem;
 }
 
+.overall-ratings-stars-div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.overall-ratings-stars-div span:first-of-type {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 35px;
+}
+
+.overall-ratings-stars-div svg {
+  padding-left: .25rem;
+}
+
+.overall-ratings-stars-div span:last-of-type {
+  font-size: 12px;
+}
+
 .rating {
   display: flex;
   align-items: center;
@@ -170,4 +205,8 @@ h4 {
 
 .rating span:first-of-type {
   width: 135px;
+}
+
+.rating span {
+  font-size: 14px;
 }

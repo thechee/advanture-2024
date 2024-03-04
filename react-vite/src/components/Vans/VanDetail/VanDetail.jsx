@@ -5,9 +5,10 @@ import { thunkGetOneVan } from "../../../redux/van";
 import { FaRegHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
-import "./VanDetail.css";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
+import StarRatings from 'react-star-ratings';
+import "./VanDetail.css";
 
 export const VanDetail = () => {
   const navigate = useNavigate()
@@ -80,8 +81,15 @@ export const VanDetail = () => {
           <h1>
             {van.make} {van.model} {van.year}
           </h1>
-          <div>
-            <span>{ratingsSum.toString().length == 1 ? ratingsSum.toFixed(1) : ratingsSum.toFixed(2)}</span>
+          <div className="van-overall-ratings-div">
+            <span id="van-overall-stars">{ratingsSum.toString().length == 1 ? ratingsSum.toFixed(1) : ratingsSum.toFixed(2)} </span>
+            <StarRatings
+                    rating={ratingsSum}
+                    starRatedColor="rgb(89, 60, 251)"
+                    starEmptyColor="white"
+                    starDimension="25px"
+                    numberOfStars={1}
+                  />
           </div>
           <div className="van-detail-details">
             <ul className="details-ul">
@@ -115,11 +123,18 @@ export const VanDetail = () => {
 
           {ratings.length ? 
             <div>
-              <div>
-                <p>
+              <div className="overall-ratings-stars-div">
+                <span>
                   {ratingsSum.toString().length == 1 ? ratingsSum.toFixed(1) : ratingsSum.toFixed(2)}
-                </p>
-                <p>({ratings.length} ratings)</p>
+                  <StarRatings
+                    rating={ratingsSum}
+                    starRatedColor="rgb(89, 60, 251)"
+                    starEmptyColor="white"
+                    starDimension="25px"
+                    numberOfStars={1}
+                  />
+                </span>
+                <span>({ratings.length} ratings)</span>
               </div>
               <div>
                 <div className="rating"><span>Cleanliness</span><RatingsBar ratingAvg={avgCleanliness}/><span>{avgCleanliness.toFixed(1)}</span></div>

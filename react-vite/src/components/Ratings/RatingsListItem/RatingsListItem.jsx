@@ -1,5 +1,6 @@
-export const RatingsListItem = ({ rating }) => {
+import "./RatingsListItem.css";
 
+export const RatingsListItem = ({ rating }) => {
   function formatLongDate(dateStr) {
     const date = new Date(dateStr);
     const day = date.getUTCDate();
@@ -8,22 +9,27 @@ export const RatingsListItem = ({ rating }) => {
     return `${month} ${day}, ${year}`;
   }
 
-  const date = rating.createdAt == rating.updatedAt ? formatLongDate(rating.createdAt) : formatLongDate(rating.updatedAt)
+  const date =
+    rating.createdAt == rating.updatedAt
+      ? formatLongDate(rating.createdAt)
+      : formatLongDate(rating.updatedAt);
 
   return (
-    <li>
+    <li className="review-li">
       <div className="reviewer-img-div">
         <img src={rating.rater.profileImage} alt="" />
       </div>
-      <div>
+      <div className="review-data-div">
         <div className="review-stars-info-div">
           <span>STARS GO HERE</span>
-          <span>{rating.rater.firstName} {date}</span>
+          <span className="reviewer-name">
+            {rating.rater.firstName} <span className="review-date">{date}</span>
+          </span>
         </div>
         <div className="review-text-div">
           <p>{rating.review}</p>
         </div>
       </div>
     </li>
-  )
-}
+  );
+};

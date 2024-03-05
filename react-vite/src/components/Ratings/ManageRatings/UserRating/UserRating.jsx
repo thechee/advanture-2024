@@ -1,11 +1,9 @@
 import StarRatings from "react-star-ratings";
 import OpenModalButton from "../../../OpenModalButton";
 import { DeleteRatingModal } from "../../DeleteRatingModal/DeleteRatingModal";
-import { useNavigate } from "react-router";
 import "./UserRating.css";
 
 export const UserRating = ({ rating }) => {
-  const navigate = useNavigate()
 
   function formatLongDate(dateStr) {
     const date = new Date(dateStr);
@@ -25,7 +23,7 @@ export const UserRating = ({ rating }) => {
   const handleUpdate = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // navigate(`/vans/${van.id}/update`);
+
   };
 
 

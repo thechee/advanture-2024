@@ -25,6 +25,7 @@ export const ManageRatings = () => {
 
   return (
     <div className="manage-ratings">
+    <h2>Reviews you&apos;ve left</h2>
       {userRatings.length ? 
         (<ul>
         {userRatings.map(rating => (

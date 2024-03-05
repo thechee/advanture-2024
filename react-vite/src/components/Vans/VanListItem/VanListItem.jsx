@@ -74,9 +74,9 @@ export const VanListItem = ({ van }) => {
             )}
             <span>${van.rentalRate}/day</span>
           </div>
-          <div className="van-list-item-heart-div">
+          {!isOwner && <div className="van-list-item-heart-div">
             <FaRegHeart />
-          </div>
+          </div>}
         </div>
       </li>
     </Link>

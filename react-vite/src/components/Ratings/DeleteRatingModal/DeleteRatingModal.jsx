@@ -13,7 +13,6 @@ export const DeleteRatingModal = ({ rating }) => {
     e.preventDefault()
     await dispatch(thunkRemoveUserRating(rating.id))
     closeModal()
-    navigate('/reviews/manage')
   }
 
   const handleCancel = (e) => {

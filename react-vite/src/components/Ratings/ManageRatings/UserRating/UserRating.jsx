@@ -15,6 +15,8 @@ export const UserRating = ({ rating }) => {
     return `${month} ${day}, ${year}`;
   }
 
+  const updated = rating.updatedAt > rating.createdAt
+
   const date =
     rating.createdAt == rating.updatedAt
       ? formatLongDate(rating.createdAt)
@@ -26,10 +28,6 @@ export const UserRating = ({ rating }) => {
     // navigate(`/vans/${van.id}/update`);
   };
 
-  // const handleRemove = (e) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  // };
 
   return (
     <li className="user-review-li">
@@ -59,7 +57,10 @@ export const UserRating = ({ rating }) => {
             />
           </div>
           <div>
-            <span className="user-review-date">Reviewed on: {date}</span>
+            {updated ? 
+            <span className="user-review-date">Updated on: {date}</span>
+            :
+            <span className="user-review-date">Reviewed on: {date}</span>}
           </div>
         </div>
         <div className="user-review-text-div">

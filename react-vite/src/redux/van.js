@@ -8,6 +8,7 @@ const DELETE_VAN = 'van/DELETE_VAN';
 const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE';
 const UPDATE_VAN_IMAGE = 'van/UPDATE_VAN_IMAGE';
 const GET_VAN_RATINGS = 'van/GET_VAN_RATINGS';
+const CREATE_VAN_RATING = 'van/CREATE_VAN_RATING';
 const DELETE_VAN_RATING = 'van/DELETE_VAN_RATING';
 
 /* ========== Action Creators ========== */
@@ -49,10 +50,16 @@ const updateVanImage = (vanId, image) => ({
   image
 })
 
-const getVanRatings = (vanId, rating) => ({
-  type: GET_VAN_RATINGS,
+const createVanRating = (vanId, rating) => ({
+  type: CREATE_VAN_RATING,
   vanId,
   rating
+})
+
+const getVanRatings = (vanId, ratings) => ({
+  type: GET_VAN_RATINGS,
+  vanId,
+  ratings
 })
 
 const deleteVanRating = (vanId, ratingId) => ({
@@ -182,6 +189,23 @@ export const thunkGetVanRatings = (vanId) => async dispatch => {
   }
 }
 
+export const thunkCreateVanRating = (vanId, rating) => async dispatch => {
+  const response = await fetch(`/api/vans/${vanId}/ratings`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(rating)
+  })
+
+  if (response.ok) {
+    const newRating = await response.json()
+    dispatch(createVanRating(vanId, newRating))
+    return newRating
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
 export const thunkDeleteVanRating = (vanId, ratingId) => async dispatch => {
   const response = await fetch(`/api/ratings/${ratingId}`, {
     method: "DELETE"
@@ -248,6 +272,19 @@ export const vanReducer = (state = initialState, action) => {
       newState[action.vanId].ratings = {}
       action.ratings.forEach(rating => newState[action.vanId].ratings[rating.id] = rating)
       return newState
+    }
+    case CREATE_VAN_RATING: {
+      const newState = { 
+        ...state,
+        [action.vanId]: {
+          ...state[action.vanId],
+          ratings: {
+            ...state[action.vanId].ratings,
+            [action.rating.id]: action.rating
+          }
+        }
+      }
+      return newState;
     }
     case DELETE_VAN_RATING: {
       const newState = { 

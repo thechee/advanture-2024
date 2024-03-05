@@ -1,7 +1,8 @@
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
-const ADD_USER_VANS = 'session/ADD_USER_VANS';
-const ADD_USER_RATINGS = 'session/ADD_USER_RATINGS';
+const GET_USER_VANS = 'session/GET_USER_VANS';
+const DELETE_USER_VAN = 'session/DELETE_USER_VAN';
+const GET_USER_RATINGS = 'session/GET_USER_RATINGS';
 const DELETE_USER_RATING = 'session/DELETE_USER_RATING';
 
 const setUser = (user) => ({
@@ -13,13 +14,18 @@ const removeUser = () => ({
   type: REMOVE_USER
 });
 
-const addUserVans = (vans) => ({
-  type: ADD_USER_VANS,
+const getUserVans = (vans) => ({
+  type: GET_USER_VANS,
   vans
 })
 
-const addUserRatings = (ratings) => ({
-  type: ADD_USER_RATINGS,
+export const deleteUserVan = (vanId) => ({
+  type: DELETE_USER_VAN,
+  vanId
+})
+
+const getUserRatings = (ratings) => ({
+  type: GET_USER_RATINGS,
   ratings
 })
 
@@ -86,7 +92,7 @@ export const thunkGetUserVans = () => async dispatch => {
   
   if (response.ok) {
     const vans = await response.json()
-    dispatch(addUserVans(vans))
+    dispatch(getUserVans(vans))
   } else {
     const errors = await response.json()
     return errors
@@ -98,7 +104,7 @@ export const thunkGetUserRatings = () => async dispatch => {
 
   if (response.ok) {
     const ratings = await response.json()
-    dispatch(addUserRatings(ratings))
+    dispatch(getUserRatings(ratings))
   } else {
     const errors = await response.json()
     return errors
@@ -128,13 +134,26 @@ function sessionReducer(state = initialState, action) {
       return { ...state, user: action.payload };
     case REMOVE_USER:
       return { ...state, user: null };
-    case ADD_USER_VANS: {
+    case GET_USER_VANS: {
       const newState = { ...state }
       newState.user.vans = {};
       action.vans.forEach(van => newState.user.vans[van.id] = van)
       return newState;
     }
-    case ADD_USER_RATINGS: {
+    case DELETE_USER_VAN: {
+      const newState = { 
+        ...state,
+        user: {
+          ...state.user,
+          vans: {
+            ...state.user.vans
+          }
+        }
+      }
+      delete newState.user.vans[action.vanId]
+      return newState;
+    }
+    case GET_USER_RATINGS: {
       const newState = { ...state }
       newState.user.ratings = {};
       action.ratings.forEach(rating => newState.user.ratings[rating.id] = rating)

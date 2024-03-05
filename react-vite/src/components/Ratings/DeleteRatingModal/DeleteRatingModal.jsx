@@ -1,12 +1,10 @@
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useModal } from "../../../context/Modal";
 import './DeleteRatingModal.css'
 import { thunkDeleteVanRating } from "../../../redux/van";
 
 export const DeleteRatingModal = ({ rating }) => {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const { closeModal } = useModal()
 
   const handleDelete = async (e) => {

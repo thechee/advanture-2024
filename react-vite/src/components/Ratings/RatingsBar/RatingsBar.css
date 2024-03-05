@@ -1,0 +1,14 @@
+.ratings-bar { 
+  height: .5rem;
+  background: lightgray;
+  border-radius: 5px;
+  width: 350px;
+}
+
+.ratings-bar > span {
+  display: block;
+  height: 100%;
+  background-color: var(--purple);
+  overflow: hidden;
+  border-radius: 5px;
+}

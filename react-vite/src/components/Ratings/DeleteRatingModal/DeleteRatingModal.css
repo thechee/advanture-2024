@@ -1,0 +1,11 @@
+.delete-rating-modal {
+  width: 300px;
+}
+
+.delete-rating-modal span {
+  font-weight: 600;
+}
+
+.cancel {
+  margin-top: .5rem;
+}

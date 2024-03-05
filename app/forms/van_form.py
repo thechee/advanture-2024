@@ -17,7 +17,7 @@ class VanForm(FlaskForm):
   state = StringField('state', validators=[DataRequired()])
   zip_code = StringField('zip code', validators=[DataRequired(), Length(min=5, max=5)])
   rental_rate = IntegerField('rental rate', validators=[DataRequired(), NumberRange(min=1, max=500)])
-  description = TextAreaField('description', validators=[DataRequired(), Length(min=50, max=9999, message="Please eneter at least 50 characters describing the van")])
+  description = TextAreaField('description', validators=[DataRequired(), Length(min=50, max=9999, message="Please enter at least 50 characters describing the van")])
   distance_allowed = IntegerField('distance allowed', validators=[Optional(), NumberRange(min=0, max=9999)])
   mpg = IntegerField('mpg', validators=[Optional(), NumberRange(min=1, max=150)])
   doors = IntegerField('doors', validators=[DataRequired(), NumberRange(min=1, max=9)])

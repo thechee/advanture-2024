@@ -37,14 +37,15 @@ export const UpdateVan = () => {
   const zipCodeRegex = /\d{5}/;
 
   useEffect(() => {
-    dispatch(thunkGetOneVan(vanId))
-  }, [dispatch, vanId])
+    if (!van) dispatch(thunkGetOneVan(vanId))
+  }, [dispatch, vanId, van])
 
   useEffect(() => {
     const mpgInput = document.querySelector("#MPG-input");
     if (van && mpgInput) {
       if (fuelTypeId == 4) {
         mpgInput.setAttribute("disabled", "");
+        setMpg("")
       } else if (mpgInput.hasAttribute("disabled")) {
         mpgInput.removeAttribute("disabled");
       }
@@ -56,6 +57,7 @@ export const UpdateVan = () => {
     if (van && distanceInput) {
     if (unlimited) {
       distanceInput.setAttribute("disabled", "");
+      setDistanceIncluded("")
     } else if (distanceInput.hasAttribute("disabled")) {
       distanceInput.removeAttribute("disabled");
     }
@@ -75,6 +77,14 @@ export const UpdateVan = () => {
 
   useEffect(() => {
     if (van?.id) {
+      let previewImage;
+      for (const image in van.images) {
+        if (van.images[image].preview == true) {
+          previewImage = van.images[image].imageUrl
+          break;
+        }
+      }
+
       setYear(van.year)
       setMake(van.make)
       setModel(van.model)
@@ -94,7 +104,7 @@ export const UpdateVan = () => {
       setDoors(van.doors)
       setSeats(van.seats)
       setFuelTypeId(van.fuelTypeId)
-      setImage(van.images.find(image => image.preview == true).imageUrl)
+      setImage(previewImage)
     }
   }, [van])
   
@@ -172,6 +182,7 @@ export const UpdateVan = () => {
     if (Object.values(errors).length) {
       setValidationErrors(errors);
     } else {
+
       await dispatch(
         thunkUpdateVan({
           year,
@@ -222,8 +233,8 @@ export const UpdateVan = () => {
 
     const newImageURL = URL.createObjectURL(tempFile); // Generate a local URL to render the image file inside of the <img> tag.
     setImageURL(newImageURL);
-    setImage(tempFile);
     setFileName(tempFile.name);
+    setImage(tempFile);
     // setOptional("");
   };
 
@@ -331,7 +342,6 @@ export const UpdateVan = () => {
         <input
           type="number"
           id="MPG-input"
-          min={1}
           value={mpg}
           onChange={(e) => setMpg(e.target.value)}
         />
@@ -512,7 +522,8 @@ export const UpdateVan = () => {
           {imageURL && <img src={imageURL} className="van-upload-thumbnail"></img>}
         </div>
       </div>
-      <button className="submit-btn">Update van</button>
+      <button type="submit" className="submit-btn">Update van</button>
+      <button onClick={() => navigate(`/vans/${vanId}`)} className="cancel btn">Cancel</button>
     </form>
   );
 };

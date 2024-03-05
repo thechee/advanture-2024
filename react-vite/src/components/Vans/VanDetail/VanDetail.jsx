@@ -5,22 +5,26 @@ import { thunkGetOneVan } from "../../../redux/van";
 import { FaRegHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
+import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
+import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
+import StarRatings from 'react-star-ratings';
 import "./VanDetail.css";
 
 export const VanDetail = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const { vanId } = useParams();
-  const van = useSelector((state) => state.vans[vanId]);
-  const user = useSelector((state) => state.session.user);
+  const van = useSelector(state => state.vans[vanId]);
+  const user = useSelector(state => state.session.user);
+  const ratingsObj = useSelector(state => state.vans[vanId]?.ratings)
 
   useEffect(() => {
-    dispatch(thunkGetOneVan(vanId));
-  }, [dispatch, vanId]);
+    if (!van) dispatch(thunkGetOneVan(vanId));
+  }, [dispatch, vanId, van]);
 
-  if (!van) return <h1>404! VAN NOT FOUND</h1>;
+  if (!van) return null;
 
-  function formatDate(dateStr) {
+  function formatShortDate(dateStr) {
     const date = new Date(dateStr);
     const month = date.toLocaleString("en-us", { month: "short" });
     const year = date.getUTCFullYear();
@@ -29,11 +33,17 @@ export const VanDetail = () => {
 
   function favoriteHandler() {}
 
-  const previewImage = van.images.find(
-    (image) => image.preview == true
-  ).imageUrl;
-  const joinedDate = formatDate(van.owner.createdAt);
+  let previewImage;
+  for (const image in van.images) {
+    if (van.images[image].preview == true) {
+      previewImage = van.images[image].imageUrl
+      break;
+    }
+  }
+
+  const joinedDate = formatShortDate(van.owner.createdAt);
   const owner = user?.id == van.owner.id;
+  const ratings = Object.values(ratingsObj)
 
   return (
     <div>
@@ -48,9 +58,16 @@ export const VanDetail = () => {
           <h1>
             {van.make} {van.model} {van.year}
           </h1>
-          <div>
-            <span>AVG RATING GOES HERE</span>
-          </div>
+          {van.numRatings > 0 && <div className="van-overall-ratings-div">
+            <span id="van-overall-stars">{van.vanAvgRating.toString().length <= 3 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating.toFixed(2)} </span>
+            <StarRatings
+                    rating={van.vanAvgRating}
+                    starRatedColor="rgb(89, 60, 251)"
+                    starEmptyColor="white"
+                    starDimension="25px"
+                    numberOfStars={1}
+                  />
+          </div>}
           <div className="van-detail-details">
             <ul className="details-ul">
               {van.mpg && <li>{van.mpg} MPG</li>}
@@ -80,7 +97,41 @@ export const VanDetail = () => {
             </ul>
           </div>
           <h4>RATINGS AND REVIEWS</h4>
-          <h4 style={{ color: "#808080" }}>REVIEWS</h4>
+
+          {ratings.length ? 
+            <div>
+              <div className="overall-ratings-stars-div">
+                <span>
+                  {van.vanAvgRating.toString().length == 1 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating.toFixed(2)}
+                  <StarRatings
+                    rating={van.vanAvgRating}
+                    starRatedColor="rgb(89, 60, 251)"
+                    starEmptyColor="white"
+                    starDimension="25px"
+                    numberOfStars={1}
+                  />
+                </span>
+                <span>({van.numRatings} ratings)</span>
+              </div>
+              <div>
+                <div className="rating"><span>Cleanliness</span><RatingsBar ratingAvg={van.vanAvgCleanliness}/><span className="avg-rating-num">{van.vanAvgCleanliness.toFixed(1)}</span></div>
+                <div className="rating"><span>Maintenance</span><RatingsBar ratingAvg={van.vanAvgMaintenance}/><span className="avg-rating-num">{van.vanAvgMaintenance.toFixed(1)}</span></div>
+                <div className="rating"><span>Communication</span><RatingsBar ratingAvg={van.vanAvgCommunication}/><span className="avg-rating-num">{van.vanAvgCommunication.toFixed(1)}</span></div>
+                <div className="rating"><span>Convenience</span><RatingsBar ratingAvg={van.vanAvgConvenience}/><span className="avg-rating-num">{van.vanAvgConvenience.toFixed(1)}</span></div>
+                <div className="rating"><span>Accuracy</span><RatingsBar ratingAvg={van.vanAvgAccuracy}/><span className="avg-rating-num">{van.vanAvgAccuracy.toFixed(1)}</span></div>
+              </div>
+              <div>
+                <h4 style={{ color: "#808080" }}>REVIEWS</h4>
+                <ul>
+                  {ratings.map(rating => (
+                    <RatingsListItem key={rating.id} rating={rating}/>
+                  ))}
+                </ul>
+              </div>
+            </div> :
+            <div>
+              <h3>This van is not yet rated or reviewed!</h3>  
+            </div>}
         </div>
 
         <div className="van-detail-right-div">
@@ -117,7 +168,7 @@ export const VanDetail = () => {
             </div>
           ) : (
             <div className="favorite-div">
-              <button className="add-to-favorites btn">
+              <button className="add-to-favorites">
                 <span>
                   <FaRegHeart />
                 </span>

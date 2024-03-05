@@ -1,11 +1,12 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
-from app.models import Van, VanImage, db
+from app.models import Van, VanImage, Rating, db
 from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 from app.forms import VanForm, VanImageForm
 
 van_routes = Blueprint('vans', __name__)
 
+#! VANS
 @van_routes.route('/')
 def vans():
   """
@@ -24,16 +25,7 @@ def van(vanId):
   if van:
     return van.to_dict()
   else:
-    return {"errors": {"message": "Van not found"}}
-
-@login_required
-@van_routes.route('/manage')
-def user_vans():
-  vans = Van.query.filter(current_user.id == Van.user_id).all()
-  if vans:
-    return [van.to_dict() for van in vans]
-  else:
-    return []
+    return {"errors": {"message": "Van not found"}}, 404
 
 
 @login_required
@@ -94,8 +86,8 @@ def update_van(vanId):
     van.zip_code = form.data["zip_code"] or van.zip_code
     van.rental_rate = form.data["rental_rate"] or van.rental_rate
     van.description = form.data["description"] or van.description
-    van.distance_allowed = form.data["distance_allowed"] or van.distance_allowed
-    van.mpg = form.data["mpg"] or van.mpg
+    van.distance_allowed = form.data["distance_allowed"]
+    van.mpg = form.data["mpg"]
     van.doors = form.data["doors"] or van.doors
     van.seats = form.data["seats"] or van.seats
     van.fuel_type_id = form.data["fuel_type_id"] or van.fuel_type_id
@@ -128,6 +120,8 @@ def delete_van(vanId):
 
   return {"message": "Van successfully deleted"}
 
+
+#! VAN IMAGES
 @login_required
 @van_routes.route('/<int:vanId>/images', methods=["POST"])
 def new_van_image(vanId):
@@ -159,7 +153,6 @@ def new_van_image(vanId):
 @van_routes.route('/<int:vanId>/images', methods=["PUT"])
 def update_van_image(vanId):
   preview_image = VanImage.query.filter(VanImage.van_id == vanId, VanImage.preview == True).one()
-  print("==========>", preview_image)
 
   form = VanImageForm()
 
@@ -187,4 +180,29 @@ def update_van_image(vanId):
     db.session.commit()
     return updated_van_image.to_dict()
   return form.errors, 401
-  return "Error"
+
+#! VAN RATINGS
+@login_required
+@van_routes.route('/vans/<int:vanId>/ratings')
+def get_van_ratings(vanId):
+  """
+  Query for all of the ratings of the van from the URL params
+  """
+
+  ratings = Rating.query.filter(Rating.van_id == vanId).all()
+
+  if ratings:
+    return [rating.to_dict() for rating in ratings]
+  else:
+    return []
+
+#! MANAGE VANS
+@login_required
+@van_routes.route('/manage')
+def user_vans():
+  vans = Van.query.filter(current_user.id == Van.user_id).all()
+  if vans:
+    return [van.to_dict() for van in vans]
+  else:
+    return []
+  

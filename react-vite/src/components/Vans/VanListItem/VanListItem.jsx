@@ -4,25 +4,26 @@ import { FaRegHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import OpenModalButton from "../../OpenModalButton";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal";
+import StarRatings from "react-star-ratings";
 
 export const VanListItem = ({ van }) => {
-  const navigate = useNavigate()
-  const previewImage = van.images.find(
-    (image) => image.preview == true
-  ).imageUrl;
+  const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);
   const isOwner = user?.id == van.owner.id;
 
-  const handleUpdate = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    navigate(`/vans/${van.id}/update`)
+  let previewImage;
+  for (const image in van.images) {
+    if (van.images[image].preview == true) {
+      previewImage = van.images[image].imageUrl;
+      break;
+    }
   }
 
-  const handleRemove = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/vans/${van.id}/update`);
+  };
 
   return (
     <Link to={`/vans/${van.id}`}>
@@ -37,20 +38,40 @@ export const VanListItem = ({ van }) => {
             </h2>
           </div>
           <div>
-            <span>This is where the rating will go</span>
+            {van.numRatings ? (
+              <>
+                <span id="van-overall-stars">{van.vanAvgRating.toString().length <= 3 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating.toFixed(2)} </span>
+                <StarRatings
+                  rating={1}
+                  starRatedColor="rgb(89, 60, 251)"
+                  starEmptyColor="gray"
+                  starDimension="25px"
+                  numberOfStars={1}
+                />
+              </>
+            ) : (
+              <span>New Listing</span>
+            )}
           </div>
           <div>
             <span className="van-list-item-location">
               {van.city}, {van.state}
             </span>
-
           </div>
 
           <div className="van-list-item-price-div">
-          {isOwner && <button onClick={handleUpdate} className="submit-btn">Update</button>}
-          {isOwner && 
-          <OpenModalButton className={"submit-btn"} buttonText={"Remove"} onButtonClick={handleRemove} modalComponent={<DeleteVanModal van={van} />}/>
-          }
+            {isOwner && (
+              <button onClick={handleUpdate} className="submit-btn">
+                Update
+              </button>
+            )}
+            {isOwner && (
+              <OpenModalButton
+                className={"submit-btn"}
+                buttonText={"Remove"}
+                modalComponent={<DeleteVanModal van={van} />}
+              />
+            )}
             <span>${van.rentalRate}/day</span>
           </div>
           <div className="van-list-item-heart-div">

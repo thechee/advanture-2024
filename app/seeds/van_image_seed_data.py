@@ -74,4 +74,49 @@ van_images=[
     "image_url": "https://advanture-capstone.s3.us-west-1.amazonaws.com/van5/F0IjoianBlZyIsImpwZWciOnsicXVhbGl0eSI6ODB9LCJyb3RhdGUiOm51bGx.jpeg",
     "preview": False
   },
+  {
+    "van_id": 6,
+    "image_url": "https://advanture-capstone.s3.us-west-1.amazonaws.com/van6/5fe36262edf8920018093780.webp",
+    "preview": True
+  },
+  {
+    "van_id": 6,
+    "image_url": "https://advanture-capstone.s3.us-west-1.amazonaws.com/van6/5fe362c5a6448800181931d6.webp",
+    "preview": False
+  },
+  {
+    "van_id": 6,
+    "image_url": "https://advanture-capstone.s3.us-west-1.amazonaws.com/van6/5fe362daedf8920018093785.webp",
+    "preview": False
+  },
+  {
+    "van_id": 7,
+    "image_url": "https://advanture-capstone.s3.us-west-1.amazonaws.com/van7/40b3d3e6b5a737ff9b28cc1af85d6afc.jpg",
+    "preview": True
+  },
+  {
+    "van_id": 8,
+    "image_url": "https://advanture-capstone.s3.us-west-1.amazonaws.com/van8/2018-volkswagen-t6-transporter-california_18.webp",
+    "preview": True
+  },
+  {
+    "van_id": 8,
+    "image_url": "https://advanture-capstone.s3.us-west-1.amazonaws.com/van8/volkswagent6_2018_essentials_fullwide2.webp",
+    "preview": False
+  },
+  {
+    "van_id": 9,
+    "image_url": "https://advanture-capstone.s3.us-west-1.amazonaws.com/van9/promasterheader-sans-window.jpg",
+    "preview": True
+  },
+  {
+    "van_id": 9,
+    "image_url": "https://advanture-capstone.s3.us-west-1.amazonaws.com/van9/top-penthouse-1.jpg",
+    "preview": False
+  },
+  {
+    "van_id": 10,
+    "image_url": "https://advanture-capstone.s3.us-west-1.amazonaws.com/van10/9248037L.webp",
+    "preview": True
+  }
 ]

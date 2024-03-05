@@ -1,4 +1,4 @@
-import { deleteUserRating } from './session'
+import { deleteUserRating, deleteUserVan } from './session'
 
 const GET_VANS = 'van/GET_VANS';
 const GET_ONE_VAN = 'van/GET_ONE_VAN';
@@ -129,6 +129,7 @@ export const thunkDeleteVan = (vanId) => async dispatch => {
   if (response.ok) {
     const message = await response.json()
     dispatch(deleteVan(vanId))
+    dispatch(deleteUserVan(vanId))
     return message
   } else {
     const errors = await response.json()

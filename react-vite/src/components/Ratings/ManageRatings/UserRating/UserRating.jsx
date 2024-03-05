@@ -23,7 +23,7 @@ export const UserRating = ({ rating }) => {
   const handleUpdate = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    navigate(`/vans/${van.id}/update`);
+    // navigate(`/vans/${van.id}/update`);
   };
 
   // const handleRemove = (e) => {

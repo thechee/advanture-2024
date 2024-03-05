@@ -25,13 +25,14 @@ class Rating(db.Model):
   van = db.relationship("Van", back_populates="ratings")
 
   def to_dict(self):
+    avg_rating = (self.cleanliness + self.maintenance + self.communication + self.convenience + self.accuracy) / 5
 
     return {
       "id": self.id,
       "rater": self.rater.to_dict(),
       "vanId": self.van_id,
       "review": self.review,
-      "overallStars": self.overall_stars,
+      "avgRating": avg_rating,
       "cleanliness": self.cleanliness,
       "maintenance": self.maintenance,
       "communication": self.communication,

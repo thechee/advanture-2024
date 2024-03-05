@@ -86,8 +86,8 @@ def update_van(vanId):
     van.zip_code = form.data["zip_code"] or van.zip_code
     van.rental_rate = form.data["rental_rate"] or van.rental_rate
     van.description = form.data["description"] or van.description
-    van.distance_allowed = form.data["distance_allowed"] or van.distance_allowed
-    van.mpg = form.data["mpg"] or van.mpg
+    van.distance_allowed = form.data["distance_allowed"]
+    van.mpg = form.data["mpg"]
     van.doors = form.data["doors"] or van.doors
     van.seats = form.data["seats"] or van.seats
     van.fuel_type_id = form.data["fuel_type_id"] or van.fuel_type_id
@@ -153,7 +153,6 @@ def new_van_image(vanId):
 @van_routes.route('/<int:vanId>/images', methods=["PUT"])
 def update_van_image(vanId):
   preview_image = VanImage.query.filter(VanImage.van_id == vanId, VanImage.preview == True).one()
-  print("==========>", preview_image)
 
   form = VanImageForm()
 

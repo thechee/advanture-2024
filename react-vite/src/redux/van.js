@@ -199,7 +199,18 @@ export const vanReducer = (state = initialState, action) => {
     }
     case ADD_VAN_IMAGE: {
       const newState = { ...state }
-      newState[action.vanId].images.push(action.image)
+      newState[action.vanId].images = { [action.image.id]: action.image }
+      return newState;
+    }
+    case UPDATE_VAN_IMAGE: {
+      const newState = { ...state }
+      
+      newState[action.vanId].images = { [action.image.id]: action.image }
+      return newState;
+    }
+    case UPDATE_VAN: {
+      const newState = { ...state }
+      newState[action.van.id] = action.van
       return newState;
     }
     case DELETE_VAN: {

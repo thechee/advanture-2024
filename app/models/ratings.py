@@ -26,11 +26,18 @@ class Rating(db.Model):
 
   def to_dict(self):
     avg_rating = (self.cleanliness + self.maintenance + self.communication + self.convenience + self.accuracy) / 5
+    van_preview_image = [image.image_url for image in self.van.images if image.preview is True][0]
 
     return {
       "id": self.id,
       "rater": self.rater.to_dict(),
       "vanId": self.van_id,
+      "vanMake": self.van.make,
+      "vanModel": self.van.model,
+      "vanYear": self.van.year,
+      "vanOwner": self.van.owner.first_name,
+      "vanOwnerProfileImg": self.van.owner.profile_image_url,
+      "vanPreviewImage": van_preview_image,
       "review": self.review,
       "avgRating": avg_rating,
       "cleanliness": self.cleanliness,

@@ -2,6 +2,7 @@ const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 const ADD_USER_VANS = 'session/ADD_USER_VANS';
 const ADD_USER_RATINGS = 'session/ADD_USER_RATINGS';
+const REMOVE_USER_RATING = 'session/REMOVE_USER_RATING';
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -22,6 +23,10 @@ const addUserRatings = (ratings) => ({
   ratings
 })
 
+const removeUserRating = (ratingId) => ({
+  type: REMOVE_USER_RATING,
+  ratingId
+})
 
 
 export const thunkAuthenticate = () => async (dispatch) => {
@@ -100,6 +105,21 @@ export const thunkGetUserRatings = () => async dispatch => {
   }
 }
 
+export const thunkRemoveUserRating = (ratingId) => async dispatch => {
+  const response = await fetch(`/api/ratings/${ratingId}`, {
+    method: "DELETE"
+  })
+
+  if (response.ok) {
+    const message = await response.json()
+    dispatch(removeUserRating(ratingId))
+    return message
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
 const initialState = { user: null };
 
 function sessionReducer(state = initialState, action) {
@@ -118,6 +138,19 @@ function sessionReducer(state = initialState, action) {
       const newState = { ...state }
       newState.user.ratings = {};
       action.ratings.forEach(rating => newState.user.ratings[rating.id] = rating)
+      return newState;
+    }
+    case REMOVE_USER_RATING: {
+      const newState = { 
+        ...state,
+        user: {
+          ...state.user,
+          ratings: {
+            ...state.user.ratings
+          }
+        }
+      }
+      delete newState.user.ratings[action.ratingId]
       return newState;
     }
     default:

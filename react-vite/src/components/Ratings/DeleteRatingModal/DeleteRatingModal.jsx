@@ -1,19 +1,19 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "../../../context/Modal";
-import { thunkDeleteVan } from "../../../redux/van";
-import './DeleteVanModal.css'
+import { thunkRemoveUserRating } from "../../../redux/session";
+import './DeleteRatingModal.css'
 
-export const DeleteVanModal = ({ van }) => {
+export const DeleteRatingModal = ({ rating }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { closeModal } = useModal()
 
   const handleDelete = async (e) => {
     e.preventDefault()
-    await dispatch(thunkDeleteVan(van.id))
+    await dispatch(thunkRemoveUserRating(rating.id))
     closeModal()
-    // navigate('/vans/manage')
+    navigate('/reviews/manage')
   }
 
   const handleCancel = (e) => {
@@ -22,10 +22,10 @@ export const DeleteVanModal = ({ van }) => {
   }
 
   return (
-    <div className='delete-van-modal'>
+    <div className='delete-rating-modal'>
       <h2>Confirm Delete</h2>
-      <p>Are you sure you want to remove this <span>{van.year} {van.make} {van.model}</span> from Advanture?</p>
-      <button className="submit-btn" onClick={handleDelete}>Confirm</button>
+      <p>Are you sure you want to remove your rating for the <span>{rating.vanYear} {rating.vanMake} {rating.vanModel}</span>?</p>
+      <button className="submit-btn btn" onClick={handleDelete}>Confirm</button>
       <button className="btn cancel" onClick={handleCancel}>Cancel</button>
     </div>
   );

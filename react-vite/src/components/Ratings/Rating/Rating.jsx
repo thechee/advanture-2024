@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import StarRatings from "react-star-ratings";
-import "./NewRating.css";
+import "./Rating.css";
 import { thunkCreateVanRating, thunkGetOneVan } from "../../../redux/van";
 
-export const NewRating = ({ vanId, setViewNewReview }) => {
+export const Rating = ({ vanId, setViewNewReview }) => {
   const dispatch = useDispatch();
   const [review, setReview] = useState("");
   const [cleanliness, setCleanliness] = useState(0);
@@ -34,8 +34,13 @@ export const NewRating = ({ vanId, setViewNewReview }) => {
     e.preventDefault();
 
     setSubmitted(true)
-
-    if (!Object.values(validationErrors).length) {
+    
+    const errors = {}
+    if (review.length < 30 && review.length > 0) errors.review = "Review should be at least 30 characters"
+    
+    if (Object.values(errors).length) {
+      setValidationErrors(errors)
+    } else {
       const rating = {
         cleanliness,
         maintenance,

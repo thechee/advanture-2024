@@ -7,27 +7,27 @@ import OpenModalButton from "../../OpenModalButton";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
-import StarRatings from 'react-star-ratings';
-import { NewRating } from "../../Ratings/NewRating/NewRating.jsx";
+import StarRatings from "react-star-ratings";
+import { Rating } from "../../Ratings/Rating/Rating.jsx";
 import "./VanDetail.css";
 
 export const VanDetail = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { vanId } = useParams();
-  const van = useSelector(state => state.vans[vanId]);
-  const user = useSelector(state => state.session.user);
-  const ratingsObj = useSelector(state => state.vans[vanId]?.ratings)
-  const [viewNewReview, setViewNewReview] = useState(false)
+  const van = useSelector((state) => state.vans[vanId]);
+  const user = useSelector((state) => state.session.user);
+  const ratingsObj = useSelector((state) => state.vans[vanId]?.ratings);
+  const [viewNewReview, setViewNewReview] = useState(false);
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
   }, [dispatch, vanId]);
 
   if (!van) return null;
-  if (!ratingsObj) return null
+  if (!ratingsObj) return null;
 
-  const ratings = Object.values(ratingsObj)
+  const ratings = Object.values(ratingsObj);
 
   function formatShortDate(dateStr) {
     const date = new Date(dateStr);
@@ -41,7 +41,7 @@ export const VanDetail = () => {
   let previewImage;
   for (const image in van.images) {
     if (van.images[image].preview == true) {
-      previewImage = van.images[image].imageUrl
+      previewImage = van.images[image].imageUrl;
       break;
     }
   }
@@ -62,16 +62,22 @@ export const VanDetail = () => {
           <h1>
             {van.make} {van.model} {van.year}
           </h1>
-          {ratings.length > 0 && <div className="van-overall-ratings-div">
-            <span id="van-overall-stars">{van.vanAvgRating.toString().length <= 3 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating.toFixed(2)} </span>
-            <StarRatings
-                    rating={van.vanAvgRating}
-                    starRatedColor="rgb(89, 60, 251)"
-                    starEmptyColor="white"
-                    starDimension="25px"
-                    numberOfStars={1}
-                  />
-          </div>}
+          {ratings.length > 0 && (
+            <div className="van-overall-ratings-div">
+              <span id="van-overall-stars">
+                {van.vanAvgRating.toString().length <= 3
+                  ? van.vanAvgRating.toFixed(1)
+                  : van.vanAvgRating.toFixed(2)}{" "}
+              </span>
+              <StarRatings
+                rating={van.vanAvgRating}
+                starRatedColor="rgb(89, 60, 251)"
+                starEmptyColor="white"
+                starDimension="25px"
+                numberOfStars={1}
+              />
+            </div>
+          )}
           <div className="van-detail-details">
             <ul className="details-ul">
               {van.mpg && <li>{van.mpg} MPG</li>}
@@ -102,11 +108,13 @@ export const VanDetail = () => {
           </div>
           <h4>RATINGS AND REVIEWS</h4>
 
-          {ratings.length ? 
+          {ratings.length ? (
             <div>
               <div className="overall-ratings-stars-div">
                 <span>
-                  {van.vanAvgRating.toString().length == 1 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating.toFixed(2)}
+                  {van.vanAvgRating.toString().length == 1
+                    ? van.vanAvgRating.toFixed(1)
+                    : van.vanAvgRating.toFixed(2)}
                   <StarRatings
                     rating={van.vanAvgRating}
                     starRatedColor="rgb(89, 60, 251)"
@@ -118,42 +126,87 @@ export const VanDetail = () => {
                 <span>({ratings.length} ratings)</span>
               </div>
               <div>
-                <div className="rating"><span>Cleanliness</span><RatingsBar ratingAvg={van.vanAvgCleanliness}/><span className="avg-rating-num">{van.vanAvgCleanliness.toFixed(1)}</span></div>
-                <div className="rating"><span>Maintenance</span><RatingsBar ratingAvg={van.vanAvgMaintenance}/><span className="avg-rating-num">{van.vanAvgMaintenance.toFixed(1)}</span></div>
-                <div className="rating"><span>Communication</span><RatingsBar ratingAvg={van.vanAvgCommunication}/><span className="avg-rating-num">{van.vanAvgCommunication.toFixed(1)}</span></div>
-                <div className="rating"><span>Convenience</span><RatingsBar ratingAvg={van.vanAvgConvenience}/><span className="avg-rating-num">{van.vanAvgConvenience.toFixed(1)}</span></div>
-                <div className="rating"><span>Accuracy</span><RatingsBar ratingAvg={van.vanAvgAccuracy}/><span className="avg-rating-num">{van.vanAvgAccuracy.toFixed(1)}</span></div>
+                <div className="rating">
+                  <span>Cleanliness</span>
+                  <RatingsBar ratingAvg={van.vanAvgCleanliness} />
+                  <span className="avg-rating-num">
+                    {van.vanAvgCleanliness.toFixed(1)}
+                  </span>
+                </div>
+                <div className="rating">
+                  <span>Maintenance</span>
+                  <RatingsBar ratingAvg={van.vanAvgMaintenance} />
+                  <span className="avg-rating-num">
+                    {van.vanAvgMaintenance.toFixed(1)}
+                  </span>
+                </div>
+                <div className="rating">
+                  <span>Communication</span>
+                  <RatingsBar ratingAvg={van.vanAvgCommunication} />
+                  <span className="avg-rating-num">
+                    {van.vanAvgCommunication.toFixed(1)}
+                  </span>
+                </div>
+                <div className="rating">
+                  <span>Convenience</span>
+                  <RatingsBar ratingAvg={van.vanAvgConvenience} />
+                  <span className="avg-rating-num">
+                    {van.vanAvgConvenience.toFixed(1)}
+                  </span>
+                </div>
+                <div className="rating">
+                  <span>Accuracy</span>
+                  <RatingsBar ratingAvg={van.vanAvgAccuracy} />
+                  <span className="avg-rating-num">
+                    {van.vanAvgAccuracy.toFixed(1)}
+                  </span>
+                </div>
               </div>
               <div>
                 <h4 style={{ color: "#808080" }}>REVIEWS</h4>
                 <ul>
-                  {ratings.map(rating => {
-                    if (rating.review) {
-                      return <RatingsListItem key={rating.id} rating={rating}/>
-                    }
+                  {ratings.map((rating) => {
+                    // if (rating.review) {
+                    return <RatingsListItem key={rating.id} rating={rating} />;
+                    // }
                   })}
                 </ul>
 
-                {viewNewReview &&
-                <div>
-                  <NewRating vanId={vanId} setViewNewReview={setViewNewReview} />
-                </div> }
-                {!viewNewReview && user && !owner &&
-                <button onClick={() => setViewNewReview(true)} id="add-a-review-btn" className="submit-btn">Add a review</button>
-                }
-                
+                {viewNewReview && (
+                  <div>
+                    <Rating vanId={vanId} setViewNewReview={setViewNewReview} />
+                  </div>
+                )}
+                {!viewNewReview && user && !owner && (
+                  <button
+                    onClick={() => setViewNewReview(true)}
+                    id="add-a-review-btn"
+                    className="submit-btn"
+                  >
+                    Add a review
+                  </button>
+                )}
               </div>
-            </div> :
+            </div>
+          ) : (
             <div>
               <h3>This van is not yet rated or reviewed!</h3>
-              {viewNewReview &&
+              {viewNewReview && (
                 <div>
-                  <NewRating vanId={vanId} setViewNewReview={setViewNewReview} />
-                </div> }
-                {!viewNewReview && user && !owner &&
-                <button onClick={() => setViewNewReview(true)} id="add-a-review-btn" className="submit-btn">Add a review</button>
-                }
-            </div>}
+                  <Rating vanId={vanId} setViewNewReview={setViewNewReview} />
+                </div>
+              )}
+              {!viewNewReview && user && !owner && (
+                <button
+                  onClick={() => setViewNewReview(true)}
+                  id="add-a-review-btn"
+                  className="submit-btn"
+                >
+                  Add a review
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         <div className="van-detail-right-div">
@@ -182,7 +235,9 @@ export const VanDetail = () => {
 
           {owner ? (
             <div className="owner-div">
-              <button onClick={() => navigate(`/vans/${vanId}/update`)}>Update Van</button>
+              <button onClick={() => navigate(`/vans/${vanId}/update`)}>
+                Update Van
+              </button>
               <OpenModalButton
                 buttonText="Remove Van"
                 modalComponent={<DeleteVanModal van={van} />}

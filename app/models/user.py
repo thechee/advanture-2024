@@ -19,7 +19,8 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    vans = db.relationship("Van", back_populates="owner")
+    vans = db.relationship("Van", back_populates="owner", cascade="all, delete-orphan")
+    owned_ratings = db.relationship("Rating", back_populates="rater")
 
     @property
     def password(self):

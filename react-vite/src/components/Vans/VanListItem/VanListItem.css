@@ -1,6 +1,6 @@
 .van-list-item-li {
   display: flex;
-  border: 1px solid rgba(211, 211, 211, .5);
+  border: 1px solid var(--light-border);
   border-radius: 10px;
   margin-bottom: 1rem;
   margin-right: 1.25rem;

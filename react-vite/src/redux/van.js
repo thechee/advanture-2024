@@ -1,10 +1,16 @@
-const GET_VANS = 'van/GET_VANS'
-const GET_ONE_VAN = 'van/GET_ONE_VAN'
-const ADD_VAN = 'van/ADD_VAN'
-const UPDATE_VAN = 'van/UPDATE_VAN'
-const DELETE_VAN = 'van/DELETE_VAN'
-const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE'
-const UPDATE_VAN_IMAGE = 'van/UPDATE_VAN_IMAGE'
+import { deleteUserRating } from './session'
+
+const GET_VANS = 'van/GET_VANS';
+const GET_ONE_VAN = 'van/GET_ONE_VAN';
+const ADD_VAN = 'van/ADD_VAN';
+const UPDATE_VAN = 'van/UPDATE_VAN';
+const DELETE_VAN = 'van/DELETE_VAN';
+const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE';
+const UPDATE_VAN_IMAGE = 'van/UPDATE_VAN_IMAGE';
+const GET_VAN_RATINGS = 'van/GET_VAN_RATINGS';
+const DELETE_VAN_RATING = 'van/DELETE_VAN_RATING';
+
+/* ========== Action Creators ========== */
 
 const getVans = (vans) => ({
   type: GET_VANS,
@@ -42,6 +48,20 @@ const updateVanImage = (vanId, image) => ({
   vanId,
   image
 })
+
+const getVanRatings = (vanId, rating) => ({
+  type: GET_VAN_RATINGS,
+  vanId,
+  rating
+})
+
+const deleteVanRating = (vanId, ratingId) => ({
+  type: DELETE_VAN_RATING,
+  vanId,
+  ratingId
+})
+
+/* ========== Thunks ========== */
 
 export const thunkGetVans = () => async dispatch => {
   const response = await fetch('/api/vans/')
@@ -148,6 +168,38 @@ export const thunkUpdateVanImage = (formData, vanId) => async dispatch => {
   }
 }
 
+export const thunkGetVanRatings = (vanId) => async dispatch => {
+  const response = await fetch(`/api/vans/${vanId}/ratings`)
+
+  if (response.ok) {
+    const ratings = await response.json()
+    dispatch(getVanRatings(vanId, ratings))
+    return ratings
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
+export const thunkDeleteVanRating = (vanId, ratingId) => async dispatch => {
+  const response = await fetch(`/api/ratings/${ratingId}`, {
+    method: "DELETE"
+  })
+
+  if (response.ok) {
+    const message = await response.json()
+    dispatch(deleteVanRating(vanId, ratingId))
+    dispatch(deleteUserRating(ratingId))
+    return message
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
+
+/* ========== Reducer ========== */
+
 const initialState = {}
 
 export const vanReducer = (state = initialState, action) => {
@@ -171,13 +223,43 @@ export const vanReducer = (state = initialState, action) => {
     }
     case ADD_VAN_IMAGE: {
       const newState = { ...state }
-      newState[action.vanId].images.push(action.image)
+      newState[action.vanId].images = { [action.image.id]: action.image }
+      return newState;
+    }
+    case UPDATE_VAN_IMAGE: {
+      const newState = { ...state }
+      
+      newState[action.vanId].images = { [action.image.id]: action.image }
+      return newState;
+    }
+    case UPDATE_VAN: {
+      const newState = { ...state }
+      newState[action.van.id] = action.van
       return newState;
     }
     case DELETE_VAN: {
       const newState = { ...state }
       delete newState[action.vanId]
       return newState;
+    }
+    case GET_VAN_RATINGS: {
+      const newState = { ...state }
+      newState[action.vanId].ratings = {}
+      action.ratings.forEach(rating => newState[action.vanId].ratings[rating.id] = rating)
+      return newState
+    }
+    case DELETE_VAN_RATING: {
+      const newState = { 
+        ...state,
+        [action.vanId]: {
+          ...state[action.vanId],
+          ratings: {
+            ...state[action.vanId].ratings
+          }
+        }
+      }
+      delete newState[action.vanId].ratings[action.ratingId]
+      return newState
     }
     default:
       return state;

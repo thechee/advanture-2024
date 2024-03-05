@@ -149,6 +149,10 @@ h4 {
   border-bottom: 1px solid lightgray;
 }
 
+.owner-div {
+  margin-top: 1rem;
+}
+
 .owner-div button {
   width: 100%;
   padding: .75rem;
@@ -156,7 +160,7 @@ h4 {
   background-color: var(--purple);
   border: none;
   border-radius: 10px;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   cursor: pointer;
 }
 

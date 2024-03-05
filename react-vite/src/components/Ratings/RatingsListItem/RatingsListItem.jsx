@@ -28,7 +28,7 @@ export const RatingsListItem = ({ rating }) => {
             numberOfStars={5}
             starRatedColor="rgb(89, 60, 251)"
             starEmptyColor="#e0e0e0"
-            rating={rating.overallStars}
+            rating={Math.round(rating.avgRating)}
           />
           <span className="reviewer-name">
             {rating.rater.firstName} <span className="review-date">{date}</span>

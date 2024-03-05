@@ -19,8 +19,8 @@ export const VanDetail = () => {
   const ratingsObj = useSelector(state => state.vans[vanId]?.ratings)
 
   useEffect(() => {
-    dispatch(thunkGetOneVan(vanId));
-  }, [dispatch, vanId]);
+    if (!van) dispatch(thunkGetOneVan(vanId));
+  }, [dispatch, vanId, van]);
 
   if (!van) return null;
 
@@ -45,29 +45,6 @@ export const VanDetail = () => {
   const owner = user?.id == van.owner.id;
   const ratings = Object.values(ratingsObj)
 
-  const ratingsTotals = {
-    cleanliness: 0,
-    maintenance: 0,
-    communication: 0,
-    convenience: 0,
-    accuracy: 0,
-  }
-
-  for (const rating in ratingsObj) {
-    for (const [key, value] of Object.entries(ratingsObj[rating])) {
-      if (key == "cleanliness") ratingsTotals.cleanliness += value
-      if (key == "maintenance") ratingsTotals.maintenance += value
-      if (key == "communication") ratingsTotals.communication += value
-      if (key == "convenience") ratingsTotals.convenience += value
-      if (key == "accuracy") ratingsTotals.accuracy += value}
-  }
-  const avgCleanliness = ratingsTotals.cleanliness / ratings.length
-  const avgMaintenance = ratingsTotals.maintenance / ratings.length
-  const avgCommunication = ratingsTotals.communication / ratings.length
-  const avgConvenience = ratingsTotals.convenience / ratings.length
-  const avgAccuracy = ratingsTotals.accuracy / ratings.length
-  const ratingsSum = (avgCleanliness + avgMaintenance + avgCommunication + avgConvenience + avgAccuracy) / 5
-
   return (
     <div>
       <div className="van-images-div">
@@ -81,16 +58,16 @@ export const VanDetail = () => {
           <h1>
             {van.make} {van.model} {van.year}
           </h1>
-          <div className="van-overall-ratings-div">
-            <span id="van-overall-stars">{ratingsSum.toString().length == 1 ? ratingsSum.toFixed(1) : ratingsSum.toFixed(2)} </span>
+          {van.numRatings > 0 && <div className="van-overall-ratings-div">
+            <span id="van-overall-stars">{van.vanAvgRating.toString().length <= 3 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating.toFixed(2)} </span>
             <StarRatings
-                    rating={ratingsSum}
+                    rating={van.vanAvgRating}
                     starRatedColor="rgb(89, 60, 251)"
                     starEmptyColor="white"
                     starDimension="25px"
                     numberOfStars={1}
                   />
-          </div>
+          </div>}
           <div className="van-detail-details">
             <ul className="details-ul">
               {van.mpg && <li>{van.mpg} MPG</li>}
@@ -125,23 +102,23 @@ export const VanDetail = () => {
             <div>
               <div className="overall-ratings-stars-div">
                 <span>
-                  {ratingsSum.toString().length == 1 ? ratingsSum.toFixed(1) : ratingsSum.toFixed(2)}
+                  {van.vanAvgRating.toString().length == 1 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating.toFixed(2)}
                   <StarRatings
-                    rating={ratingsSum}
+                    rating={van.vanAvgRating}
                     starRatedColor="rgb(89, 60, 251)"
                     starEmptyColor="white"
                     starDimension="25px"
                     numberOfStars={1}
                   />
                 </span>
-                <span>({ratings.length} ratings)</span>
+                <span>({van.numRatings} ratings)</span>
               </div>
               <div>
-                <div className="rating"><span>Cleanliness</span><RatingsBar ratingAvg={avgCleanliness}/><span>{avgCleanliness.toFixed(1)}</span></div>
-                <div className="rating"><span>Maintenance</span><RatingsBar ratingAvg={avgMaintenance}/><span>{avgMaintenance.toFixed(1)}</span></div>
-                <div className="rating"><span>Communication</span><RatingsBar ratingAvg={avgCommunication}/><span>{avgCommunication.toFixed(1)}</span></div>
-                <div className="rating"><span>Convenience</span><RatingsBar ratingAvg={avgConvenience}/><span>{avgConvenience.toFixed(1)}</span></div>
-                <div className="rating"><span>Accuracy</span><RatingsBar ratingAvg={avgAccuracy}/><span>{avgAccuracy.toFixed(1)}</span></div>
+                <div className="rating"><span>Cleanliness</span><RatingsBar ratingAvg={van.vanAvgCleanliness}/><span className="avg-rating-num">{van.vanAvgCleanliness.toFixed(1)}</span></div>
+                <div className="rating"><span>Maintenance</span><RatingsBar ratingAvg={van.vanAvgMaintenance}/><span className="avg-rating-num">{van.vanAvgMaintenance.toFixed(1)}</span></div>
+                <div className="rating"><span>Communication</span><RatingsBar ratingAvg={van.vanAvgCommunication}/><span className="avg-rating-num">{van.vanAvgCommunication.toFixed(1)}</span></div>
+                <div className="rating"><span>Convenience</span><RatingsBar ratingAvg={van.vanAvgConvenience}/><span className="avg-rating-num">{van.vanAvgConvenience.toFixed(1)}</span></div>
+                <div className="rating"><span>Accuracy</span><RatingsBar ratingAvg={van.vanAvgAccuracy}/><span className="avg-rating-num">{van.vanAvgAccuracy.toFixed(1)}</span></div>
               </div>
               <div>
                 <h4 style={{ color: "#808080" }}>REVIEWS</h4>

@@ -38,6 +38,7 @@ export const CreateVan = () => {
     const mpgInput = document.querySelector("#MPG-input");
     if (fuelTypeId == 4) {
       mpgInput.setAttribute("disabled", "");
+      setMpg("")
     } else {
       mpgInput.removeAttribute("disabled");
     }
@@ -47,6 +48,7 @@ export const CreateVan = () => {
     const distanceInput = document.querySelector("#distance-input");
     if (unlimited) {
       distanceInput.setAttribute("disabled", "");
+      setDistanceIncluded("")
     } else {
       distanceInput.removeAttribute("disabled");
     }
@@ -293,7 +295,6 @@ export const CreateVan = () => {
         <input
           type="number"
           id="MPG-input"
-          min={1}
           value={mpg}
           onChange={(e) => setMpg(e.target.value)}
         />

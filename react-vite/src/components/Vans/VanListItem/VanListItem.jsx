@@ -25,13 +25,6 @@ export const VanListItem = ({ van }) => {
     navigate(`/vans/${van.id}/update`);
   };
 
-  const handleRemove = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  console.log(van.vanAvgRating)
-
   return (
     <Link to={`/vans/${van.id}`}>
       <li className="van-list-item-li">
@@ -76,7 +69,6 @@ export const VanListItem = ({ van }) => {
               <OpenModalButton
                 className={"submit-btn"}
                 buttonText={"Remove"}
-                onButtonClick={handleRemove}
                 modalComponent={<DeleteVanModal van={van} />}
               />
             )}

@@ -1,3 +1,5 @@
+import { deleteUserRating } from './session'
+
 const GET_VANS = 'van/GET_VANS';
 const GET_ONE_VAN = 'van/GET_ONE_VAN';
 const ADD_VAN = 'van/ADD_VAN';
@@ -6,6 +8,7 @@ const DELETE_VAN = 'van/DELETE_VAN';
 const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE';
 const UPDATE_VAN_IMAGE = 'van/UPDATE_VAN_IMAGE';
 const GET_VAN_RATINGS = 'van/GET_VAN_RATINGS';
+const DELETE_VAN_RATING = 'van/DELETE_VAN_RATING';
 
 /* ========== Action Creators ========== */
 
@@ -52,6 +55,11 @@ const getVanRatings = (vanId, rating) => ({
   rating
 })
 
+const deleteVanRating = (vanId, ratingId) => ({
+  type: DELETE_VAN_RATING,
+  vanId,
+  ratingId
+})
 
 /* ========== Thunks ========== */
 
@@ -173,6 +181,22 @@ export const thunkGetVanRatings = (vanId) => async dispatch => {
   }
 }
 
+export const thunkDeleteVanRating = (vanId, ratingId) => async dispatch => {
+  const response = await fetch(`/api/ratings/${ratingId}`, {
+    method: "DELETE"
+  })
+
+  if (response.ok) {
+    const message = await response.json()
+    dispatch(deleteVanRating(vanId, ratingId))
+    dispatch(deleteUserRating(ratingId))
+    return message
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
 
 /* ========== Reducer ========== */
 
@@ -222,6 +246,19 @@ export const vanReducer = (state = initialState, action) => {
       const newState = { ...state }
       newState[action.vanId].ratings = {}
       action.ratings.forEach(rating => newState[action.vanId].ratings[rating.id] = rating)
+      return newState
+    }
+    case DELETE_VAN_RATING: {
+      const newState = { 
+        ...state,
+        [action.vanId]: {
+          ...state[action.vanId],
+          ratings: {
+            ...state[action.vanId].ratings
+          }
+        }
+      }
+      delete newState[action.vanId].ratings[action.ratingId]
       return newState
     }
     default:

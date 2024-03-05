@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useModal } from "../../../context/Modal";
 import './DeleteRatingModal.css'
-import { thunkDeleteVanRating } from "../../../redux/van";
+import { thunkDeleteVanRating, thunkGetOneVan } from "../../../redux/van";
 
 export const DeleteRatingModal = ({ rating }) => {
   const dispatch = useDispatch()
@@ -10,6 +10,7 @@ export const DeleteRatingModal = ({ rating }) => {
   const handleDelete = async (e) => {
     e.preventDefault()
     await dispatch(thunkDeleteVanRating(rating.vanId, rating.id))
+    await dispatch(thunkGetOneVan(rating.vanId))
     closeModal()
   }
 

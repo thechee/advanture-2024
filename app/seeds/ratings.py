@@ -8,7 +8,6 @@ def seed_ratings():
       user_id = rating["user_id"],
       van_id = rating["van_id"],
       review = rating["review"],
-      overall_stars = rating["overall_stars"],
       cleanliness = rating["cleanliness"],
       maintenance = rating["maintenance"],
       communication = rating["communication"],

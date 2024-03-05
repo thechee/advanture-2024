@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_login import current_user, login_required
 from app.models import Van, VanImage, Rating, db
 from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_from_s3
-from app.forms import VanForm, VanImageForm
+from app.forms import VanForm, VanImageForm, RatingForm
 
 van_routes = Blueprint('vans', __name__)
 
@@ -30,7 +30,10 @@ def van(vanId):
 
 @login_required
 @van_routes.route('/new', methods=["POST"])
-def new_van():
+def create_van():
+  """
+  Create a new van linked to the current user and submit to the database
+  """
   form = VanForm()
   form['csrf_token'].data = request.cookies['csrf_token']
 
@@ -183,7 +186,7 @@ def update_van_image(vanId):
 
 #! VAN RATINGS
 @login_required
-@van_routes.route('/vans/<int:vanId>/ratings')
+@van_routes.route('/<int:vanId>/ratings')
 def get_van_ratings(vanId):
   """
   Query for all of the ratings of the van from the URL params
@@ -195,6 +198,33 @@ def get_van_ratings(vanId):
     return [rating.to_dict() for rating in ratings]
   else:
     return []
+  
+@login_required
+@van_routes.route('/<int:vanId>/ratings', methods=["POST"])
+def create_rating(vanId):
+  """
+  Create a new rating linked to a van and the current user and submit to the database
+  """
+  form = RatingForm()
+  form['csrf_token'].data = request.cookies['csrf_token']
+
+  if form.validate_on_submit():
+    new_rating = Rating(
+      user_id = current_user.id,
+      van_id = vanId,
+      review = form.data["review"],
+      cleanliness = form.data["cleanliness"],
+      maintenance = form.data["maintenance"],
+      communication = form.data["communication"],
+      convenience = form.data["convenience"],
+      accuracy = form.data["accuracy"]
+    )
+
+    db.session.add(new_rating)
+    db.session.commit()
+
+    return new_rating.to_dict()
+  return form.errors, 401
 
 #! MANAGE VANS
 @login_required

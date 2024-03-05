@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { thunkGetOneVan } from "../../../redux/van";
 import { FaRegHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
@@ -8,6 +8,7 @@ import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
 import StarRatings from 'react-star-ratings';
+import { NewRating } from "../../Ratings/NewRating/NewRating.jsx";
 import "./VanDetail.css";
 
 export const VanDetail = () => {
@@ -17,12 +18,16 @@ export const VanDetail = () => {
   const van = useSelector(state => state.vans[vanId]);
   const user = useSelector(state => state.session.user);
   const ratingsObj = useSelector(state => state.vans[vanId]?.ratings)
+  const [viewNewReview, setViewNewReview] = useState(false)
 
   useEffect(() => {
-    if (!van) dispatch(thunkGetOneVan(vanId));
-  }, [dispatch, vanId, van]);
+    dispatch(thunkGetOneVan(vanId));
+  }, [dispatch, vanId]);
 
   if (!van) return null;
+  if (!ratingsObj) return null
+
+  const ratings = Object.values(ratingsObj)
 
   function formatShortDate(dateStr) {
     const date = new Date(dateStr);
@@ -43,7 +48,6 @@ export const VanDetail = () => {
 
   const joinedDate = formatShortDate(van.owner.createdAt);
   const owner = user?.id == van.owner.id;
-  const ratings = Object.values(ratingsObj)
 
   return (
     <div>
@@ -58,7 +62,7 @@ export const VanDetail = () => {
           <h1>
             {van.make} {van.model} {van.year}
           </h1>
-          {van.numRatings > 0 && <div className="van-overall-ratings-div">
+          {ratings.length > 0 && <div className="van-overall-ratings-div">
             <span id="van-overall-stars">{van.vanAvgRating.toString().length <= 3 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating.toFixed(2)} </span>
             <StarRatings
                     rating={van.vanAvgRating}
@@ -111,7 +115,7 @@ export const VanDetail = () => {
                     numberOfStars={1}
                   />
                 </span>
-                <span>({van.numRatings} ratings)</span>
+                <span>({ratings.length} ratings)</span>
               </div>
               <div>
                 <div className="rating"><span>Cleanliness</span><RatingsBar ratingAvg={van.vanAvgCleanliness}/><span className="avg-rating-num">{van.vanAvgCleanliness.toFixed(1)}</span></div>
@@ -123,14 +127,32 @@ export const VanDetail = () => {
               <div>
                 <h4 style={{ color: "#808080" }}>REVIEWS</h4>
                 <ul>
-                  {ratings.map(rating => (
-                    <RatingsListItem key={rating.id} rating={rating}/>
-                  ))}
+                  {ratings.map(rating => {
+                    if (rating.review) {
+                      return <RatingsListItem key={rating.id} rating={rating}/>
+                    }
+                  })}
                 </ul>
+
+                {viewNewReview &&
+                <div>
+                  <NewRating vanId={vanId} setViewNewReview={setViewNewReview} />
+                </div> }
+                {!viewNewReview && user && !owner &&
+                <button onClick={() => setViewNewReview(true)} id="add-a-review-btn" className="submit-btn">Add a review</button>
+                }
+                
               </div>
             </div> :
             <div>
-              <h3>This van is not yet rated or reviewed!</h3>  
+              <h3>This van is not yet rated or reviewed!</h3>
+              {viewNewReview &&
+                <div>
+                  <NewRating vanId={vanId} setViewNewReview={setViewNewReview} />
+                </div> }
+                {!viewNewReview && user && !owner &&
+                <button onClick={() => setViewNewReview(true)} id="add-a-review-btn" className="submit-btn">Add a review</button>
+                }
             </div>}
         </div>
 

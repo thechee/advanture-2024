@@ -71,7 +71,7 @@ export const thunkSignup = (formData) => async (dispatch) => {
     body: formData
   });
 
-  if(response.ok) {
+  if (response.ok) {
     const data = await response.json();
     dispatch(setUser(data));
   } else if (response.status < 500) {
@@ -81,6 +81,7 @@ export const thunkSignup = (formData) => async (dispatch) => {
     return { server: "Something went wrong. Please try again" }
   }
 };
+
 
 export const thunkLogout = () => async (dispatch) => {
   await fetch("/api/auth/logout");

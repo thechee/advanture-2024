@@ -12,7 +12,6 @@ class Rating(db.Model):
   user_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
   van_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("vans.id")), nullable=False)
   review = db.Column(db.Text)
-  overall_stars = db.Column(db.Integer, nullable=False)
   cleanliness = db.Column(db.Integer, nullable=False)
   maintenance = db.Column(db.Integer, nullable=False)
   communication = db.Column(db.Integer, nullable=False)
@@ -35,8 +34,6 @@ class Rating(db.Model):
       "vanMake": self.van.make,
       "vanModel": self.van.model,
       "vanYear": self.van.year,
-      "vanOwner": self.van.owner.first_name,
-      "vanOwnerProfileImg": self.van.owner.profile_image_url,
       "vanPreviewImage": van_preview_image,
       "review": self.review,
       "avgRating": avg_rating,

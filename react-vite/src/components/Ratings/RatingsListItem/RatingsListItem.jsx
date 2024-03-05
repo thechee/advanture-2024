@@ -15,20 +15,21 @@ export const RatingsListItem = ({ rating }) => {
     return `${month} ${day}, ${year}`;
   }
 
-  const date =
-    rating.createdAt == rating.updatedAt
-      ? formatLongDate(rating.createdAt)
-      : formatLongDate(rating.updatedAt);
+  const reviewDate = formatLongDate(rating.createdAt)
+
+  const updatedDate = formatLongDate(rating.updatedAt)
+
+  const updated = rating.updatedAt > rating.createdAt
 
   const handleUpdate = (e) => {
     e.preventDefault();
     e.stopPropagation();
     // navigate(`/vans/${van.id}/update`);
   };
-  
 
   return (
-    <li className="review-li">
+      <li className="review-li">
+
       <div className="reviewer-img-div">
         <img src={rating.rater.profileImage} alt="" />
       </div>
@@ -43,13 +44,18 @@ export const RatingsListItem = ({ rating }) => {
             rating={Math.round(rating.avgRating)}
           />
           <span className="reviewer-name">
-            {rating.rater.firstName} <span className="review-date">{date}</span>
+            {rating.rater.firstName} 
+
+            {updated ? 
+            <span className="review-date">Reviewed: {reviewDate} Updated on: {updatedDate}</span>
+            :
+            <span className="review-date">{reviewDate}</span>}
           </span>
         </div>
         <div className="review-text-div">
           <p>{rating.review}</p>
         </div>
-        {user.id == rating.rater.id &&
+        {user?.id == rating.rater.id &&
                 <div className="btns-div">
                 <button onClick={handleUpdate} className="submit-btn">
                         Update
@@ -62,6 +68,7 @@ export const RatingsListItem = ({ rating }) => {
                       />
                 </div>}
       </div>
-    </li>
+      </li>
+
   );
 };

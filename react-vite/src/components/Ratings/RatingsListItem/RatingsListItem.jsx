@@ -1,7 +1,12 @@
 import StarRatings from "react-star-ratings";
 import "./RatingsListItem.css";
+import { useSelector } from "react-redux";
+import OpenModalButton from "../../OpenModalButton";
+import { DeleteRatingModal } from "../DeleteRatingModal/DeleteRatingModal";
 
 export const RatingsListItem = ({ rating }) => {
+  const user = useSelector(state => state.session.user)
+
   function formatLongDate(dateStr) {
     const date = new Date(dateStr);
     const day = date.getUTCDate();
@@ -14,6 +19,13 @@ export const RatingsListItem = ({ rating }) => {
     rating.createdAt == rating.updatedAt
       ? formatLongDate(rating.createdAt)
       : formatLongDate(rating.updatedAt);
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/vans/${van.id}/update`);
+  };
+  
 
   return (
     <li className="review-li">
@@ -37,6 +49,18 @@ export const RatingsListItem = ({ rating }) => {
         <div className="review-text-div">
           <p>{rating.review}</p>
         </div>
+        {user.id == rating.rater.id &&
+                <div className="btns-div">
+                <button onClick={handleUpdate} className="submit-btn">
+                        Update
+                      </button>
+                  <OpenModalButton
+                        className={"submit-btn"}
+                        buttonText={"Remove"}
+                        // onButtonClick={handleRemove}
+                        modalComponent={<DeleteRatingModal rating={rating}/>}
+                      />
+                </div>}
       </div>
     </li>
   );

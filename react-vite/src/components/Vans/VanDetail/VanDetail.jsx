@@ -168,7 +168,7 @@ export const VanDetail = () => {
             </div>
           ) : (
             <div className="favorite-div">
-              <button className="add-to-favorites btn">
+              <button className="add-to-favorites">
                 <span>
                   <FaRegHeart />
                 </span>

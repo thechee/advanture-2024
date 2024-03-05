@@ -173,10 +173,14 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 5px;
 }
 
 .add-to-favorites span {
   margin-right: .5rem;
+  display: flex;
+  align-items: center;
+
 }
 
 .overall-ratings-stars-div {

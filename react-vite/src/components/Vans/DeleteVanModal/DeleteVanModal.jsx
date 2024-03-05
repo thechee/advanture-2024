@@ -13,7 +13,7 @@ export const DeleteVanModal = ({ van }) => {
     e.preventDefault()
     await dispatch(thunkDeleteVan(van.id))
     closeModal()
-    // navigate('/vans/manage')
+    navigate('/vans/manage')
   }
 
   const handleCancel = (e) => {

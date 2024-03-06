@@ -41,7 +41,7 @@ class Van(db.Model):
     fuel_type = self.fuel_type.fuel_type
     images = {image.id: image.to_dict() for image in self.images}
     ratings = {rating.id: rating.to_dict() for rating in self.ratings}
-    num_ratings = len(ratings)
+    num_ratings = len(self.ratings)
 
     van_avg_rating = 0
     van_avg_cleanliness = 0
@@ -82,7 +82,7 @@ class Van(db.Model):
     return_dict["numRatings"] = num_ratings
     return_dict["createdAt"] = self.created_at
     return_dict["updatedAt"] = self.updated_at
-    if num_ratings is not 0:
+    if num_ratings != 0:
       return_dict["vanAvgRating"] = float("{:3.2f}".format(van_avg_rating / num_ratings))
       return_dict["vanAvgCleanliness"] = float("{:2.1f}".format(van_avg_cleanliness / num_ratings))
       return_dict["vanAvgMaintenance"] = float("{:2.1f}".format(van_avg_maintenance / num_ratings))

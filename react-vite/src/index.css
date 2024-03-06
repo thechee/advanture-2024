@@ -1,4 +1,8 @@
 /* TODO: Add sitewide styles */
+#root {
+  padding-top: 5rem;
+}
+
 ul {
   list-style-type: none;
   padding-left: 0;

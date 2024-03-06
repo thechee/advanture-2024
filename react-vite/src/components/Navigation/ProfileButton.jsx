@@ -62,10 +62,10 @@ function ProfileButton() {
               onClick={toggleMenu}>
                 <li>Favorites</li>
               </NavLink>
-              <NavLink to={`/users/${user.id}/trips`} onClick={toggleMenu}>
+              <NavLink to={`trips`} onClick={toggleMenu}>
                 <li>Trips</li>
               </NavLink>
-              <NavLink to={`/users/${user.id}/notifications`} onClick={toggleMenu}>
+              <NavLink to={`/notifications`} onClick={toggleMenu}>
                 <li>Notifications</li>
               </NavLink>
             </div>
@@ -73,7 +73,7 @@ function ProfileButton() {
               <NavLink to={`/users/${user.id}`} onClick={toggleMenu}>
                 <li id='profile-navlink'>Profile</li>
               </NavLink>
-              <NavLink to={`/users/${user.id}/account`} onClick={toggleMenu}>
+              <NavLink to={`/account`} onClick={toggleMenu}>
                 <li>Account</li>
               </NavLink>
               <NavLink to={`/vans/new`} onClick={toggleMenu}>

@@ -13,6 +13,7 @@ class Favorite(db.Model):
   van_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("vans.id")), nullable=False)
 
   user = db.relationship("User", back_populates="favorites")
+  van = db.relationship("Van", back_populates="favorites")
 
   __table_args__ = (UniqueConstraint('user_id', 'van_id', name='user_van_favorite'),)
 

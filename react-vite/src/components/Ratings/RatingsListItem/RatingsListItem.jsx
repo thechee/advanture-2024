@@ -49,9 +49,14 @@ export const RatingsListItem = ({ rating }) => {
             {rating.rater.firstName}
 
             {updated ? (
+              <>
+
               <span className="review-date">
-                Reviewed: {reviewDate} Updated on: {updatedDate}
+                {reviewDate} 
               </span>
+              <span className="review-date">
+                Updated: {updatedDate}</span>
+              </>
             ) : (
               <span className="review-date">{reviewDate}</span>
             )}

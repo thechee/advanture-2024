@@ -154,6 +154,21 @@ export const thunkAddFavorite = (vanId) => async dispatch => {
   }
 }
 
+export const thunkDeleteFavorite = (vanId) => async dispatch => {
+  const response = await fetch(`/api/users/favorites/${vanId}`, {
+    method: "DELETE"
+  })
+
+  if (response.ok) {
+    const message = await response.json()
+    dispatch(deleteFavorite(vanId))
+    return message
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
 
 const initialState = { user: null };
 
@@ -206,12 +221,25 @@ function sessionReducer(state = initialState, action) {
         ...state,
         user: {
           ...state.user,
-          favorites: [
-            ...state.user.favorites
-          ]
+          favorites: {
+            ...state.user.favorites,
+            [action.vanId]: action.vanId
+          }
         }
        }
-      newState.user.favorites.push(action.vanId)
+      return newState
+    }
+    case DELETE_FAVORITE: {
+      const newState = { 
+        ...state,
+        user: {
+          ...state.user,
+          favorites: {
+            ...state.user.favorites
+          }
+        }
+       }
+      delete newState.user.favorites[action.vanId]
       return newState
     }
     default:

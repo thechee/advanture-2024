@@ -33,32 +33,38 @@ export const HomePage = () => {
           alt=""
         />
       </div>
+
       <div className="home-page-catchphrases">
         <h1>Escape in Style</h1>
         <h2>Van rentals for the adventureous</h2>
-        <button onClick={() => navigate("/vans")}>View Advanture Vans</button>
+        <div className="purple-bar">
+        </div>
+        <button id="view-vans-btn" onClick={() => navigate("/vans")}>View Advanture Vans</button>
       </div>
+
       <div className="home-page-makes-div">
-        <h3>Vans by make</h3>
-        <div className="home-page-make-card">
+      <h3>Vans by make</h3>
+      <div className="makes-cards-div">
+        <div className="home-page-make-card" onClick={() => alert("Featute coming soon!")}>
           <img src="https://advanture-capstone.s3.us-west-1.amazonaws.com/outside-van-mercedes-sprinter-camper.jpeg" alt="" />
           <h4>Mercedes</h4>
         </div>
-        <div className="home-page-make-card">
+        <div className="home-page-make-card" onClick={() => alert("Featute coming soon!")}>
           <img src="https://advanture-capstone.s3.us-west-1.amazonaws.com/20-Caravan-Outfitter-Free-Bird-Ford-Transit-Connect-Camper-Van-Conversion.webp" alt="" />
           <h4>Ford</h4>
         </div>
-        <div className="home-page-make-card">
+        <div className="home-page-make-card" onClick={() => alert("Featute coming soon!")}>
           <img src="https://advanture-capstone.s3.us-west-1.amazonaws.com/rrrrr.webp" alt="" />
           <h4>Ram</h4>
         </div>
-        <div className="home-page-make-card">
+        <div className="home-page-make-card" onClick={() => alert("Featute coming soon!")}>
           <img src="https://advanture-capstone.s3.us-west-1.amazonaws.com/What%2Byou%2Bneed%2Bto%2Bknow%2Bbefore%2Binvesting%2Bin%2Ba%2Bcamper%2Bvan.jpeg" alt="" />
           <h4>VW</h4>
         </div>
-        <div className="home-page-make-card">
+        <div className="home-page-make-card" onClick={() => alert("Featute coming soon!")}>
           <img src="https://advanture-capstone.s3.us-west-1.amazonaws.com/1997%2BChevy%2BExpress%2BGeneva%2BConversion%2BVan%2BClark%2BFork%2BRiver.jpeg" alt="" />
           <h4>Chevy</h4>
+        </div>
         </div>
       </div>
       {/* <div className="home-page-hosts-div">

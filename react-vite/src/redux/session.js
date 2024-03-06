@@ -112,20 +112,20 @@ export const thunkGetUserRatings = () => async dispatch => {
   }
 }
 
-// export const thunkDeleteUserRating = (ratingId) => async dispatch => {
-//   const response = await fetch(`/api/ratings/${ratingId}`, {
-//     method: "DELETE"
-//   })
+export const thunkDeleteUserRating = (ratingId) => async dispatch => {
+  const response = await fetch(`/api/ratings/${ratingId}`, {
+    method: "DELETE"
+  })
 
-//   if (response.ok) {
-//     const message = await response.json()
-//     dispatch(deleteUserRating(ratingId))
-//     return message
-//   } else {
-//     const errors = await response.json()
-//     return errors
-//   }
-// }
+  if (response.ok) {
+    const message = await response.json()
+    dispatch(deleteUserRating(ratingId))
+    return message
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
 
 const initialState = { user: null };
 

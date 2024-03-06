@@ -4,11 +4,19 @@ import { useNavigate } from "react-router";
 import "./CreateVan.css";
 import { thunkAddVan, thunkAddVanImage } from "../../../redux/van";
 
+const yearsOptions = []
+for (let i = new Date().getFullYear() + 1; i >= 1950; i--) {
+  yearsOptions.push(i)
+}
+
+const doorsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const seatsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
 export const CreateVan = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState("placeholder");
   const [make, setMake] = useState("placeholder");
   const [model, setModel] = useState("");
   const [miles, setMiles] = useState("");
@@ -21,8 +29,8 @@ export const CreateVan = () => {
   const [distanceIncluded, setDistanceIncluded] = useState("");
   const [unlimited, setUnlimited] = useState(false);
   const [mpg, setMpg] = useState("");
-  const [doors, setDoors] = useState("");
-  const [seats, setSeats] = useState("");
+  const [doors, setDoors] = useState("placeholder");
+  const [seats, setSeats] = useState("placeholder");
   const [fuelTypeId, setFuelTypeId] = useState("placeholder");
   const [image, setImage] = useState(null);
   const [fileName, setFileName] = useState("");
@@ -33,6 +41,8 @@ export const CreateVan = () => {
   const automotiveYear = new Date().getFullYear() + 1;
   const makes = ["Ford", "Dodge", "Ram", "Volkswagen", "Mercedes", "Toyota"];
   const zipCodeRegex = /\d{5}/;
+
+
 
   useEffect(() => {
     const mpgInput = document.querySelector("#MPG-input");
@@ -121,7 +131,7 @@ export const CreateVan = () => {
     if (doors > 9) errors.doors = "Your van has too many doors";
     if (!seats) errors.seats = "Seats is required";
     if (seats < 1) errors.seats = "Van must have at least 1 seat";
-    if (seats > 30) errors.seats = "This is a website for vans, not buses";
+    if (seats > 12) errors.seats = "This is a website for vans, not buses";
     if (fuelTypeId == "placeholder")
       errors.fuelTypeId = "Fuel type is required";
     if (fuelTypeId > 5 || fuelTypeId < 1)
@@ -197,7 +207,24 @@ export const CreateVan = () => {
       onSubmit={handleSubmit}
       encType="multipart/form-data"
     >
+      <div className="van-form-body">
       <div className="create-van-left-div">
+
+      <label>Year</label>
+        <div>
+          <select value={year} onChange={e => setYear(e.target.value)}>
+          <option disabled value={"placeholder"}>
+            Select year
+          </option>
+            {yearsOptions.map(year => (
+              <option key={year} value={year}>{year}</option>
+            ))}
+          </select>
+        </div>
+        <div className="errors">
+          {validationErrors.year && <p>{validationErrors.year}</p>}
+        </div>
+
         <label>Make</label>
         <select value={make} onChange={(e) => setMake(e.target.value)}>
           <option disabled value={"placeholder"}>
@@ -224,18 +251,6 @@ export const CreateVan = () => {
           {validationErrors.model && <p>{validationErrors.model}</p>}
         </div>
 
-        <label>Year</label>
-        <div>
-          <input
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            type="number"
-          />
-        </div>
-        <div className="errors">
-          {validationErrors.year && <p>{validationErrors.year}</p>}
-        </div>
-
         <label>Miles</label>
         <input
           type="number"
@@ -247,23 +262,27 @@ export const CreateVan = () => {
         </div>
 
         <label>Doors</label>
-        <input
-          type="number"
-          value={doors}
-          min={1}
-          onChange={(e) => setDoors(e.target.value)}
-        />
+        <select value={doors} onChange={e => setDoors(e.target.value)}>
+        <option disabled value={"placeholder"}>
+            Select doors
+          </option>
+            {doorsOptions.map(door => (
+              <option key={door} value={door}>{door}</option>
+            ))}
+          </select>
         <div className="errors">
           {validationErrors.doors && <p>{validationErrors.doors}</p>}
         </div>
 
         <label>Seats</label>
-        <input
-          type="number"
-          value={seats}
-          min={1}
-          onChange={(e) => setSeats(e.target.value)}
-        />
+        <select value={seats} onChange={e => setSeats(e.target.value)}>
+        <option disabled value={"placeholder"}>
+            Select seats
+          </option>
+            {seatsOptions.map(seat => (
+              <option key={seat} value={seat}>{seat}</option>
+            ))}
+          </select>
         <div className="errors">
           {validationErrors.seats && <p>{validationErrors.seats}</p>}
         </div>
@@ -474,7 +493,11 @@ export const CreateVan = () => {
           {imageURL &&<img src={imageURL} className="van-upload-thumbnail"></img>}
         </div>
       </div>
+
+      </div>
+      <div className="van-form-btns-div">
       <button className="submit-btn">Add van</button>
+      </div>
     </form>
   );
 };

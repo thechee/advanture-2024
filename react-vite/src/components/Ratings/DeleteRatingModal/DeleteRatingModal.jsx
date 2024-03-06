@@ -2,15 +2,18 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../../context/Modal";
 import './DeleteRatingModal.css'
 import { thunkDeleteVanRating, thunkGetOneVan } from "../../../redux/van";
+import { thunkDeleteUserRating } from "../../../redux/session";
 
-export const DeleteRatingModal = ({ rating }) => {
+export const DeleteRatingModal = ({ rating, type }) => {
   const dispatch = useDispatch()
   const { closeModal } = useModal()
 
   const handleDelete = async (e) => {
     e.preventDefault()
-    await dispatch(thunkDeleteVanRating(rating.vanId, rating.id))
-    await dispatch(thunkGetOneVan(rating.vanId))
+    if (type == "user") await dispatch(thunkDeleteUserRating(rating.id))
+    if (type == "van") {
+      await dispatch(thunkDeleteVanRating(rating.vanId, rating.id))
+    .then(async () => await dispatch(thunkGetOneVan(rating.vanId)))}
     closeModal()
   }
 

@@ -60,7 +60,7 @@ export const Rating = ({ vanId, setViewNewReview }) => {
     <div className="new-review-div">
       <h3>Rate your experience with the van</h3>
 
-      <form onSubmit={handleSubmit} className="new-review-form">
+      <form onSubmit={handleSubmit} className="review-form">
         <label>Cleanliness</label>
         <StarRatings
           starDimension="22px"

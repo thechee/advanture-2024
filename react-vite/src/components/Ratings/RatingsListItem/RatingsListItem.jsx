@@ -6,7 +6,9 @@ import { DeleteRatingModal } from "../DeleteRatingModal/DeleteRatingModal";
 import { UpdateRating } from "../UpdateRating/UpdateRating";
 import { useState } from "react";
 
+
 export const RatingsListItem = ({ rating }) => {
+
   const user = useSelector((state) => state.session.user);
   const [update, setUpdate] = useState(false);
 
@@ -50,7 +52,6 @@ export const RatingsListItem = ({ rating }) => {
 
             {updated ? (
               <>
-
               <span className="review-date">
                 {reviewDate} 
               </span>
@@ -73,8 +74,7 @@ export const RatingsListItem = ({ rating }) => {
             <OpenModalButton
               className={"submit-btn"}
               buttonText={"Remove"}
-              // onButtonClick={handleRemove}
-              modalComponent={<DeleteRatingModal rating={rating} />}
+              modalComponent={<DeleteRatingModal rating={rating} type="van"/>}
             />
           </div>
         )}

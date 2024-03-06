@@ -9,8 +9,8 @@ import LoginFormModal from "../../LoginFormModal"
 
 export const ManageRatings = () => {
   const dispatch = useDispatch()
-  const userRatingsObj = useSelector(state => state.session.user?.ratings)
   const user = useSelector(state => state.session.user)
+  const userRatingsObj = useSelector(state => state.session.user?.ratings)
   const [loggedIn, setLoggedIn] = useState(false)
 
   useEffect(() => {
@@ -39,6 +39,8 @@ export const ManageRatings = () => {
       </div>
     );
   }
+
+  if (!userRatingsObj) return null
 
   const userRatings = Object.values(userRatingsObj)
 

@@ -1,16 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
-import "./VanListItem.css";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import OpenModalButton from "../../OpenModalButton";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal";
+import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import OpenModalButton from "../../OpenModalButton";
 import StarRatings from "react-star-ratings";
-import { thunkAddFavorite } from "../../../redux/session";
+import "./VanListItem.css";
 
 export const VanListItem = ({ van }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.session.user);
+  const user = useSelector((state) => state.session.user);
   const isOwner = user?.id == van.owner.id;
 
   let previewImage;
@@ -21,7 +21,7 @@ export const VanListItem = ({ van }) => {
     }
   }
 
-  const favorited = user.favorites.includes(van.id)
+  const favorited = van.id in user.favorites;
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -32,20 +32,14 @@ export const VanListItem = ({ van }) => {
   const handleFavorite = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    await dispatch(thunkAddFavorite(van.id))
-  }
+    await dispatch(thunkAddFavorite(van.id));
+  };
 
   const handleUnfavorite = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-
-    const response = await fetch(`/api/users/favorites/${van.id}`, {
-      method: "DELETE"
-    })
-
-    const message = await response.json()
-    console.log(message)
-  }
+    await dispatch(thunkDeleteFavorite(van.id));
+  };
 
   return (
     <Link to={`/vans/${van.id}`}>
@@ -62,7 +56,11 @@ export const VanListItem = ({ van }) => {
           <div>
             {van.numRatings ? (
               <>
-                <span id="van-overall-stars">{van.vanAvgRating.toString().length <= 3 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating.toFixed(2)} </span>
+                <span id="van-overall-stars">
+                  {van.vanAvgRating.toString().length <= 3
+                    ? van.vanAvgRating.toFixed(1)
+                    : van.vanAvgRating.toFixed(2)}{" "}
+                </span>
                 <StarRatings
                   rating={1}
                   starRatedColor="rgb(89, 60, 251)"
@@ -96,9 +94,15 @@ export const VanListItem = ({ van }) => {
             )}
             <span>${van.rentalRate}/day</span>
           </div>
-          {!isOwner && <div className="van-list-item-heart-div">
-            {favorited ? <FaHeart style={{color: "red"}} onClick={handleUnfavorite}/> : <FaRegHeart onClick={handleFavorite}/>}
-          </div>}
+          {!isOwner && (
+            <div className="van-list-item-heart-div">
+              {favorited ? (
+                <FaHeart style={{ color: "red" }} onClick={handleUnfavorite} />
+              ) : (
+                <FaRegHeart onClick={handleFavorite} />
+              )}
+            </div>
+          )}
         </div>
       </li>
     </Link>

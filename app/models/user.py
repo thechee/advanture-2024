@@ -35,7 +35,7 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
     def to_dict(self):
-      favorites = [favorite.van_id for favorite in self.favorites]
+      favorites = {favorite.van_id: favorite.van_id for favorite in self.favorites}
 
       return {
           'id': self.id,

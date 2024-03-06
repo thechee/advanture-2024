@@ -12,8 +12,6 @@ import OpenModalButton from "../../OpenModalButton";
 import StarRatings from "react-star-ratings";
 import moment from 'moment'
 import "./VanDetail.css";
-import 
-
 
 export const VanDetail = () => {
   const navigate = useNavigate();

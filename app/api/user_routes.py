@@ -25,6 +25,15 @@ def user(id):
     return user.to_dict()
 
 
+@user_routes.route('/favorites')
+@login_required
+def get_user_favorited_vans():
+    """
+    Return a list of the user's favorited vans
+    """
+    vans = Favorite.query.filter(Favorite.user_id == current_user.id).all()
+    return [van.van.to_dict() for van in vans]
+
 @user_routes.route('favorites/<int:vanId>', methods=["POST"])
 @login_required
 def add_favorite(vanId):
@@ -42,7 +51,7 @@ def add_favorite(vanId):
 
     return new_favorite.to_dict()
 
-@user_routes.route('favorites/<int:vanId>', methods=["DELETE"])
+@user_routes.route('/favorites/<int:vanId>', methods=["DELETE"])
 @login_required
 def delete_favorite(vanId):
     """

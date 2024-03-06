@@ -146,7 +146,7 @@ export const thunkAddFavorite = (vanId) => async dispatch => {
 
   if (response.ok) {
     const newFavorite = await response.json()
-    dispatch(addFavorite(newFavorite))
+    dispatch(addFavorite(newFavorite.vanId))
     return newFavorite
   } else {
     const errors = await response.json()
@@ -200,6 +200,19 @@ function sessionReducer(state = initialState, action) {
       }
       delete newState.user.ratings[action.ratingId]
       return newState;
+    }
+    case ADD_FAVORITE: {
+      const newState = { 
+        ...state,
+        user: {
+          ...state.user,
+          favorites: [
+            ...state.user.favorites
+          ]
+        }
+       }
+      newState.user.favorites.push(action.vanId)
+      return newState
     }
     default:
       return state;

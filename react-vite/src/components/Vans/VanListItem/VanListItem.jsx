@@ -5,11 +5,12 @@ import { useSelector, useDispatch } from "react-redux";
 import OpenModalButton from "../../OpenModalButton";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal";
 import StarRatings from "react-star-ratings";
+import { thunkAddFavorite } from "../../../redux/session";
 
 export const VanListItem = ({ van }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.session.user);
+  const user = useSelector(state => state.session.user);
   const isOwner = user?.id == van.owner.id;
 
   let previewImage;
@@ -31,7 +32,7 @@ export const VanListItem = ({ van }) => {
   const handleFavorite = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    await dispatch()
+    await dispatch(thunkAddFavorite(van.id))
   }
 
   const handleUnfavorite = async (e) => {

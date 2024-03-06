@@ -1,0 +1,35 @@
+.new-review-div {
+  margin-left: 4.25rem;
+}
+
+.review-div button {
+  width: 450px;
+  margin-bottom: .5rem;
+}
+
+.review-form label{
+  font-size: 13px;
+}
+
+.review-form textarea {
+  width: 450px;
+  box-sizing: border-box;
+  height: 8rem;
+}
+
+.optional {
+  color: red;
+  font-size: 11px;
+}
+
+.review-form .errors {
+  margin: 0
+}
+
+.review-form .errors p {
+  padding: 0;
+}
+
+.review-form .submit-btn {
+  margin-bottom: .5rem;
+}

@@ -1,9 +1,10 @@
 .user-review-li {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   border: 1px solid var(--light-border);
   border-radius: 10px;
-  width: 800px;
+  width: 525px;
   margin: 1rem auto;
 }
 
@@ -12,23 +13,23 @@
 }
 
 .user-review-van-img-div {
-  width: 25rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
 
 .user-review-data-div {
-  width: fit-content;
+  width: 500px;
   padding: 0 1rem;
 }
 
 .user-review-van-img {
   width: 100%;
   height: 100%;
-  /* aspect-ratio: 2.2; */
+  aspect-ratio: 2.2;
   object-fit: cover;
   border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 .user-review-owner-img {

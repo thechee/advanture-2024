@@ -218,3 +218,8 @@ h4 {
 .rating span {
   font-size: 14px;
 }
+
+#add-a-review-btn {
+  width: 450px;
+  margin-left: 4.25rem;
+}

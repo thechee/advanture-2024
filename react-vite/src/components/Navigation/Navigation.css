@@ -3,6 +3,12 @@
   align-items: center;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #F3F3F3;
+  position: fixed;
+  top: 0;
+  background-color: white;
+  z-index: 5;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 #logo {

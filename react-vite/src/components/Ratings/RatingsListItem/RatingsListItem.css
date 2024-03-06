@@ -25,13 +25,15 @@
 }
 
 .reviewer-name {
-  font-size: 12px;  
+  font-size: 13px;  
   font-weight: 500;
-
 }
 
 .review-date {
-  color: grey
+  color: grey;
+  padding-left: .5rem;
+  font-weight: 400;
+  font-size: 11px;
 }
 
 .review-text-div p {

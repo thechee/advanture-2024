@@ -8,10 +8,15 @@ import './VanList.css'
 export const VanList = () => {
   const dispatch = useDispatch()
   const vansObj = useSelector(state => state.vans)
+  const userFavorites = useSelector(state => state.session.user.favorites)
   
   useEffect(() => {
     dispatch(thunkGetVans())
   }, [dispatch])
+
+  useEffect(() => {
+
+  }, [userFavorites])
   
   if (!vansObj) return null
   const vans = Object.values(vansObj)

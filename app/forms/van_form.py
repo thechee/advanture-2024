@@ -21,5 +21,5 @@ class VanForm(FlaskForm):
   distance_allowed = IntegerField('distance allowed', validators=[Optional(), NumberRange(min=0, max=9999)])
   mpg = IntegerField('mpg', validators=[Optional(), NumberRange(min=1, max=150)])
   doors = IntegerField('doors', validators=[DataRequired(), NumberRange(min=1, max=9)])
-  seats = IntegerField('seats', validators=[DataRequired(), NumberRange(min=1, max=30)])
+  seats = IntegerField('seats', validators=[DataRequired(), NumberRange(min=1, max=12)])
   fuel_type_id = SelectField('fuel type', validators=[DataRequired()], choices=fuel_types)

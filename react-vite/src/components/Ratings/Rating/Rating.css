@@ -2,16 +2,16 @@
   margin-left: 4.25rem;
 }
 
-.new-review-div button {
+.review-div button {
   width: 450px;
   margin-bottom: .5rem;
 }
 
-.new-review-form label{
+.review-form label{
   font-size: 13px;
 }
 
-.new-review-form textarea {
+.review-form textarea {
   width: 450px;
   box-sizing: border-box;
   height: 8rem;
@@ -22,10 +22,14 @@
   font-size: 11px;
 }
 
-.new-review-form .errors {
+.review-form .errors {
   margin: 0
 }
 
-.new-review-form .errors p {
+.review-form .errors p {
   padding: 0;
+}
+
+.review-form .submit-btn {
+  margin-bottom: .5rem;
 }

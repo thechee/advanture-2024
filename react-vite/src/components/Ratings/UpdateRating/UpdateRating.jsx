@@ -34,7 +34,7 @@ export const UpdateRating = ({ rating, setUpdate }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true)
-    
+
     const errors = {}
     if (review.length < 30 && review.length > 0) errors.review = "Review should be at least 30 characters"
     
@@ -60,9 +60,9 @@ export const UpdateRating = ({ rating, setUpdate }) => {
 
   return (
     <div className="update-review-div">
-      <h3>Update your rating</h3>
+      <h3>Update your review</h3>
 
-      <form onSubmit={handleSubmit} className="new-review-form">
+      <form onSubmit={handleSubmit} className="review-form">
         <label>Cleanliness</label>
         <StarRatings
           starDimension="22px"

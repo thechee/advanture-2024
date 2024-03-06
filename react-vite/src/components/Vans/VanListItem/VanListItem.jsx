@@ -1,13 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./VanListItem.css";
-import { FaRegHeart } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
 import OpenModalButton from "../../OpenModalButton";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal";
 import StarRatings from "react-star-ratings";
 
 export const VanListItem = ({ van }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
   const isOwner = user?.id == van.owner.id;
 
@@ -19,11 +20,31 @@ export const VanListItem = ({ van }) => {
     }
   }
 
+  const favorited = user.favorites.includes(van.id)
+
   const handleUpdate = (e) => {
     e.preventDefault();
     e.stopPropagation();
     navigate(`/vans/${van.id}/update`);
   };
+
+  const handleFavorite = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await dispatch()
+  }
+
+  const handleUnfavorite = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const response = await fetch(`/api/users/favorites/${van.id}`, {
+      method: "DELETE"
+    })
+
+    const message = await response.json()
+    console.log(message)
+  }
 
   return (
     <Link to={`/vans/${van.id}`}>
@@ -75,7 +96,7 @@ export const VanListItem = ({ van }) => {
             <span>${van.rentalRate}/day</span>
           </div>
           {!isOwner && <div className="van-list-item-heart-div">
-            <FaRegHeart />
+            {favorited ? <FaHeart style={{color: "red"}} onClick={handleUnfavorite}/> : <FaRegHeart onClick={handleFavorite}/>}
           </div>}
         </div>
       </li>

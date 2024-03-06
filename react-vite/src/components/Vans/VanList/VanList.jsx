@@ -9,6 +9,10 @@ export const VanList = () => {
   const dispatch = useDispatch()
   const vansObj = useSelector(state => state.vans)
   
+  navigator.geolocation.getCurrentPosition((position) => {
+    console.log(position.coords.latitude, position.coords.longitude);
+  });
+
   useEffect(() => {
     dispatch(thunkGetVans())
   }, [dispatch])

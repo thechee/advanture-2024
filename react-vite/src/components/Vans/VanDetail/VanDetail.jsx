@@ -9,6 +9,7 @@ import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
 import StarRatings from "react-star-ratings";
 import { Rating } from "../../Ratings/Rating/Rating.jsx";
+
 import "./VanDetail.css";
 
 export const VanDetail = () => {

@@ -1,6 +1,6 @@
 /* TODO: Add sitewide styles */
 #root {
-  padding-top: 5rem;
+  padding-top: 4.5rem;
 }
 
 ul {
@@ -36,6 +36,10 @@ label {
   display: block;
 }
 
+button {
+  cursor: pointer;
+}
+
 #modal-content {
   border-radius: 5px;
   padding: 1.5rem;
@@ -58,7 +62,6 @@ label {
   width: 100%;
   font-weight: 600;
   font-size: 14px;
-  cursor: pointer;
 }
 
 :root {
@@ -75,7 +78,6 @@ label {
 .btn {
   border: none;
   border-radius: 5px;
-  cursor: pointer;
   font-weight: 600;
   padding: .75rem;
   width: 100%;

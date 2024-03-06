@@ -1,18 +1,27 @@
 .create-van-form {
   width: 850px;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   margin: 2rem auto;
   justify-content: space-between;
 }
 
+.van-form-body {
+  display: flex;
+  gap: 1rem;
+}
+
 .create-van-form input,
 .create-van-form select {
-  width: 250px;
+  width: 200px;
   padding: .5rem;
-  font-size: 15px;
+  font-size: 14px;
   box-sizing: border-box;
 
+}
+
+.create-van-form label {
+  font-size: 12px;
 }
 
 .create-van-form label span {
@@ -21,7 +30,7 @@
 
 .create-van-form button {
   width: 250px;
-  margin: 2rem auto;
+  margin: .25rem auto;
 }
 
 .create-van-form textarea {
@@ -56,4 +65,9 @@
   width: 100%;
   aspect-ratio: 2.2;
   object-fit: cover;
+}
+
+.van-form-btns-div {
+  display: flex;
+  flex-direction: column;
 }

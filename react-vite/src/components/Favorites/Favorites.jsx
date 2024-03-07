@@ -20,16 +20,14 @@ export const Favorites = () => {
     fetchVans()
   }, [user])
   
-  console.log(favorites)
   if (!user) return null
   
   return (
     <div className="favorites-div">
       <h1>{user.firstName}&apos;s favorites</h1>
-      <div className="favorites-list">
-        {favorites.length ? <ul>
+      <div>
+        {favorites.length ? <ul className="favorites-list">
         {favorites.map(van => {
-          console.log(van)
           return <SmallVanCard key={van.id} van={van}/>
           })}
         </ul> : 

@@ -1,0 +1,42 @@
+.favorites-div {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 950px;
+  margin: 1.5rem auto;
+}
+
+.favorites-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.no-favorites {
+  margin: 10rem auto;
+  width: 50%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.no-favorites h2 {
+  margin-bottom: 0;
+}
+
+.white-btn {
+  background-color: white;
+  border-radius: 5px;
+  padding: .5rem 2rem;
+  border: 1px solid lightgray;
+  font-weight: 600;
+  margin: 1rem auto;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: fit-content;
+}
+
+.white-btn svg {
+  padding-right: .5rem;
+}

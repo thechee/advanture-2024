@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
-from app.models import User, Rating
+from app.models import User, Favorite, db
 
 user_routes = Blueprint('users', __name__)
 
@@ -25,3 +25,42 @@ def user(id):
     return user.to_dict()
 
 
+@user_routes.route('/favorites')
+@login_required
+def get_user_favorited_vans():
+    """
+    Return a list of the user's favorited vans
+    """
+    vans = Favorite.query.filter(Favorite.user_id == current_user.id).all()
+    return [van.van.to_dict() for van in vans]
+
+@user_routes.route('favorites/<int:vanId>', methods=["POST"])
+@login_required
+def add_favorite(vanId):
+    """
+    Add the vanId to current user's favorites
+    """
+
+    new_favorite = Favorite(
+        user_id = current_user.id,
+        van_id = vanId
+    )
+
+    db.session.add(new_favorite)
+    db.session.commit()
+
+    return new_favorite.to_dict()
+
+@user_routes.route('/favorites/<int:vanId>', methods=["DELETE"])
+@login_required
+def delete_favorite(vanId):
+    """
+    Remove the vanId from the current user's favorites
+    """
+
+    favorite = Favorite.query.filter(Favorite.user_id == current_user.id, Favorite.van_id == vanId).one()
+
+    db.session.delete(favorite)
+    db.session.commit()
+
+    return {"message": "Favorite successfully deleted"}

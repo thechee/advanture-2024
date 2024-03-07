@@ -4,6 +4,8 @@ const GET_USER_VANS = 'session/GET_USER_VANS';
 const DELETE_USER_VAN = 'session/DELETE_USER_VAN';
 const GET_USER_RATINGS = 'session/GET_USER_RATINGS';
 const DELETE_USER_RATING = 'session/DELETE_USER_RATING';
+const ADD_FAVORITE = 'session/ADD_FAVORITE';
+const DELETE_FAVORITE = 'session/DELETE_FAVORITE';
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -32,6 +34,16 @@ const getUserRatings = (ratings) => ({
 export const deleteUserRating = (ratingId) => ({
   type: DELETE_USER_RATING,
   ratingId
+})
+
+const addFavorite = (vanId) => ({
+  type: ADD_FAVORITE,
+  vanId
+})
+
+const deleteFavorite = (vanId) => ({
+  type: DELETE_FAVORITE,
+  vanId
 })
 
 
@@ -127,6 +139,37 @@ export const thunkDeleteUserRating = (ratingId) => async dispatch => {
   }
 }
 
+export const thunkAddFavorite = (vanId) => async dispatch => {
+  const response = await fetch(`/api/users/favorites/${vanId}`, {
+    method: "POST"
+  })
+
+  if (response.ok) {
+    const newFavorite = await response.json()
+    dispatch(addFavorite(newFavorite.vanId))
+    return newFavorite
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
+export const thunkDeleteFavorite = (vanId) => async dispatch => {
+  const response = await fetch(`/api/users/favorites/${vanId}`, {
+    method: "DELETE"
+  })
+
+  if (response.ok) {
+    const message = await response.json()
+    dispatch(deleteFavorite(vanId))
+    return message
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
+
 const initialState = { user: null };
 
 function sessionReducer(state = initialState, action) {
@@ -172,6 +215,32 @@ function sessionReducer(state = initialState, action) {
       }
       delete newState.user.ratings[action.ratingId]
       return newState;
+    }
+    case ADD_FAVORITE: {
+      const newState = { 
+        ...state,
+        user: {
+          ...state.user,
+          favorites: {
+            ...state.user.favorites,
+            [action.vanId]: action.vanId
+          }
+        }
+       }
+      return newState
+    }
+    case DELETE_FAVORITE: {
+      const newState = { 
+        ...state,
+        user: {
+          ...state.user,
+          favorites: {
+            ...state.user.favorites
+          }
+        }
+       }
+      delete newState.user.favorites[action.vanId]
+      return newState
     }
     default:
       return state;

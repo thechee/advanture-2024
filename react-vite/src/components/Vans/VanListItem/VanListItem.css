@@ -74,6 +74,7 @@
 .van-list-item-heart-div svg {
   position: relative;
   width: 20px;
-  left: 395px;
-  bottom: 147px;
+  left: 392px;
+  bottom: 145px;
+  transform: scale(1.3);
 }

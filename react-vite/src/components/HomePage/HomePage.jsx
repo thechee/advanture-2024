@@ -36,7 +36,7 @@ export const HomePage = () => {
 
       <div className="home-page-catchphrases">
         <h1>Escape in Style</h1>
-        <h2>Van rentals for the adventureous</h2>
+        <h2>Van rentals for the adventurous</h2>
         <div className="purple-bar">
         </div>
         <button id="view-vans-btn" onClick={() => navigate("/vans")}>View Advanture Vans</button>

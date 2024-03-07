@@ -6,14 +6,12 @@ import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
 import { Rating } from "../../Ratings/Rating/Rating.jsx";
-import {
-  thunkAddFavorite,
-  thunkDeleteFavorite,
-} from "../../../redux/session.js";
+import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session.js";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
 import StarRatings from "react-star-ratings";
 import moment from "moment";
+import { AdvancedMarker, Map, Marker, Pin } from "@vis.gl/react-google-maps";
 import "./VanDetail.css";
 
 export const VanDetail = () => {
@@ -26,10 +24,34 @@ export const VanDetail = () => {
   const [viewNewReview, setViewNewReview] = useState(false);
   const [from, setFrom] = useState(moment().format("YYYY-MM-DD"));
   const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
+  const [latLng, setLatLng] = useState({})
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
   }, [dispatch, vanId]);
+
+
+  useEffect(() => {
+    async function getLatLng(address, city, state) {
+      const {Geocoder} = await google.maps.importLibrary("geocoding")
+      
+      const geocoder = new Geocoder()
+      
+      geocoder.geocode({
+        "address": `${address}, ${city}, ${state}`
+      }, (results, status) => {
+        if (status == "OK") {
+          setLatLng({
+            lat: results[0].geometry.location.lat(),
+            lng: results[0].geometry.location.lng()
+          })
+        }
+      })
+    }
+
+    if (van) getLatLng(van.address, van.city, van.state)
+
+  }, [van])
 
   if (!van) return null;
   if (!ratingsObj) return null;
@@ -68,6 +90,7 @@ export const VanDetail = () => {
 
   let favorited
   if (user) favorited = van.id in user.favorites
+
 
   return (
     <div>
@@ -301,6 +324,27 @@ export const VanDetail = () => {
           )}
         </div>
       </div>
+      <div className="van-detail-map-div">
+        {!!Object.values(latLng).length && 
+        <Map 
+        center={latLng}
+        zoom={15}
+        gestureHandling={'greedy'}
+        controlled={true}
+        disableDefaultUI={true}
+        style={{height: "700px"}}
+        mapId={import.meta.env.VITE_VAN_DETAIL_MAP_ID}
+        >
+          <AdvancedMarker 
+          position={latLng}
+          className={"custom"}
+          >
+            <div></div>
+          </AdvancedMarker>
+        </Map>
+        }
+      </div>
     </div>
   );
 };
+// 

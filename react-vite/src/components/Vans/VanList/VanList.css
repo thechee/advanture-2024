@@ -1,8 +1,12 @@
+.van-list-content {
+  display: flex;
+}
+
 .van-list-ul {
   margin: 0 0 0 1.5rem;
   display: flex;
   flex-direction: column;
-  width: fit-content;
+  width: 750px;
   overflow: scroll;
   overflow-x: hidden;
   height: calc(100vh - 80px);
@@ -11,4 +15,9 @@
 .van-list-ul a {
   display: flex;
   width: fit-content;
+}
+
+.van-list-map-div {
+  height: calc(100vh - 80px);
+  width: calc(100vw - 725px);
 }

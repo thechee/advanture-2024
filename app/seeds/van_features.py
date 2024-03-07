@@ -8,7 +8,6 @@ def seed_van_features():
   newVans = []
   for van in vans:
     newVan = Van(
-    id=van['id'],
     user_id=van['user_id'],
     year=van['year'],
     make=van['make'],
@@ -28,6 +27,8 @@ def seed_van_features():
     )
 
     newVans.append(newVan)
+    db.session.add(newVan)
+    db.session.commit()
 
   newFeatures = []
   for feature in features:
@@ -40,7 +41,7 @@ def seed_van_features():
     for i in random.sample(range(13), 6):
       van.features.append(newFeatures[i])
   
-  db.session.add_all(newVans)
+  # db.session.add_all(newVans)
   db.session.add_all(newFeatures)
 
   db.session.commit()

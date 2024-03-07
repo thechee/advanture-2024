@@ -1,19 +1,16 @@
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { useModal } from "../../../context/Modal";
 import './RemoveFavoritesModal.css'
 import { thunkDeleteFavorite } from "../../../redux/session";
 
 export const RemoveFavoritesModal = ({ van }) => {
   const dispatch = useDispatch()
-  // const navigate = useNavigate()
   const { closeModal } = useModal()
 
   const handleDelete = async (e) => {
     e.preventDefault()
     await dispatch(thunkDeleteFavorite(van.id))
     closeModal()
-    // navigate('/vans/manage')
   }
 
   const handleCancel = (e) => {

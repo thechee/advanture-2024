@@ -4,9 +4,13 @@ from sqlalchemy.schema import UniqueConstraint
 
 class Favorite(db.Model):
   __tablename__ = "favorites"
+  __table_args__ = (UniqueConstraint('user_id', 'van_id', name='user_van_favorite'),)
 
   if environment == "production":
-    __table_args__ = {"schema": SCHEMA}
+    __table_args__ = (
+                      UniqueConstraint('user_id', 'van_id', name='user_van_favorite'),
+                      {"schema": SCHEMA}
+                      )
 
   id = db.Column(db.Integer, primary_key=True)
   user_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
@@ -14,8 +18,6 @@ class Favorite(db.Model):
 
   user = db.relationship("User", back_populates="favorites")
   van = db.relationship("Van", back_populates="favorites")
-
-  __table_args__ = (UniqueConstraint('user_id', 'van_id', name='user_van_favorite'),)
 
   def to_dict(self):
     return {

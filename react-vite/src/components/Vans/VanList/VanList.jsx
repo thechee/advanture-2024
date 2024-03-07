@@ -8,7 +8,7 @@ import './VanList.css'
 export const VanList = () => {
   const dispatch = useDispatch()
   const vansObj = useSelector(state => state.vans)
-  const userFavorites = useSelector(state => state.session.user.favorites)
+  const userFavorites = useSelector(state => state.session.user?.favorites)
   
   useEffect(() => {
     dispatch(thunkGetVans())

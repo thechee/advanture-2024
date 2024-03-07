@@ -28,7 +28,6 @@ export const VanList = () => {
         setLatLng(pos);
       });
     }
-
     setIsLoaded(true);
   }, []);
 
@@ -52,6 +51,7 @@ export const VanList = () => {
                 defaultZoom={12}
                 gestureHandling={"greedy"}
                 disableDefaultUI={true}
+                mapId={import.meta.env.VITE_VAN_DETAIL_MAP_ID}
               />
             )}
           </div>

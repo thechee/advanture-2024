@@ -11,7 +11,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
 import StarRatings from "react-star-ratings";
 import moment from "moment";
-import { AdvancedMarker, Map, Marker, Pin } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import "./VanDetail.css";
 
 export const VanDetail = () => {

@@ -229,3 +229,14 @@ h4 {
   width: 450px;
   margin-left: 4.25rem;
 }
+
+.van-detail-map-div {
+  margin-bottom: 3rem;
+}
+
+.custom {
+  background-color: rgba(89, 60, 251, .5);
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}

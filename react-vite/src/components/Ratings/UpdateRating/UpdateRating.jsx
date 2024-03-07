@@ -21,8 +21,7 @@ export const UpdateRating = ({ rating, setUpdate }) => {
       const errors = {}
       if (!cleanliness) errors.cleanliness = "You must select at least 1 star";
       if (!maintenance) errors.maintenance = "You must select at least 1 star";
-      if (!communication)
-        errors.communication = "You must select at least 1 star";
+      if (!communication) errors.communication = "You must select at least 1 star";
       if (!convenience) errors.convenience = "You must select at least 1 star";
       if (!accuracy) errors.accuracy = "You must select at least 1 star";
       if (review.length < 30) errors.review = "Review should be at least 30 characters"

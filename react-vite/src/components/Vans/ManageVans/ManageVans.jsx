@@ -34,6 +34,12 @@ export const ManageVans = () => {
     );
   }
 
+  if (!vansObj) {
+    return (
+      <h1>Loading...</h1>
+    )
+  }
+
   if (!vansObj || !Object.values(vansObj).length) {
     return (
       <div className="manage-vans-div">

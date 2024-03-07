@@ -14,6 +14,11 @@ function Navigation() {
       </Link>
       <div id="empty-header">
       </div>
+      <Link to={"/vans"}>
+      <div id="host-div">
+        <span>See all vans</span>
+      </div>
+      </Link>
       {user && <Link to='/vans/new'>
       <div id="host-div">
         <span>Add a van</span>

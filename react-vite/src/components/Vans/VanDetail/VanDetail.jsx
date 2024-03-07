@@ -59,7 +59,8 @@ export const VanDetail = () => {
 
   const joinedDate = formatShortDate(van.owner.createdAt);
   const owner = user?.id == van.owner.id;
-  const favorited = van.id in user.favorites
+  let favorited
+  if (user) favorited = van.id in user.favorites
 
   return (
     <div>

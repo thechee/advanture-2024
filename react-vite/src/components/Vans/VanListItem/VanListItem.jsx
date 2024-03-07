@@ -22,7 +22,10 @@ export const VanListItem = ({ van }) => {
   }
 
   let favorited;
-  if (user) van.id in user.favorites;
+  console.log(van.id)
+  console.log(user.favorites)
+  if (user) favorited = van.id in user.favorites;
+  console.log(favorited)
 
   const handleUpdate = (e) => {
     e.preventDefault();

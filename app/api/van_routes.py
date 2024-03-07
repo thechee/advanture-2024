@@ -56,7 +56,7 @@ def create_van():
       seats = form.data['seats'],
       fuel_type_id = form.data['fuel_type_id']
     )
-    print("******************* NEW VAN =>", new_van)
+    print("******************* NEW VAN =>", new_van.id)
 
     db.session.add(new_van)
     db.session.commit()

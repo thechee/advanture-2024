@@ -24,6 +24,7 @@ export const UserRating = ({ rating }) => {
     e.preventDefault();
     e.stopPropagation();
 
+    
   };
 
 

@@ -1,0 +1,66 @@
+.small-van-card {
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px lightgray;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.small-van-card-img-div {
+  width: 100%;
+  height: 165px;
+}
+
+.small-van-card-img-div img {
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  aspect-ratio: 2.2;
+  object-fit: cover;
+}
+
+.small-van-card-lower-div {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.small-van-card-lower-div h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.small-van-card-ratings-div {
+  margin-top: 0;
+  padding-top: .3rem;
+  padding-bottom: .75rem;
+  border-bottom: 1px solid lightgray;
+  height: 45px;
+  box-sizing: border-box;
+}
+
+.small-van-card-ratings-div svg {
+  transform: scale(.8);
+}
+
+.small-van-card-price-div {
+  text-align: end;
+  padding-top: 1rem;
+  font-weight: 600;
+}
+
+.small-van-card-heart-div {
+  border-radius: 5px;
+  background-color: white;
+  padding: 0.5rem;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  bottom: 260px;
+  left: 255px;
+  cursor: pointer;
+}

@@ -258,7 +258,7 @@ export const VanDetail = () => {
                 value={until}
                 onChange={(e) => setUntil(e.target.value)}
               />
-              <button className="submit-btn">Continue</button>
+              <button onClick={()=> alert("Feature coming soon!")} className="submit-btn">Continue</button>
             </div>
           )}
           <div className="van-detail-distance-div">

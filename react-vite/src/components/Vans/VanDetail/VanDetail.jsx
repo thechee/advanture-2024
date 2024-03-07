@@ -6,11 +6,14 @@ import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
 import { Rating } from "../../Ratings/Rating/Rating.jsx";
-import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session.js";
+import {
+  thunkAddFavorite,
+  thunkDeleteFavorite,
+} from "../../../redux/session.js";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
 import StarRatings from "react-star-ratings";
-import moment from 'moment'
+import moment from "moment";
 import "./VanDetail.css";
 
 export const VanDetail = () => {
@@ -21,8 +24,8 @@ export const VanDetail = () => {
   const user = useSelector((state) => state.session.user);
   const ratingsObj = useSelector((state) => state.vans[vanId]?.ratings);
   const [viewNewReview, setViewNewReview] = useState(false);
-  const [from, setFrom] = useState(moment().format("YYYY-MM-DD"))
-  const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"))
+  const [from, setFrom] = useState(moment().format("YYYY-MM-DD"));
+  const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
@@ -40,12 +43,15 @@ export const VanDetail = () => {
     return `${month} ${year}`;
   }
 
+  const handleFavorite = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await dispatch(thunkAddFavorite(van.id));
+  };
 
-  const handleFavorite = async () => {
-    await dispatch(thunkAddFavorite(van.id))
-  }
-
-  const handleUnfavorite = async () => {
+  const handleUnfavorite = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     await dispatch(thunkDeleteFavorite(van.id));
   };
 
@@ -59,6 +65,7 @@ export const VanDetail = () => {
 
   const joinedDate = formatShortDate(van.owner.createdAt);
   const owner = user?.id == van.owner.id;
+
   let favorited
   if (user) favorited = van.id in user.favorites
 
@@ -67,13 +74,18 @@ export const VanDetail = () => {
       <div className="van-images-div">
         <img src={previewImage} alt="" />
       </div>
-      <div onClick={handleFavorite} className="van-detail-heart-div">
+      {!owner && <div>
       {favorited ? (
-                <FaHeart style={{ color: "red" }} onClick={handleUnfavorite} />
-              ) : (
-                <FaRegHeart onClick={handleFavorite} />
-        )}
+        <div onClick={handleUnfavorite} className="van-detail-heart-div">
+          <FaHeart style={{ color: "red" }} />
+        </div>
+      ) : (
+        <div onClick={handleFavorite} className="van-detail-heart-div">
+          <FaRegHeart />
+        </div>
+      )}
       </div>
+      }
       <div className="van-detail-content">
         <div className="van-detail-left-div">
           <h1>
@@ -235,9 +247,17 @@ export const VanDetail = () => {
           {!owner && (
             <div className="van-detail-trip-div">
               <label>Trip Start</label>
-              <input type="date" value={from} onChange={e => setFrom(e.target.value)}/>
+              <input
+                type="date"
+                value={from}
+                onChange={(e) => setFrom(e.target.value)}
+              />
               <label>Trip End</label>
-              <input type="date" value={until} onChange={e => setUntil(e.target.value)}/>
+              <input
+                type="date"
+                value={until}
+                onChange={(e) => setUntil(e.target.value)}
+              />
               <button className="submit-btn">Continue</button>
             </div>
           )}
@@ -263,20 +283,20 @@ export const VanDetail = () => {
           ) : (
             <div className="favorite-div">
               {favorited ? (
-              <button className="add-to-favorites" onClick={handleUnfavorite}>
-                <span>
-                <FaHeart style={{ color: "red" }} />
-                </span>
+                <button className="add-to-favorites" onClick={handleUnfavorite}>
+                  <span>
+                    <FaHeart style={{ color: "red" }} />
+                  </span>
                   Remove from favorites
                 </button>
               ) : (
                 <button className="add-to-favorites" onClick={handleFavorite}>
-                <span>
-                <FaRegHeart />
-                </span>
+                  <span>
+                    <FaRegHeart />
+                  </span>
                   Add to Favorites
                 </button>
-        )}
+              )}
             </div>
           )}
         </div>

@@ -1,0 +1,15 @@
+.remove-favorites-modal {
+  width: 400px;
+}
+
+.remove-favorites-modal p {
+  line-height: 23px;
+}
+
+.remove-favorites-modal span {
+  font-weight: 600;
+}
+
+.cancel {
+  margin-top: .5rem;
+}

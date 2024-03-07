@@ -2,14 +2,15 @@ import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { thunkGetOneVan } from "../../../redux/van";
-import { FaRegHeart } from "react-icons/fa";
-import OpenModalButton from "../../OpenModalButton";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
-import StarRatings from "react-star-ratings";
 import { Rating } from "../../Ratings/Rating/Rating.jsx";
-
+import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session.js";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import OpenModalButton from "../../OpenModalButton";
+import StarRatings from "react-star-ratings";
+import moment from 'moment'
 import "./VanDetail.css";
 
 export const VanDetail = () => {
@@ -20,6 +21,8 @@ export const VanDetail = () => {
   const user = useSelector((state) => state.session.user);
   const ratingsObj = useSelector((state) => state.vans[vanId]?.ratings);
   const [viewNewReview, setViewNewReview] = useState(false);
+  const [from, setFrom] = useState(moment().format("YYYY-MM-DD"))
+  const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"))
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
@@ -37,7 +40,14 @@ export const VanDetail = () => {
     return `${month} ${year}`;
   }
 
-  function favoriteHandler() {}
+
+  const handleFavorite = async () => {
+    await dispatch(thunkAddFavorite(van.id))
+  }
+
+  const handleUnfavorite = async () => {
+    await dispatch(thunkDeleteFavorite(van.id));
+  };
 
   let previewImage;
   for (const image in van.images) {
@@ -49,14 +59,19 @@ export const VanDetail = () => {
 
   const joinedDate = formatShortDate(van.owner.createdAt);
   const owner = user?.id == van.owner.id;
+  const favorited = van.id in user.favorites
 
   return (
     <div>
       <div className="van-images-div">
         <img src={previewImage} alt="" />
       </div>
-      <div onClick={favoriteHandler} className="van-detail-heart-div">
-        <FaRegHeart />
+      <div onClick={handleFavorite} className="van-detail-heart-div">
+      {favorited ? (
+                <FaHeart style={{ color: "red" }} onClick={handleUnfavorite} />
+              ) : (
+                <FaRegHeart onClick={handleFavorite} />
+        )}
       </div>
       <div className="van-detail-content">
         <div className="van-detail-left-div">
@@ -219,9 +234,9 @@ export const VanDetail = () => {
           {!owner && (
             <div className="van-detail-trip-div">
               <label>Trip Start</label>
-              <input type="date" />
+              <input type="date" value={from} onChange={e => setFrom(e.target.value)}/>
               <label>Trip End</label>
-              <input type="date" />
+              <input type="date" value={until} onChange={e => setUntil(e.target.value)}/>
               <button className="submit-btn">Continue</button>
             </div>
           )}
@@ -246,12 +261,21 @@ export const VanDetail = () => {
             </div>
           ) : (
             <div className="favorite-div">
-              <button className="add-to-favorites">
+              {favorited ? (
+              <button className="add-to-favorites" onClick={handleUnfavorite}>
                 <span>
-                  <FaRegHeart />
+                <FaHeart style={{ color: "red" }} />
                 </span>
-                Add to Favorites
-              </button>
+                  Remove from favorites
+                </button>
+              ) : (
+                <button className="add-to-favorites" onClick={handleFavorite}>
+                <span>
+                <FaRegHeart />
+                </span>
+                  Add to Favorites
+                </button>
+        )}
             </div>
           )}
         </div>

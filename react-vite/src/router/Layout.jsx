@@ -30,7 +30,7 @@ export default function Layout() {
   return (
     <>
       <ModalProvider>
-        <APIProvider apiKey="key">
+        <APIProvider apiKey={key}>
 
         <Navigation />
         {isLoaded && <Outlet />}

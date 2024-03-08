@@ -9,6 +9,7 @@ export const VanList = () => {
   const dispatch = useDispatch();
   const vansObj = useSelector((state) => state.vans);
   const userFavorites = useSelector((state) => state.session.user?.favorites);
+  const mapId = useSelector(state => state.maps.mapId)
   const [latLng, setLatLng] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -51,6 +52,7 @@ export const VanList = () => {
                 defaultZoom={12}
                 gestureHandling={"greedy"}
                 disableDefaultUI={true}
+                mapId={mapId}
               />
             )}
           </div>

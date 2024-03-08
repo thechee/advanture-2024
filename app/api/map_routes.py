@@ -8,4 +8,4 @@ map_routes = Blueprint('maps', __name__)
 
 @map_routes.route('/key', methods=["POST"])
 def get_key():
-  return {maps_api_key, map_id}
+  return {"key": maps_api_key, "mapId": map_id}

@@ -3,6 +3,7 @@ const REMOVE_USER = 'session/removeUser';
 const GET_USER_VANS = 'session/GET_USER_VANS';
 const DELETE_USER_VAN = 'session/DELETE_USER_VAN';
 const GET_USER_RATINGS = 'session/GET_USER_RATINGS';
+const UPDATE_USER_RATING = 'session/UPDATE_USER_RATING';
 const DELETE_USER_RATING = 'session/DELETE_USER_RATING';
 const ADD_FAVORITE = 'session/ADD_FAVORITE';
 const DELETE_FAVORITE = 'session/DELETE_FAVORITE';
@@ -29,6 +30,11 @@ export const deleteUserVan = (vanId) => ({
 const getUserRatings = (ratings) => ({
   type: GET_USER_RATINGS,
   ratings
+})
+
+const updateUserRating = (rating) => ({
+  type: UPDATE_USER_RATING,
+  rating
 })
 
 export const deleteUserRating = (ratingId) => ({
@@ -124,6 +130,22 @@ export const thunkGetUserRatings = () => async dispatch => {
   }
 }
 
+export const thunkUpdateUserRatings = (rating) => async dispatch => {
+  const response = await fetch(`/api/ratings/${rating.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(rating)
+  })
+
+  if (response.ok) {
+    const updatedRating = await response.json()
+    dispatch(updateUserRating(updatedRating))
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
 export const thunkDeleteUserRating = (ratingId) => async dispatch => {
   const response = await fetch(`/api/ratings/${ratingId}`, {
     method: "DELETE"
@@ -198,10 +220,28 @@ function sessionReducer(state = initialState, action) {
       return newState;
     }
     case GET_USER_RATINGS: {
-      const newState = { ...state }
+      const newState = { 
+        ...state,
+        user: {
+          ...state.user
+        }
+      }
       newState.user.ratings = {};
       action.ratings.forEach(rating => newState.user.ratings[rating.id] = rating)
       return newState;
+    }
+    case UPDATE_USER_RATING: {
+      const newState = {
+        ...state,
+        user: {
+          ...state.user,
+          ratings: {
+            ...state.user.ratings
+          }
+        }
+      }
+      newState.user.ratings[action.rating.id] = action.rating
+      return newState
     }
     case DELETE_USER_RATING: {
       const newState = { 

@@ -1,9 +1,12 @@
+import { useState } from "react";
 import StarRatings from "react-star-ratings";
 import OpenModalButton from "../../../OpenModalButton";
 import { DeleteRatingModal } from "../../DeleteRatingModal/DeleteRatingModal";
 import "./UserRating.css";
+import { UpdateRating } from "../../UpdateRating/UpdateRating";
 
 export const UserRating = ({ rating }) => {
+  const [update, setUpdate] = useState(false);
 
   function formatLongDate(dateStr) {
     const date = new Date(dateStr);
@@ -19,13 +22,6 @@ export const UserRating = ({ rating }) => {
     rating.createdAt == rating.updatedAt
       ? formatLongDate(rating.createdAt)
       : formatLongDate(rating.updatedAt);
-
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    
-  };
 
 
   return (
@@ -65,17 +61,18 @@ export const UserRating = ({ rating }) => {
         <div className="user-review-text-div">
           <p>{rating.review}</p>
         </div>
-        <div className="btns-div">
-        <button onClick={handleUpdate} className="submit-btn">
-                Update
-              </button>
+          {!update && 
+        <div className="user-rating-btns-div">
+          <button className="submit-btn" onClick={() => setUpdate(true)}>Update</button>
           <OpenModalButton
-                className={"submit-btn"}
+                className={"btn"}
                 buttonText={"Remove"}
-                // onButtonClick={handleRemove}
                 modalComponent={<DeleteRatingModal rating={rating} type="user"/>}
-              />
+                />
+          
         </div>
+          }
+          {update && <UpdateRating rating={rating} setUpdate={setUpdate} type="user"/>}
       </div>
     </li>
   );

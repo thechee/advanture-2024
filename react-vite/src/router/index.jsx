@@ -9,6 +9,7 @@ import { ManageRatings } from '../components/Ratings/ManageRatings/ManageRatings
 import { UpdateVan } from '../components/Vans/UpdateVan/UpdateVan';
 import { Favorites } from '../components/Favorites/Favorites';
 import { Errors } from '../components/Errors/Errors';
+import { Profile } from '../components/Profile/Profile';
 
 
 export const router = createBrowserRouter([
@@ -102,7 +103,7 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <h1>Feature coming soon!</h1>
+                element: <Profile />
               },
               {
                 path: "favorites",

@@ -72,7 +72,6 @@ export const UserRating = ({ rating }) => {
           <OpenModalButton
                 className={"submit-btn"}
                 buttonText={"Remove"}
-                // onButtonClick={handleRemove}
                 modalComponent={<DeleteRatingModal rating={rating} type="user"/>}
               />
         </div>

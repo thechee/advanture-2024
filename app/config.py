@@ -13,3 +13,4 @@ class Config:
         'DATABASE_URL').replace('postgres://', 'postgresql://')
     SQLALCHEMY_ECHO = True
     MAPS_API_KEY = os.environ.get('MAPS_API_KEY')
+    MAP_ID = os.environ.get('MAP_ID')

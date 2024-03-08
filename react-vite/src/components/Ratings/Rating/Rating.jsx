@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import StarRatings from "react-star-ratings";
 import "./Rating.css";
@@ -14,28 +14,19 @@ export const Rating = ({ vanId, setViewNewReview }) => {
   const [accuracy, setAccuracy] = useState(0);
   const [validationErrors, setValidationErrors] = useState({});
   const [submitted, setSubmitted] = useState(false)
-
-  useEffect(() => {
-    if (submitted) {
-      const errors = {}
-      if (!cleanliness) errors.cleanliness = "You must select at least 1 star";
-      if (!maintenance) errors.maintenance = "You must select at least 1 star";
-      if (!communication)
-        errors.communication = "You must select at least 1 star";
-      if (!convenience) errors.convenience = "You must select at least 1 star";
-      if (!accuracy) errors.accuracy = "You must select at least 1 star";
-      if (review.length < 30) errors.review = "Review should be at least 30 characters"
-
-      setValidationErrors(errors)
-    }
-  }, [submitted, cleanliness, maintenance, communication, convenience, accuracy, review])
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
     setSubmitted(true)
     
     const errors = {}
+    if (!cleanliness) errors.cleanliness = "You must select at least 1 star";
+    if (!maintenance) errors.maintenance = "You must select at least 1 star";
+    if (!communication)
+      errors.communication = "You must select at least 1 star";
+    if (!convenience) errors.convenience = "You must select at least 1 star";
+    if (!accuracy) errors.accuracy = "You must select at least 1 star";
     if (review.length < 30 && review.length > 0) errors.review = "Review should be at least 30 characters"
     
     if (Object.values(errors).length) {

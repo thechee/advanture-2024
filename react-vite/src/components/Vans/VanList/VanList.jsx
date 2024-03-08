@@ -29,7 +29,6 @@ export const VanList = () => {
         setLatLng(pos);
       });
     }
-
     setIsLoaded(true);
   }, []);
 

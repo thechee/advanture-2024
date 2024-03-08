@@ -4,8 +4,9 @@ import StarRatings from "react-star-ratings";
 import "../Rating/Rating.css";
 import "./UpdateRating.css"
 import { thunkUpdateVanRating, thunkGetOneVan } from "../../../redux/van";
+import { thunkUpdateUserRatings } from "../../../redux/session";
 
-export const UpdateRating = ({ rating, setUpdate }) => {
+export const UpdateRating = ({ rating, setUpdate, type }) => {
   const dispatch = useDispatch();
   const [review, setReview] = useState(rating.review);
   const [cleanliness, setCleanliness] = useState(rating.cleanliness);
@@ -49,9 +50,15 @@ export const UpdateRating = ({ rating, setUpdate }) => {
         accuracy,
         review
       }
+      
+      if (type == "van") {
+        dispatch(thunkUpdateVanRating(rating.vanId, updatedRating))
+        dispatch(thunkGetOneVan(rating.vanId))
+      }
 
-      dispatch(thunkUpdateVanRating(rating.vanId, updatedRating))
-      dispatch(thunkGetOneVan(rating.vanId))
+      if (type == "user") {
+        dispatch(thunkUpdateUserRatings(updatedRating))
+      }
 
       setUpdate(false)
     }
@@ -153,11 +160,11 @@ export const UpdateRating = ({ rating, setUpdate }) => {
           {validationErrors.review && <p>{validationErrors.review}</p>}
         </div>
 
-        <button className="submit-btn">Submit</button>
       </form>
-      <button onClick={() => setUpdate(false)} className="btn">
-        Cancel
-      </button>
+      <div className="update-rating-btn-div">
+      <button onClick={handleSubmit} className="submit-btn">Submit</button>
+      <button onClick={() => setUpdate(false)} className="btn">Cancel</button>
+      </div>
     </div>
   );
 };

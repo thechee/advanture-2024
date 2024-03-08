@@ -219,31 +219,17 @@ export const VanDetail = () => {
                 <h4 style={{ color: "#808080" }}>REVIEWS</h4>
                 <ul>
                   {ratings.map((rating) => {
-                    // if (rating.review) {
                     return <RatingsListItem key={rating.id} rating={rating} />;
-                    // }
                   })}
                 </ul>
 
-                {viewNewReview && (
-                  <div>
-                    <Rating vanId={vanId} setViewNewReview={setViewNewReview} />
-                  </div>
-                )}
-                {!viewNewReview && user && !owner && (
-                  <button
-                    onClick={() => setViewNewReview(true)}
-                    id="add-a-review-btn"
-                    className="submit-btn"
-                  >
-                    Add a review
-                  </button>
-                )}
               </div>
             </div>
           ) : (
             <div>
               <h3>This van is not yet rated or reviewed!</h3>
+              </div>
+              )}
               {viewNewReview && (
                 <div>
                   <Rating vanId={vanId} setViewNewReview={setViewNewReview} />
@@ -258,8 +244,6 @@ export const VanDetail = () => {
                   Add a review
                 </button>
               )}
-            </div>
-          )}
         </div>
 
         <div className="van-detail-right-div">

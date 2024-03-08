@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { thunkGetVans } from "../../../redux/van";
 import { VanListItem } from "../VanListItem/VanListItem";
 import "./VanList.css";
-import { Map } from "@vis.gl/react-google-maps";
+import { FaMapMarkerAlt } from "react-icons/fa";
+
+import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 
 export const VanList = () => {
   const dispatch = useDispatch();
@@ -11,6 +13,7 @@ export const VanList = () => {
   const userFavorites = useSelector((state) => state.session.user?.favorites);
   const mapId = useSelector(state => state.maps.mapId)
   const [latLng, setLatLng] = useState({});
+  const [vanPositions, setVanPositions] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -32,8 +35,41 @@ export const VanList = () => {
     setIsLoaded(true);
   }, []);
 
+  useEffect(() => {
+    async function getVanLatLng(vans) {
+      const { Geocoder } = await google.maps.importLibrary("geocoding");
+  
+      const geocoder = new Geocoder();
+  
+      vans.forEach(async van => {
+
+        await geocoder.geocode(
+          {
+            address: `${van.address}, ${van.city}, ${van.state}`,
+          },
+          (results, status) => {
+            if (status == "OK") {
+              tempArr.push({
+                van: van,
+                lat: results[0].geometry.location.lat(),
+                lng: results[0].geometry.location.lng()
+              })
+            }
+          }
+        );
+      })
+    }
+    const tempArr = []
+    getVanLatLng(Object.values(vansObj))
+    setVanPositions(tempArr)
+
+  }, [vansObj, ])
+
   if (!vansObj) return null;
   const vans = Object.values(vansObj);
+
+
+  console.log("vanPositions", vanPositions)
 
   return (
     <div className="van-list-content">
@@ -52,7 +88,24 @@ export const VanList = () => {
                 gestureHandling={"greedy"}
                 disableDefaultUI={true}
                 mapId={mapId}
-              />
+                >
+                  
+                  <AdvancedMarker position={latLng} className="user-pos">
+                    <div>
+                    <FaMapMarkerAlt />
+                    </div>
+                  </AdvancedMarker>
+                {vanPositions.map(van => (
+                  <>
+                  <AdvancedMarker key={van.van.id} position={{lat: van.lat, lng: van.lng}} className="price-marker" onClick={() => {}}>
+                  <div>
+                    <span>${van.van.rentalRate}</span>
+                  </div>
+                </AdvancedMarker>
+                  </>
+                ))}
+                
+                </Map>
             )}
           </div>
         </>

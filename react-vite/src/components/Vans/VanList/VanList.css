@@ -21,3 +21,29 @@
   height: calc(100vh - 80px);
   width: calc(100vw - 725px);
 }
+
+.price-marker {
+  padding: .3rem .5rem;
+  background-color: white;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.price-marker:hover {
+  background-color: black;
+  color: white;
+}
+
+.user-pos {
+  background-color: black;
+  color: white;
+  padding: 1.25rem;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10px;
+  width: 10px;
+}

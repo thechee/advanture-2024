@@ -7,10 +7,12 @@ import {
 import thunk from "redux-thunk";
 import sessionReducer from "./session";
 import { vanReducer } from "./van";
+import { mapsReducer } from "./maps";
 
 const rootReducer = combineReducers({
   session: sessionReducer,
-  vans: vanReducer
+  vans: vanReducer,
+  maps: mapsReducer
 });
 
 let enhancer;

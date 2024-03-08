@@ -67,12 +67,12 @@ export const RatingsListItem = ({ rating }) => {
           <p>{rating.review}</p>
         </div>
         {user?.id == rating.rater.id && !update && (
-          <div className="btns-div">
+          <div className="rli-btns-div">
             <button onClick={handleUpdate} className="submit-btn">
               Update
             </button>
             <OpenModalButton
-              className={"submit-btn"}
+              className={"btn"}
               buttonText={"Remove"}
               modalComponent={<DeleteRatingModal rating={rating} type="van"/>}
             />
@@ -80,7 +80,7 @@ export const RatingsListItem = ({ rating }) => {
         )}
         {user?.id == rating.rater.id && update && (
           <div>
-            <UpdateRating rating={rating} setUpdate={setUpdate}/>
+            <UpdateRating rating={rating} setUpdate={setUpdate} type="van"/>
           </div>
         )}
       </div>

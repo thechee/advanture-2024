@@ -49,14 +49,14 @@
   font-size: 11px;
 }
 
-.btns-div {
+.user-rating-btns-div {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 0.5rem;
   gap: 0.55rem;
 }
 
-.btns-div .submit-btn {
-  padding: .25rem;
+.user-rating-btns-div button {
+  padding: .5rem;
   width: 100px;
 }

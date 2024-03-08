@@ -4,8 +4,9 @@ import StarRatings from "react-star-ratings";
 import "../Rating/Rating.css";
 import "./UpdateRating.css"
 import { thunkUpdateVanRating, thunkGetOneVan } from "../../../redux/van";
+import { thunkUpdateUserRatings } from "../../../redux/session";
 
-export const UpdateRating = ({ rating, setUpdate }) => {
+export const UpdateRating = ({ rating, setUpdate, type }) => {
   const dispatch = useDispatch();
   const [review, setReview] = useState(rating.review);
   const [cleanliness, setCleanliness] = useState(rating.cleanliness);
@@ -16,25 +17,25 @@ export const UpdateRating = ({ rating, setUpdate }) => {
   const [validationErrors, setValidationErrors] = useState({});
   const [submitted, setSubmitted] = useState(false)
 
-  useEffect(() => {
-    if (submitted) {
-      const errors = {}
-      if (!cleanliness) errors.cleanliness = "You must select at least 1 star";
-      if (!maintenance) errors.maintenance = "You must select at least 1 star";
-      if (!communication) errors.communication = "You must select at least 1 star";
-      if (!convenience) errors.convenience = "You must select at least 1 star";
-      if (!accuracy) errors.accuracy = "You must select at least 1 star";
-      if (review.length < 30) errors.review = "Review should be at least 30 characters"
-
-      setValidationErrors(errors)
-    }
-  }, [submitted, cleanliness, maintenance, communication, convenience, accuracy, review])
-
+  // useEffect(() => {
+  //   if (submitted) {
+  //     const errors = {}
+      
+  //     setValidationErrors(errors)
+  //   }
+  // }, [submitted, cleanliness, maintenance, communication, convenience, accuracy, review])
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true)
-
+    
     const errors = {}
+    if (!cleanliness) errors.cleanliness = "You must select at least 1 star";
+    if (!maintenance) errors.maintenance = "You must select at least 1 star";
+    if (!communication) errors.communication = "You must select at least 1 star";
+    if (!convenience) errors.convenience = "You must select at least 1 star";
+    if (!accuracy) errors.accuracy = "You must select at least 1 star";
+    if (review.length < 30) errors.review = "Review should be at least 30 characters"
     if (review.length < 30 && review.length > 0) errors.review = "Review should be at least 30 characters"
     
     if (Object.values(errors).length) {
@@ -49,9 +50,15 @@ export const UpdateRating = ({ rating, setUpdate }) => {
         accuracy,
         review
       }
+      
+      if (type == "van") {
+        dispatch(thunkUpdateVanRating(rating.vanId, updatedRating))
+        dispatch(thunkGetOneVan(rating.vanId))
+      }
 
-      dispatch(thunkUpdateVanRating(rating.vanId, updatedRating))
-      dispatch(thunkGetOneVan(rating.vanId))
+      if (type == "user") {
+        dispatch(thunkUpdateUserRatings(updatedRating))
+      }
 
       setUpdate(false)
     }
@@ -153,11 +160,11 @@ export const UpdateRating = ({ rating, setUpdate }) => {
           {validationErrors.review && <p>{validationErrors.review}</p>}
         </div>
 
-        <button className="submit-btn">Submit</button>
       </form>
-      <button onClick={() => setUpdate(false)} className="btn">
-        Cancel
-      </button>
+      <div className="update-rating-btn-div">
+      <button onClick={handleSubmit} className="submit-btn">Submit</button>
+      <button onClick={() => setUpdate(false)} className="btn">Cancel</button>
+      </div>
     </div>
   );
 };

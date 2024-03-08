@@ -6,53 +6,59 @@ import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
 import { Rating } from "../../Ratings/Rating/Rating.jsx";
-import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session.js";
+import {
+  thunkAddFavorite,
+  thunkDeleteFavorite,
+} from "../../../redux/session.js";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
+import LoginFormModal from "../../LoginFormModal";
 import StarRatings from "react-star-ratings";
 import moment from "moment";
 import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import "./VanDetail.css";
+import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv.jsx";
 
 export const VanDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { vanId } = useParams();
-  const van = useSelector(state => state.vans[vanId]);
-  const user = useSelector(state => state.session.user);
-  const ratingsObj = useSelector(state => state.vans[vanId]?.ratings);
-  const mapId = useSelector(state => state.maps.mapId)
+  const van = useSelector((state) => state.vans[vanId]);
+  const user = useSelector((state) => state.session.user);
+  const ratingsObj = useSelector((state) => state.vans[vanId]?.ratings);
+  const mapId = useSelector((state) => state.maps.mapId);
   const [viewNewReview, setViewNewReview] = useState(false);
   const [from, setFrom] = useState(moment().format("YYYY-MM-DD"));
   const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
-  const [latLng, setLatLng] = useState({})
+  const [latLng, setLatLng] = useState({});
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
   }, [dispatch, vanId]);
 
-
   useEffect(() => {
     async function getLatLng(address, city, state) {
-      const {Geocoder} = await google.maps.importLibrary("geocoding")
-      
-      const geocoder = new Geocoder()
-      
-      geocoder.geocode({
-        "address": `${address}, ${city}, ${state}`
-      }, (results, status) => {
-        if (status == "OK") {
-          setLatLng({
-            lat: results[0].geometry.location.lat(),
-            lng: results[0].geometry.location.lng()
-          })
+      const { Geocoder } = await google.maps.importLibrary("geocoding");
+
+      const geocoder = new Geocoder();
+
+      geocoder.geocode(
+        {
+          address: `${address}, ${city}, ${state}`,
+        },
+        (results, status) => {
+          if (status == "OK") {
+            setLatLng({
+              lat: results[0].geometry.location.lat(),
+              lng: results[0].geometry.location.lng(),
+            });
+          }
         }
-      })
+      );
     }
 
-    if (van) getLatLng(van.address, van.city, van.state)
-
-  }, [van])
+    if (van) getLatLng(van.address, van.city, van.state);
+  }, [van]);
 
   if (!van) return null;
   if (!ratingsObj) return null;
@@ -89,27 +95,38 @@ export const VanDetail = () => {
   const joinedDate = formatShortDate(van.owner.createdAt);
   const owner = user?.id == van.owner.id;
 
-  let favorited
-  if (user) favorited = van.id in user.favorites
-
+  let favorited;
+  if (user) favorited = van.id in user.favorites;
 
   return (
     <div>
       <div className="van-images-div">
         <img src={previewImage} alt="" />
       </div>
-      {!owner && <div>
-      {favorited ? (
-        <div onClick={handleUnfavorite} className="van-detail-heart-div">
-          <FaHeart style={{ color: "red" }} />
-        </div>
-      ) : (
-        <div onClick={handleFavorite} className="van-detail-heart-div">
-          <FaRegHeart />
+      {!owner && (
+        <div>
+          {favorited ? (
+            <div onClick={handleUnfavorite} className="van-detail-heart-div">
+              <FaHeart style={{ color: "red" }} />
+            </div>
+          ) : (
+            <>
+              {user && (
+                <div onClick={handleFavorite} className="van-detail-heart-div">
+                  <FaRegHeart />
+                </div>
+              )}
+              {!user && (
+                <OpenModalDiv
+                  modalComponent={<LoginFormModal />}
+                  divText={<FaRegHeart />}
+                  className={"van-detail-heart-div"}
+                />
+              )}
+            </>
+          )}
         </div>
       )}
-      </div>
-      }
       <div className="van-detail-content">
         <div className="van-detail-left-div">
           <h1>
@@ -222,28 +239,27 @@ export const VanDetail = () => {
                     return <RatingsListItem key={rating.id} rating={rating} />;
                   })}
                 </ul>
-
               </div>
             </div>
           ) : (
             <div>
               <h3>This van is not yet rated or reviewed!</h3>
-              </div>
-              )}
-              {viewNewReview && (
-                <div>
-                  <Rating vanId={vanId} setViewNewReview={setViewNewReview} />
-                </div>
-              )}
-              {!viewNewReview && user && !owner && (
-                <button
-                  onClick={() => setViewNewReview(true)}
-                  id="add-a-review-btn"
-                  className="submit-btn"
-                >
-                  Add a review
-                </button>
-              )}
+            </div>
+          )}
+          {viewNewReview && (
+            <div>
+              <Rating vanId={vanId} setViewNewReview={setViewNewReview} />
+            </div>
+          )}
+          {!viewNewReview && user && !owner && (
+            <button
+              onClick={() => setViewNewReview(true)}
+              id="add-a-review-btn"
+              className="submit-btn"
+            >
+              Add a review
+            </button>
+          )}
         </div>
 
         <div className="van-detail-right-div">
@@ -266,7 +282,12 @@ export const VanDetail = () => {
                 value={until}
                 onChange={(e) => setUntil(e.target.value)}
               />
-              <button onClick={()=> alert("Feature coming soon!")} className="submit-btn">Continue</button>
+              <button
+                onClick={() => alert("Feature coming soon!")}
+                className="submit-btn"
+              >
+                Continue
+              </button>
             </div>
           )}
           <div className="van-detail-distance-div">
@@ -298,38 +319,56 @@ export const VanDetail = () => {
                   Remove from favorites
                 </button>
               ) : (
-                <button className="add-to-favorites" onClick={handleFavorite}>
-                  <span>
-                    <FaRegHeart />
-                  </span>
-                  Add to Favorites
-                </button>
+                <>
+                  {user && (
+                    <button
+                      className="add-to-favorites"
+                      onClick={handleFavorite}
+                    >
+                      <span>
+                        <FaRegHeart />
+                      </span>
+                      Add to Favorites
+                    </button>
+                  )}
+                  {!user && (
+                    <OpenModalButton
+                      modalComponent={<LoginFormModal />}
+                      buttonText={
+                        <>
+                          <span>
+                            <FaRegHeart />
+                          </span>
+                          Add to Favorites
+                        </>
+                      }
+                      className={"add-to-favorites"}
+                    />
+                  )}
+                </>
               )}
             </div>
           )}
         </div>
       </div>
       <div className="van-detail-map-div">
-        {!!Object.values(latLng).length && 
-        <Map 
-        center={latLng}
-        zoom={15}
-        gestureHandling={'greedy'}
-        controlled={true}
-        disableDefaultUI={true}
-        style={{height: "700px"}}
-        mapId={mapId}
-        >
-          <AdvancedMarker 
-          position={latLng}
-          className={"custom"}
+        {!!Object.values(latLng).length && (
+          <Map
+            center={latLng}
+            zoom={15}
+            gestureHandling={"greedy"}
+            controlled={true}
+            disableDefaultUI={true}
+            style={{ height: "700px" }}
+            mapId={mapId}
           >
-            <div></div>
-          </AdvancedMarker>
-        </Map>
-        }
+            <AdvancedMarker position={latLng} className={"custom"}>
+              <div></div>
+            </AdvancedMarker>
+          </Map>
+        )}
       </div>
     </div>
   );
 };
-// 
+//

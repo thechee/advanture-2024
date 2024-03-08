@@ -4,6 +4,8 @@ import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal";
 import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
+import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv"
+import LoginFormModal from "../../LoginFormModal"
 import StarRatings from "react-star-ratings";
 import "./VanListItem.css";
 
@@ -97,11 +99,22 @@ export const VanListItem = ({ van }) => {
           </div>
           {!isOwner && (
             <div className="van-list-item-heart-div">
-              {favorited ? (
+
+              {favorited ? 
                 <FaHeart style={{ color: "red" }} onClick={handleUnfavorite} />
-              ) : (
-                <FaRegHeart onClick={handleFavorite} />
-              )}
+               : 
+               <>
+                 {user && (<FaRegHeart onClick={handleFavorite} />)}
+                 {!user && 
+                 (<OpenModalDiv 
+                  modalComponent={<LoginFormModal />}
+                  divText={<FaRegHeart />}
+                  
+                 />)}
+               </>
+              }
+
+
             </div>
           )}
         </div>

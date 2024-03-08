@@ -18,9 +18,10 @@ export const VanDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { vanId } = useParams();
-  const van = useSelector((state) => state.vans[vanId]);
-  const user = useSelector((state) => state.session.user);
-  const ratingsObj = useSelector((state) => state.vans[vanId]?.ratings);
+  const van = useSelector(state => state.vans[vanId]);
+  const user = useSelector(state => state.session.user);
+  const ratingsObj = useSelector(state => state.vans[vanId]?.ratings);
+  const mapId = useSelector(state => state.maps.mapId)
   const [viewNewReview, setViewNewReview] = useState(false);
   const [from, setFrom] = useState(moment().format("YYYY-MM-DD"));
   const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
@@ -317,7 +318,7 @@ export const VanDetail = () => {
         controlled={true}
         disableDefaultUI={true}
         style={{height: "700px"}}
-        mapId={import.meta.env.VITE_VAN_DETAIL_MAP_ID}
+        mapId={mapId}
         >
           <AdvancedMarker 
           position={latLng}

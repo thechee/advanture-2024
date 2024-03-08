@@ -10,8 +10,6 @@ import "./index.css";
 
 const store = configureStore();
 
-const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY
-
 if (import.meta.env.MODE !== "production") {
   window.store = store;
   window.sessionActions = sessionActions;
@@ -19,7 +17,7 @@ if (import.meta.env.MODE !== "production") {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
     <ReduxProvider store={store}>
-      <APIProvider apiKey={API_KEY}>
+      <APIProvider apiKey="PLACEHOLDER">
       <RouterProvider router={router} />
       </APIProvider>
     </ReduxProvider>

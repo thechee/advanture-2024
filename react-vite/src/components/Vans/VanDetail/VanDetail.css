@@ -1,0 +1,242 @@
+.van-images-div {
+  width: 100%;
+}
+
+.van-images-div img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 2.25;
+}
+
+.van-detail-content {
+  display: flex;
+  justify-content: center;
+  margin: 3rem auto;
+  width: 950px;
+}
+
+.van-detail-left-div {
+  width: 550px;
+  margin-right: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.van-overall-ratings-div {
+  display: flex;
+  align-items: center;
+}
+
+#van-overall-stars {
+  font-size: 20px;
+  font-weight: 700;
+  padding-right: .25rem;
+}
+
+.van-detail-content h1 {
+  margin: 0;
+}
+
+.van-description {
+  font-size: 14px;
+  margin: 0;
+  line-height: 22px;
+}
+
+.van-detail-right-div {
+  width: 275px;
+  display: flex;
+  flex-direction: column;
+}
+
+.van-detail-right-div label {
+  color: var(--purple);
+  font-size: 14px;
+}
+
+.van-detail-right-div input {
+  width: 100%;
+  padding: .5rem;
+  font-size: 15px;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+
+.van-detail-right-div p {
+  margin-top: 0;
+}
+
+.van-detail-price {
+  font-weight: 700;
+  font-size: large;
+}
+
+.feature-ul,
+.details-ul {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+.feature-ul li,
+.van-detail-details li {
+  width: 50%;
+  padding: .5rem 0;
+  font-size: 14px;
+}
+
+.van-detail-host-div {
+  display: flex;
+  align-items: center;
+}
+
+.van-detail-host-info {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+}
+
+.van-detail-host-div h3 {
+  margin-top: 0;
+}
+
+.van-detail-host-info span {
+  font-size: 14px;
+}
+
+.van-detail-host-img-div {
+  width: 5rem;
+  margin-right: 1rem;
+}
+
+.van-detail-host-img-div img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.van-detail-heart-div {
+  border-radius: 5px;
+  background-color: white;
+  padding: .5rem;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  top: 100px;
+  right: 30px;
+  cursor: pointer;
+}
+
+h4 {
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: .5rem;
+}
+
+.van-detail-trip-div {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 1.5rem;
+}
+
+.van-detail-distance-div {
+  margin-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid lightgray;
+}
+
+.owner-div {
+  margin-top: 1rem;
+}
+
+.owner-div button {
+  width: 100%;
+  padding: .75rem;
+  color: white;
+  background-color: var(--purple);
+  border: none;
+  font-weight: 600;
+  border-radius: 10px;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.add-to-favorites {
+  width: 100%;
+  padding: .75rem;
+  background-color: white;
+  border: 1px solid lightgray;
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  font-weight: 600;
+  color: #414143;
+}
+
+.add-to-favorites span {
+  margin-right: .5rem;
+  display: flex;
+  align-items: center;
+}
+
+.add-to-favorites svg {
+  transform: scale(1.3);
+}
+
+.overall-ratings-stars-div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.overall-ratings-stars-div span:first-of-type {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 35px;
+}
+
+.overall-ratings-stars-div svg {
+  padding-left: .25rem;
+}
+
+.overall-ratings-stars-div span:last-of-type {
+  font-size: 12px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: .5rem;
+  justify-content: space-between;
+}
+
+.rating span:first-of-type {
+  width: 135px;
+}
+
+.rating span {
+  font-size: 14px;
+}
+
+#add-a-review-btn {
+  width: 450px;
+  margin-left: 4.25rem;
+}
+
+.van-detail-map-div {
+  margin-bottom: 3rem;
+}
+
+.custom {
+  background-color: rgba(89, 60, 251, .5);
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}

@@ -19,7 +19,9 @@ class User(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    vans = db.relationship("Van", back_populates="owner")
+    vans = db.relationship("Van", back_populates="owner", cascade="all, delete-orphan")
+    owned_ratings = db.relationship("Rating", back_populates="rater")
+    favorites = db.relationship("Favorite", back_populates="user")
 
     @property
     def password(self):
@@ -33,12 +35,15 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password, password)
 
     def to_dict(self):
-        return {
-            'id': self.id,
-            'firstName': self.first_name,
-            'lastName': self.last_name,
-            'email': self.email,
-            'profileImage': self.profile_image_url,
-            'created_at': self.created_at,
-            'updated_at': self.updated_at
-        }
+      favorites = {favorite.van_id: favorite.van_id for favorite in self.favorites}
+
+      return {
+          'id': self.id,
+          'firstName': self.first_name,
+          'lastName': self.last_name,
+          'email': self.email,
+          'profileImage': self.profile_image_url,
+          'favorites': favorites,
+          'createdAt': self.created_at,
+          'updatedAt': self.updated_at
+      }

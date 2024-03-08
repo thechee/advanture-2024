@@ -1,0 +1,80 @@
+.van-list-item-li {
+  display: flex;
+  border: 1px solid var(--light-border);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  margin-right: 1.25rem;
+  width: 700px;
+}
+
+.van-list-item-li:hover {
+  background-color: var(--hover);
+}
+
+.van-list-item-image-div {
+  height: 170px;
+  width: 265px;
+}
+
+.van-list-item-image-div img {
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.van-list-item-info {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 170px;
+  padding: .75rem;
+  width: 430px;
+}
+
+.van-list-item-info h2 {
+  font-size: large;
+  margin: 0;
+}
+
+.van-list-item-location {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.van-list-item-price-div {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+}
+
+.van-list-item-li button {
+  width: 100px;
+  padding: .25rem;
+  margin-bottom: .25rem;
+}
+
+.van-list-item-price-div span {
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: .5px;
+  margin-right: .8rem;
+}
+
+.van-list-item-heart-div {
+  /* top: 0.5rem;
+  right: 0.5rem;*/
+  height: 0px;
+  /* width: 20px; */
+  /* height: 20px; */
+}
+
+.van-list-item-heart-div svg {
+  position: relative;
+  width: 20px;
+  left: 392px;
+  bottom: 145px;
+  transform: scale(1.3);
+}

@@ -1,4 +1,8 @@
 /* TODO: Add sitewide styles */
+#root {
+  padding-top: 4.5rem;
+}
+
 ul {
   list-style-type: none;
   padding-left: 0;
@@ -32,6 +36,10 @@ label {
   display: block;
 }
 
+button {
+  cursor: pointer;
+}
+
 #modal-content {
   border-radius: 5px;
   padding: 1.5rem;
@@ -46,5 +54,31 @@ label {
 }
 
 .submit-btn {
-  background-color: #593CFB;
+  background-color: var(--purple);
+  color: white;
+  border: none;
+  padding: .75rem;
+  border-radius: 5px;
+  width: 100%;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+:root {
+  --hover: #F3F3F3;
+  --purple: rgb(89, 60, 251);
+  --light-border: rgba(211, 211, 211, .5);
+}
+
+.van-detail-distance-div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn {
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  padding: .75rem;
+  width: 100%;
 }

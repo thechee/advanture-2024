@@ -1,19 +1,10 @@
-from app.models import db, Van, Feature, van_features, environment, SCHEMA
+from app.models import db, Van, Feature, environment, SCHEMA
 from sqlalchemy.sql import text
 from .vans_seed_data import vans
 from .features_seed_data import features
 import random
 
 def seed_van_features():
-  # for van in vans:
-  #   for i in random.sample(range(13), 6):
-  #     db.session.add(van_features(
-  #         van_id=van['id'],
-  #         feature_id=i
-  #         ))
-  #     db.session.commit()
-    # for feature in features:
-    #     db.session.add(Feature(name=feature['name']))
   newVans = []
   for van in vans:
     newVan = Van(
@@ -36,6 +27,8 @@ def seed_van_features():
     )
 
     newVans.append(newVan)
+    db.session.add(newVan)
+    db.session.commit()
 
   newFeatures = []
   for feature in features:
@@ -48,7 +41,7 @@ def seed_van_features():
     for i in random.sample(range(13), 6):
       van.features.append(newFeatures[i])
   
-  db.session.add_all(newVans)
+  # db.session.add_all(newVans)
   db.session.add_all(newFeatures)
 
   db.session.commit()

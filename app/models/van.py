@@ -32,31 +32,63 @@ class Van(db.Model):
   owner = db.relationship("User", back_populates="vans")
   fuel_type = db.relationship("FuelType", back_populates="vans")
   features = db.relationship("Feature", secondary=van_features, back_populates="vans")
-  images = db.relationship("VanImage", back_populates="van")
+  images = db.relationship("VanImage", back_populates="van", cascade='all, delete-orphan')
+  ratings = db.relationship("Rating", back_populates="van", cascade='all, delete-orphan')
+  favorites = db.relationship("Favorite", back_populates="van", cascade='all, delete-orphan')
 
   def to_dict(self):
     owner = self.owner.to_dict()
-    features = [feature.feature for feature in self.features]
+    features = [feature.name for feature in self.features]
+    fuel_type = self.fuel_type.fuel_type
+    images = {image.id: image.to_dict() for image in self.images}
+    ratings = {rating.id: rating.to_dict() for rating in self.ratings}
+    num_ratings = len(self.ratings)
 
-    return {
-      "id": self.id,
-      "owner": owner,
-      "year": self.year,
-      "make": self.make,
-      "model": self.model,
-      "miles": self.miles,
-      "address": self.address,
-      "city": self.city,
-      "state": self.state,
-      "zipCode": self.zip_code,
-      "rentalRate": self.rental_rate,
-      "description": self.description,
-      "distanceAllowed": self.distance_allowed,
-      "mpg": self.mpg,
-      "doors": self.doors,
-      "seats": self.seats,
-      "fuelType": self.fuel_type,
-      "features": features,
-      "createdAt": self.created_at,
-      "updatedAt": self.updated_at
-    }
+    van_avg_rating = 0
+    van_avg_cleanliness = 0
+    van_avg_maintenance = 0
+    van_avg_communication = 0
+    van_avg_convenience = 0
+    van_avg_accuracy = 0
+    for key in ratings:
+      van_avg_rating += ratings[key]["avgRating"]
+      van_avg_cleanliness += ratings[key]["cleanliness"]
+      van_avg_maintenance += ratings[key]["maintenance"]
+      van_avg_communication += ratings[key]["communication"]
+      van_avg_convenience += ratings[key]["convenience"]
+      van_avg_accuracy += ratings[key]["accuracy"]
+
+    return_dict = dict()
+    return_dict["id"] = self.id
+    return_dict["owner"] = owner
+    return_dict["year"] = self.year
+    return_dict["make"] = self.make
+    return_dict["model"] = self.model
+    return_dict["miles"] = self.miles
+    return_dict["address"] = self.address
+    return_dict["city"] = self.city
+    return_dict["state"] = self.state
+    return_dict["zipCode"] = self.zip_code
+    return_dict["rentalRate"] = self.rental_rate
+    return_dict["description"] = self.description
+    return_dict["distanceAllowed"] = self.distance_allowed
+    return_dict["mpg"] = self.mpg
+    return_dict["doors"] = self.doors
+    return_dict["seats"] = self.seats
+    return_dict["fuelType"] = fuel_type
+    return_dict["fuelTypeId"] = self.fuel_type_id
+    return_dict["features"] = features
+    return_dict["images"] = images
+    return_dict["ratings"] = ratings
+    return_dict["numRatings"] = num_ratings
+    return_dict["createdAt"] = self.created_at
+    return_dict["updatedAt"] = self.updated_at
+    if num_ratings != 0:
+      return_dict["vanAvgRating"] = float("{:3.2f}".format(van_avg_rating / num_ratings))
+      return_dict["vanAvgCleanliness"] = float("{:2.1f}".format(van_avg_cleanliness / num_ratings))
+      return_dict["vanAvgMaintenance"] = float("{:2.1f}".format(van_avg_maintenance / num_ratings))
+      return_dict["vanAvgCommunication"] = float("{:2.1f}".format(van_avg_communication / num_ratings))
+      return_dict["vanAvgConvenience"] = float("{:2.1f}".format(van_avg_convenience / num_ratings))
+      return_dict["vanAvgAccuracy"] = float("{:2.1f}".format(van_avg_accuracy / num_ratings))
+
+    return return_dict

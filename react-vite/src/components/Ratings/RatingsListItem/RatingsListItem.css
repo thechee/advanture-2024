@@ -1,0 +1,56 @@
+.review-li {
+  display: flex;
+  border-bottom: 1px solid var(--light-border);
+  padding: 1.5rem 0;
+}
+
+.reviewer-img-div {
+  width: 3rem;
+}
+
+.reviewer-img-div img {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.review-data-div {
+  width: 450px;
+  padding-left: 1.5rem;
+}
+
+.review-stars-info-div {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: .5rem;
+}
+
+.reviewer-name {
+  font-size: 13px;  
+  font-weight: 500;
+}
+
+.review-date {
+  color: grey;
+  padding-left: .5rem;
+  font-weight: 400;
+  font-size: 11px;
+}
+
+.review-text-div p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;  
+  line-height: 1.3rem;
+}
+
+.rli-btns-div {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: end;
+}
+
+.rli-btns-div button {
+  width: 100px;
+  padding: .5rem;
+}

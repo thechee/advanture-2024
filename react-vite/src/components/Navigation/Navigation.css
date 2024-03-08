@@ -1,8 +1,14 @@
 .nav-bar {
   display: flex;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid #F3F3F3;
+  position: fixed;
+  top: 0;
+  background-color: white;
+  z-index: 5;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 #logo {
@@ -32,7 +38,7 @@
 }
 
 #host-div:hover {
-  background-color: #F3F3F3
+  background-color: var(--hover)
 }
 
 #host-div span {
@@ -83,7 +89,7 @@
 
 .profile-active,
 .profile-button:hover {
-  background-color: #F3F3F3;
+  background-color: var(--hover);
 }
 
 .profile-dropdown {
@@ -94,6 +100,8 @@
   right: 1rem;
   top: 3.5rem;
   width: 250px;
+  background-color: white;
+  z-index: 1;
 }
 
 .profile-dropdown li {
@@ -112,10 +120,15 @@
   border-bottom: 1px solid lightgray;
 }
 
+.profile-dropdown-manage-div {
+  padding: 1rem 0;
+}
+
 .profile-dropdown-logout-div {
   padding-top: 1rem;
+  border-top: 1px solid lightgray;
 }
 
 .profile-dropdown li:hover {
-  background-color: #F3F3F3
+  background-color: var(--hover)
 }

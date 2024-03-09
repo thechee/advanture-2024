@@ -1,5 +1,11 @@
+
+
 .van-list-content {
   display: flex;
+  margin-top: 2.5rem;
+  height: calc(100vh - 113px);
+  width: 100vw;
+  overflow-x: hidden;
 }
 
 .van-list-ul {
@@ -9,7 +15,8 @@
   min-width: 725px;
   overflow: scroll;
   overflow-x: hidden;
-  height: calc(100vh - 80px);
+  /* height: calc(100vh - 113px); */
+  height: 100%;
 }
 
 .van-list-ul a {
@@ -18,6 +25,99 @@
 }
 
 .van-list-map-div {
-  height: calc(100vh - 80px);
-  width: calc(100vw - 725px);
+  height: 100%;
+  width: calc(100vw - 730px);
+}
+
+.price-marker {
+  padding: .3rem .5rem;
+  background-color: white;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.price-marker:hover {
+  background-color: black;
+  color: white;
+}
+
+.user-pos {
+  background-color: black;
+  color: white;
+  padding: 1.25rem;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10px;
+  width: 10px;
+}
+
+.filters-nav {
+  /* height: 1rem; */
+  width: 100%;
+  box-shadow: 0px 2px 5px lightgray;
+  position: absolute;
+  z-index: 4;
+  background-color: white;
+  padding: .5rem 0 .5rem 1.5rem;
+  display: flex;
+  gap: .5rem;
+  overflow-x: hidden;
+}
+
+.filters-nav button > svg {
+  padding-left: .5rem;
+}
+
+.sort-div {
+  position: absolute;
+  left: 1.5rem;
+  border: 1px solid var(--light-border);
+  border-radius: 10px;
+  top: 8rem;
+  /* height: 20rem; */
+  width: 20rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  z-index: 4;
+  padding-top: 1rem;
+}
+
+.sort-choice-radios {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+}
+
+.sort-choice-radios input {
+  margin: 0 1rem 0 0;
+  cursor: pointer;
+  color: var(--purple);
+
+  appearance: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  border: 1px solid black;
+}
+
+.sort-choice-radios input:checked {
+  border: 5.5px solid var(--purple);
+}
+
+.sort-btns-div {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  border-top: 1px solid lightgray;
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.sort-btns-div button {
+  width: fit-content;
 }

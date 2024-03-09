@@ -73,7 +73,6 @@ export const VanList = () => {
     const closeMenu = (e) => {
       if (divRef.current && !divRef.current.contains(e.target)) {
         setShowSort(false);
-        document.body.classList.remove("no-scroll")
       }
     };
 

@@ -15,6 +15,8 @@ export const VanList = () => {
   const [vanPositions, setVanPositions] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showSort, setShowSort] = useState(false)
+  const [showPrice, setShowPrice] = useState(false)
+  const [showFilters, setShowFilters] = useState(false)
   const [sort, setSort] = useState("")
   const divRef = useRef()
 
@@ -81,9 +83,11 @@ export const VanList = () => {
     return () => document.removeEventListener("click", closeMenu);
   }, [showSort]);
 
-  const handleSortClick = (e) => {
+  const handleFiltersClick = (e, filter) => {
     e.stopPropagation();
-    setShowSort(true)
+    if (filter == "sort") setShowSort(true)
+    if (filter == "price") setShowPrice(true)
+    if (filter == "filters") setShowFilters(true)
   }
 
   if (!vansObj) return null;
@@ -112,9 +116,9 @@ export const VanList = () => {
         {showSort ? 
         <button className="white-btn">Sort by <FaChevronUp /></button>
         :
-        <button className="white-btn" onClick={handleSortClick}>Sort by <FaChevronDown /></button>}
-        <button className="white-btn">Daily price <FaChevronDown /></button>
-        <button className="white-btn">More filters <FaChevronDown /></button>
+        <button className="white-btn" onClick={(e) => handleFiltersClick(e, "sort")}>Sort by <FaChevronDown /></button>}
+        <button className="white-btn" onClick={(e) => handleFiltersClick(e, "price")}>Daily price <FaChevronDown /></button>
+        <button className="white-btn" onClick={(e) => handleFiltersClick(e, "filters")}>More filters <FaChevronDown /></button>
       </div>
       {showSort && <div className="sort-div" ref={divRef}>
         <form id="sort-form" onSubmit={sortSubmitHandler}>
@@ -133,6 +137,9 @@ export const VanList = () => {
           <button className="submit-btn">Apply</button>
         </div>
         </form>
+        </div>}
+      {showFilters && <div className="more-filters-div">
+
         </div>}
       {isLoaded && (
         <div className="van-list-content">

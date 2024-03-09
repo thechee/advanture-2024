@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkGetVans } from "../../../redux/van";
 import { VanListItem } from "../VanListItem/VanListItem";
 import "./VanList.css";
-import { FaMapMarkerAlt } from "react-icons/fa";
-
+import { FaMapMarkerAlt, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 
 export const VanList = () => {
@@ -15,6 +14,9 @@ export const VanList = () => {
   const [latLng, setLatLng] = useState({});
   const [vanPositions, setVanPositions] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showSort, setShowSort] = useState(false)
+  const [sort, setSort] = useState("")
+  const divRef = useRef()
 
   useEffect(() => {
     dispatch(thunkGetVans());
@@ -65,17 +67,78 @@ export const VanList = () => {
 
   }, [vansObj, ])
 
+  useEffect(() => {
+    if (!showSort) return;
+
+    const closeMenu = (e) => {
+      if (divRef.current && !divRef.current.contains(e.target)) {
+        setShowSort(false);
+        document.body.classList.remove("no-scroll")
+      }
+    };
+
+    document.addEventListener("click", closeMenu);
+
+    return () => document.removeEventListener("click", closeMenu);
+  }, [showSort]);
+
+  const handleSortClick = (e) => {
+    e.stopPropagation();
+    setShowSort(true)
+  }
+
   if (!vansObj) return null;
-  const vans = Object.values(vansObj);
+  let vans = Object.values(vansObj);
+  if (sort == "low") vans = vans.sort((a, b) => (a.rentalRate - b.rentalRate))
+  if (sort == "high") vans = vans.sort((a, b) => (b.rentalRate - a.rentalRate))
 
+  const handleReset = (e) => {
+    // e.preventDefault()
+    // e.stopPropagation();
+    const form = document.getElementById("sort-form")
+    form.reset()
+    setSort("")
+    setShowSort(false)
+    dispatch(thunkGetVans())
+  }
 
-  console.log("vanPositions", vanPositions)
+  const sortSubmitHandler = (e) => {
+    e.preventDefault()
+    dispatch(thunkGetVans(sort))
+  }
 
   return (
-    <div className="van-list-content">
+    <>
+      <div className="filters-nav">
+        {showSort ? 
+        <button className="white-btn">Sort by <FaChevronUp /></button>
+        :
+        <button className="white-btn" onClick={handleSortClick}>Sort by <FaChevronDown /></button>}
+        <button className="white-btn">Daily price <FaChevronDown /></button>
+        <button className="white-btn">More filters <FaChevronDown /></button>
+      </div>
+      {showSort && <div className="sort-div" ref={divRef}>
+        <form id="sort-form" onSubmit={sortSubmitHandler}>
+        <div className="sort-choice-radios">
+        <input type="radio" name="sort" value="low" id="sort-choice-low"
+        onChange={() => setSort("low")}/>
+        <label htmlFor="sort-choice-low">Daily price: low to high</label>
+        </div>
+        <div className="sort-choice-radios">
+        <input type="radio" name="sort" value="high" id="sort-choice-high"
+        onChange={() => setSort("high")}/>
+        <label htmlFor="sort-choice-high">Daily price: high to low</label>
+        </div>
+        <div className="sort-btns-div">
+          <button className="white-btn" onClick={handleReset}>Reset</button>
+          <button className="submit-btn">Apply</button>
+        </div>
+        </form>
+        </div>}
       {isLoaded && (
-        <>
+        <div className="van-list-content">
           <ul className="van-list-ul">
+            <h3>{vans.length} vans available</h3>
             {vans.map((van) => (
               <VanListItem key={van.id} van={van} />
             ))}
@@ -88,8 +151,8 @@ export const VanList = () => {
                 gestureHandling={"greedy"}
                 disableDefaultUI={true}
                 mapId={mapId}
+                style={{WebkitBoxShadow: "0 0 1px 3px #000 inset"}}
                 >
-                  
                   <AdvancedMarker position={latLng} className="user-pos">
                     <div>
                     <FaMapMarkerAlt />
@@ -108,8 +171,8 @@ export const VanList = () => {
                 </Map>
             )}
           </div>
-        </>
+        </div>
       )}
-    </div>
+      </>
   );
 };

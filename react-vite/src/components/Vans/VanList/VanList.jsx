@@ -15,6 +15,7 @@ export const VanList = () => {
   const [vanPositions, setVanPositions] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showSort, setShowSort] = useState(false)
+  const [tempSort, setTempSort] = useState("")
   const [showPrice, setShowPrice] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
   const [sort, setSort] = useState("")
@@ -108,6 +109,8 @@ export const VanList = () => {
   const sortSubmitHandler = (e) => {
     e.preventDefault()
     dispatch(thunkGetVans(sort))
+    setShowSort(false)
+    setSort(tempSort)
   }
 
   return (
@@ -124,12 +127,12 @@ export const VanList = () => {
         <form id="sort-form" onSubmit={sortSubmitHandler}>
         <div className="sort-choice-radios">
         <input type="radio" name="sort" value="low" id="sort-choice-low"
-        onChange={() => setSort("low")}/>
+        onChange={() => setTempSort("low")}/>
         <label htmlFor="sort-choice-low">Daily price: low to high</label>
         </div>
         <div className="sort-choice-radios">
         <input type="radio" name="sort" value="high" id="sort-choice-high"
-        onChange={() => setSort("high")}/>
+        onChange={() => setTempSort("high")}/>
         <label htmlFor="sort-choice-high">Daily price: high to low</label>
         </div>
         <div className="sort-btns-div">

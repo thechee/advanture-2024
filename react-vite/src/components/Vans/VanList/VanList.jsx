@@ -15,6 +15,9 @@ export const VanList = () => {
   const [vanPositions, setVanPositions] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showSort, setShowSort] = useState(false)
+  const [tempSort, setTempSort] = useState("")
+  const [showPrice, setShowPrice] = useState(false)
+  const [showFilters, setShowFilters] = useState(false)
   const [sort, setSort] = useState("")
   const divRef = useRef()
 
@@ -81,9 +84,11 @@ export const VanList = () => {
     return () => document.removeEventListener("click", closeMenu);
   }, [showSort]);
 
-  const handleSortClick = (e) => {
+  const handleFiltersClick = (e, filter) => {
     e.stopPropagation();
-    setShowSort(true)
+    if (filter == "sort") setShowSort(true)
+    if (filter == "price") setShowPrice(true)
+    if (filter == "filters") setShowFilters(true)
   }
 
   if (!vansObj) return null;
@@ -104,6 +109,8 @@ export const VanList = () => {
   const sortSubmitHandler = (e) => {
     e.preventDefault()
     dispatch(thunkGetVans(sort))
+    setShowSort(false)
+    setSort(tempSort)
   }
 
   return (
@@ -112,20 +119,20 @@ export const VanList = () => {
         {showSort ? 
         <button className="white-btn">Sort by <FaChevronUp /></button>
         :
-        <button className="white-btn" onClick={handleSortClick}>Sort by <FaChevronDown /></button>}
-        <button className="white-btn">Daily price <FaChevronDown /></button>
-        <button className="white-btn">More filters <FaChevronDown /></button>
+        <button className="white-btn" onClick={(e) => handleFiltersClick(e, "sort")}>Sort by <FaChevronDown /></button>}
+        <button className="white-btn" onClick={(e) => handleFiltersClick(e, "price")}>Daily price <FaChevronDown /></button>
+        <button className="white-btn" onClick={(e) => handleFiltersClick(e, "filters")}>More filters <FaChevronDown /></button>
       </div>
       {showSort && <div className="sort-div" ref={divRef}>
         <form id="sort-form" onSubmit={sortSubmitHandler}>
         <div className="sort-choice-radios">
         <input type="radio" name="sort" value="low" id="sort-choice-low"
-        onChange={() => setSort("low")}/>
+        onChange={() => setTempSort("low")}/>
         <label htmlFor="sort-choice-low">Daily price: low to high</label>
         </div>
         <div className="sort-choice-radios">
         <input type="radio" name="sort" value="high" id="sort-choice-high"
-        onChange={() => setSort("high")}/>
+        onChange={() => setTempSort("high")}/>
         <label htmlFor="sort-choice-high">Daily price: high to low</label>
         </div>
         <div className="sort-btns-div">
@@ -133,6 +140,9 @@ export const VanList = () => {
           <button className="submit-btn">Apply</button>
         </div>
         </form>
+        </div>}
+      {showFilters && <div className="more-filters-div">
+
         </div>}
       {isLoaded && (
         <div className="van-list-content">

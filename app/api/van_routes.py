@@ -12,7 +12,14 @@ def vans():
   """
   Query for all vans and returns them in a list of van dicts
   """
-  vans = Van.query.all()
+  sort = request.args.get("sort")
+  if not sort:
+    vans = Van.query.all()
+  else:
+    if sort == "low":
+      vans = Van.query.order_by(Van.rental_rate.asc())
+    if sort == "high":
+      vans = Van.query.order_by(Van.rental_rate.desc())
   return [van.to_dict() for van in vans]
 
 @van_routes.route('/<int:vanId>')

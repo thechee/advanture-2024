@@ -24,19 +24,12 @@
   margin-bottom: 0;
 }
 
-.white-btn {
-  background-color: white;
-  border-radius: 5px;
+.no-favorites .white-btn {
   padding: .5rem 2rem;
-  border: 1px solid lightgray;
-  font-weight: 600;
   margin: 1rem auto;
-  display: flex;
-  align-items: center;
   box-sizing: border-box;
-  width: fit-content;
 }
 
-.white-btn svg {
+.no-favorites .white-btn svg {
   padding-right: .5rem;
 }

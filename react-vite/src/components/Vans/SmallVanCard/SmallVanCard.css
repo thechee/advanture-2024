@@ -4,6 +4,7 @@
   box-shadow: 0px 2px 4px lightgray;
   margin-bottom: 2rem;
   position: relative;
+  cursor: pointer;
 }
 
 .small-van-card-img-div {

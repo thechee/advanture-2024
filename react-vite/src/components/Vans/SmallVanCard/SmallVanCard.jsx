@@ -3,8 +3,10 @@ import './SmallVanCard.css'
 import { FaHeart } from "react-icons/fa";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv";
 import { RemoveFavoritesModal } from "../../Favorites/RemoveFavoritesModal/RemoveFavoritesModal";
+import { useNavigate } from "react-router-dom";
 
 export const SmallVanCard = ({van}) => {
+  const navigate = useNavigate()
 
   let previewImage;
   for (const image in van.images) {
@@ -19,7 +21,7 @@ export const SmallVanCard = ({van}) => {
   `${van.make} ${van.model} ${van.year}`
 
   return (
-    <li className="small-van-card">
+    <li className="small-van-card" onClick={() => navigate(`/vans/${van.id}`)}>
       <div className="small-van-card-img-div">
         <img src={previewImage} alt="" />
       </div>

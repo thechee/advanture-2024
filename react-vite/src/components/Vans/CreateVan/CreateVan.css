@@ -1,5 +1,5 @@
 .create-van-form {
-  width: 850px;
+  width: 900px;
   display: flex;
   flex-direction: column;
   margin: 2rem auto;
@@ -13,7 +13,7 @@
 
 .create-van-form input,
 .create-van-form select {
-  width: 200px;
+  width: 240px;
   padding: .5rem;
   font-size: 14px;
   box-sizing: border-box;

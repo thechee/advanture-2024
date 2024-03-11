@@ -67,7 +67,7 @@ def create_van():
     db.session.add(new_van)
     db.session.commit()
     return new_van.to_dict()
-  return form.errors, 401
+  return form.errors, 400
 
 
 @login_required
@@ -104,7 +104,7 @@ def update_van(vanId):
     
     db.session.commit()
     return van.to_dict()
-  return form.errors, 401
+  return form.errors, 400
 
 
 @login_required

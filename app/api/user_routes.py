@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
-from app.models import User, Favorite, db
+from app.models import User, Favorite, Van, db
 
 user_routes = Blueprint('users', __name__)
 
@@ -24,7 +24,7 @@ def user(id):
     user = User.query.get(id)
     return user.to_dict()
 
-
+# !FAVORITES
 @user_routes.route('/favorites')
 @login_required
 def get_user_favorited_vans():
@@ -40,6 +40,9 @@ def add_favorite(vanId):
     """
     Add the vanId to current user's favorites
     """
+    van = Van.query.get(vanId)
+    if van.owner.id == current_user.id:
+        return {"errors": {"message": "Owner of van can not favorite it"}}
 
     new_favorite = Favorite(
         user_id = current_user.id,

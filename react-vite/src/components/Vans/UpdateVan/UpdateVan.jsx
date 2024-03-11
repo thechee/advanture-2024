@@ -136,7 +136,7 @@ export const UpdateVan = () => {
 
     setValidationErrors({});
     const errors = {};
-    if (!year) errors.year = "Van year is required";
+    if (!year || year == "placeholder") errors.year = "Van year is required";
     if (year > automotiveYear)
       errors.year = "Year can not be after the current automotive year";
     if (year && year < 1950)
@@ -165,6 +165,7 @@ export const UpdateVan = () => {
       errors.rentalRate = "Daily rental rate must be a positive number";
     if (rentalRate > 500)
       errors.rentalRate = "We do not accept rental rates greater than $500/day";
+    if (!Number.isInteger(parseInt(rentalRate))) errors.rentalRate = "Must be a whole dollar amount"
     if (!description) errors.description = "Description is required";
     if (description.length < 50)
       errors.description = "Description must be at least 50 characters";
@@ -174,13 +175,15 @@ export const UpdateVan = () => {
       errors.distanceIncluded = "Distance included is required";
     if (!mpg && fuelTypeId != 4)
       errors.mpg = "MPG is required for non-electric vehicles";
+    if (distanceIncluded <= 0 && unlimited == false) errors.distanceIncluded = "Must be a positive number"
     if (mpg < 1 && fuelTypeId != 4)
       errors.mpg = "MPG is must be a positive number";
     if (mpg > 150 && fuelTypeId != 4) errors.mpg = "MPG can not be over 150";
-    if (!doors) errors.doors = "Doors is required";
+    if (!doors || doors == "placeholder") errors.doors = "Doors is required";
     if (doors < 1) errors.doors = "Van must have at least 1 door";
     if (doors > 9) errors.doors = "Your van has too many doors";
     if (!seats) errors.seats = "Seats is required";
+    if (!seats || seats == "placeholder") errors.seats = "Seats is required";
     if (seats < 1) errors.seats = "Van must have at least 1 seat";
     if (seats > 12) errors.seats = "This is a website for vans, not buses";
     if (fuelTypeId == "placeholder")
@@ -224,21 +227,28 @@ export const UpdateVan = () => {
           vanId
         )
       )
-        .then(async (updatedVan) => {
-          if (image && typeof image === "object" && image.name) {
-            const formData = new FormData();
+        .then(async (data) => {
+          if (!data.id) {
+            if (data.fuel_type_id) data.fuelTypeId = data.fuel_type_id
+            if (data.rental_rate) data.rentalRate = data.rental_rate
+            if (data.zip_code) data.zipCode = data.zip_code
+            
+            setValidationErrors(data);
+          } else {
 
-            formData.append("van_id", updatedVan.id);
-            formData.append("image", image);
-            formData.append("preview", true);
-
-            await dispatch(thunkUpdateVanImage(formData, updatedVan.id));
+            if (image && typeof image === "object" && image.name) {
+              const formData = new FormData();
+              
+              formData.append("van_id", data.id);
+              formData.append("image", image);
+              formData.append("preview", true);
+              
+              await dispatch(thunkUpdateVanImage(formData, data.id))
+              .then(() => navigate(`/vans/${data.id}`))
+            }
           }
-          navigate(`/vans/${updatedVan.id}`);
+          navigate(`/vans/${data.id}`)
         })
-        .catch(async (response) => {
-          setValidationErrors(response);
-        });
     }
   };
 

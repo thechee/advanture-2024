@@ -3,12 +3,12 @@ from wtforms import StringField, SelectField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, NumberRange, Length, Optional
 from datetime import datetime
 
-current_year = datetime.now().year
+current__automotive_year = datetime.now().year + 1
 makes = ["Ford", "Dodge", "Ram", "Volkswagen", "Mercedes", "Toyota"]
 fuel_types = [(1, "Gasoline"), (2, "Diesel"), (3, "Bio-Diesel"), (4, "Electric"), (5, "Hybrid")]
 
 class VanForm(FlaskForm):
-  year = IntegerField('year', validators=[DataRequired(), NumberRange(min=1950, max=current_year)])
+  year = IntegerField('year', validators=[DataRequired(), NumberRange(min=1950, max=current__automotive_year)])
   make = SelectField('make', validators=[DataRequired()], choices=makes)
   model = StringField('model', validators=[DataRequired()])
   miles = IntegerField('miles', validators=[DataRequired(), NumberRange(min=0, max=500000)])

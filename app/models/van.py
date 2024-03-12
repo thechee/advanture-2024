@@ -26,6 +26,8 @@ class Van(db.Model):
   doors = db.Column(db.Integer, nullable=False)
   seats = db.Column(db.Integer, nullable=False)
   fuel_type_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("fuel_types.id")), nullable=False)
+  lat = db.Column(db.Numeric(scale=6, asdecimal=False), nullable=False)
+  lng = db.Column(db.Numeric(scale=6, asdecimal=False), nullable=False)
   created_at = db.Column(db.DateTime, default=datetime.now)
   updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 

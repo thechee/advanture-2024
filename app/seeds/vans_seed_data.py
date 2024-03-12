@@ -26,7 +26,9 @@ vans = [
     "mpg": 20,
     "doors": 5,
     "seats": 5,
-    "fuel_type_id": 2
+    "fuel_type_id": 2,
+    "lat": "47.6762",
+    "lng": "-122.2025"
   },
   {
     "id": 2,
@@ -57,7 +59,9 @@ vans = [
     "mpg": 20,
     "doors": 5,
     "seats": 2,
-    "fuel_type_id": 1
+    "fuel_type_id": 1,
+    "lat": "39.9516",
+    "lng": "-74.9947"
   },
   {
     "id": 3,
@@ -88,7 +92,9 @@ vans = [
     "mpg": 28,
     "doors": 5,
     "seats": 2,
-    "fuel_type_id": 1
+    "fuel_type_id": 1,
+    "lat": "35.1495",
+    "lng": "-90.0490"
   },
   {
     "id": 4,
@@ -119,7 +125,9 @@ vans = [
     "mpg": 18,
     "doors": 4,
     "seats": 4,
-    "fuel_type_id": 1
+    "fuel_type_id": 1,
+    "lat": "44.7979",
+    "lng": "-106.9566"
   },
   {
     "id": 5,
@@ -150,7 +158,9 @@ vans = [
     "mpg": None,
     "doors": 4,
     "seats": 4,
-    "fuel_type_id": 4
+    "fuel_type_id": 4,
+    "lat": "45.5051",
+    "lng": "-122.6750"
   },
  {
     "id": 6,
@@ -181,7 +191,9 @@ vans = [
     "mpg": 25, 
     "doors": 5,
     "seats": 4,
-    "fuel_type_id": 3
+    "fuel_type_id": 3,
+    "lat": "39.7392",
+    "lng": "-104.9903"
 },
  {
     "id": 7,
@@ -210,7 +222,9 @@ vans = [
     "mpg": 16,
     "doors": 6,
     "seats": 12,
-    "fuel_type_id": 2
+    "fuel_type_id": 2,
+    "lat": "47.6062",
+    "lng": "-122.3321"
  },
 {
   "id": 8,
@@ -239,7 +253,9 @@ vans = [
     "mpg": 22,
     "doors": 4,
     "seats": 4,
-    "fuel_type_id": 1
+    "fuel_type_id": 1,
+    "lat": "37.7749",
+    "lng": "-122.4194"
 },
 {
     "id": 9,
@@ -268,7 +284,9 @@ vans = [
     "mpg": 18,
     "doors": 5,
     "seats": 4,
-    "fuel_type_id": 3
+    "fuel_type_id": 3,
+    "lat": "30.2672",
+    "lng": "-97.7431"
 },
 {
     "id": 10,
@@ -297,6 +315,8 @@ vans = [
     "mpg": 20,
     "doors": 5,
     "seats": 7,
-    "fuel_type_id": 1
+    "fuel_type_id": 1,
+    "lat": "25.7617",
+    "lng": "-80.1918"
 }
 ]

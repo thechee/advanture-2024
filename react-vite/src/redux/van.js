@@ -77,8 +77,10 @@ const deleteVanRating = (vanId, ratingId) => ({
 
 /* ========== Thunks ========== */
 
-export const thunkGetVans = () => async dispatch => {
-  const response = await fetch('/api/vans/')
+export const thunkGetVans = (sort) => async dispatch => {
+  let url = "/api/vans"
+  if (sort) url += `?sort=${sort}`
+  const response = await fetch(url)
 
   if (response.ok) {
     const vans = await response.json()

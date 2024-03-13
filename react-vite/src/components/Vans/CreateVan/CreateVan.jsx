@@ -47,7 +47,6 @@ export const CreateVan = () => {
   const zipCodeRegex = /\d{5}/;
 
 
-
   useEffect(() => {
     const mpgInput = document.querySelector("#MPG-input");
     if (fuelTypeId == 4) {
@@ -70,7 +69,6 @@ export const CreateVan = () => {
 
   useEffect(() => {
     if (image && typeof image === "object" && image.name) {
-      console.log(image.name.toLowerCase())
       if (!image.name.toLowerCase().endsWith(".jpeg") &&
         !image.name.toLowerCase().endsWith(".jpg") &&
         !image.name.toLowerCase().endsWith(".png"))
@@ -89,7 +87,7 @@ export const CreateVan = () => {
 
     setValidationErrors({});
     const errors = {};
-    if (!year) errors.year = "Van year is required";
+    if (!year || year == "placeholder") errors.year = "Van year is required";
     if (year > automotiveYear)
       errors.year = "Year can not be after the current automotive year";
     if (year && year < 1950)
@@ -118,22 +116,24 @@ export const CreateVan = () => {
       errors.rentalRate = "Daily rental rate must be a positive number";
     if (rentalRate > 500)
       errors.rentalRate = "We do not accept rental rates greater than $500/day";
+    if (!Number.isInteger(parseInt(rentalRate))) errors.rentalRate = "Must be a whole dollar amount"
     if (!description) errors.description = "Description is required";
     if (description.length < 50)
       errors.description = "Description must be at least 50 characters";
     if (description.length > 9999)
       errors.description = "Description must not be a book";
     if (!distanceIncluded && unlimited == false)
-      errors.distanceIncluded = "Distance included is required";
+    errors.distanceIncluded = "Distance included is required";
+    if (distanceIncluded <= 0 && unlimited == false) errors.distanceIncluded = "Must be a positive number"
     if (!mpg && fuelTypeId != 4)
       errors.mpg = "MPG is required for non-electric vehicles";
     if (mpg < 1 && fuelTypeId != 4)
       errors.mpg = "MPG is must be a positive number";
     if (mpg > 150 && fuelTypeId != 4) errors.mpg = "MPG can not be over 150";
-    if (!doors) errors.doors = "Doors is required";
+    if (!doors || doors == "placeholder") errors.doors = "Doors is required";
     if (doors < 1) errors.doors = "Van must have at least 1 door";
     if (doors > 9) errors.doors = "Your van has too many doors";
-    if (!seats) errors.seats = "Seats is required";
+    if (!seats || seats == "placeholder") errors.seats = "Seats is required";
     if (seats < 1) errors.seats = "Van must have at least 1 seat";
     if (seats > 12) errors.seats = "This is a website for vans, not buses";
     if (fuelTypeId == "placeholder")
@@ -187,19 +187,26 @@ export const CreateVan = () => {
           lng
         })
       )
-        .then(async (newVan) => {
-          const formData = new FormData();
+        .then(async (data) => {
+          if (!data.id) {
+            if (data.fuel_type_id) data.fuelTypeId = data.fuel_type_id
+            if (data.rental_rate) data.rentalRate = data.rental_rate
+            if (data.zip_code) data.zipCode = data.zip_code
 
-          formData.append("van_id", newVan.id);
-          formData.append("image", image);
-          formData.append("preview", true);
+            setValidationErrors(data)
+          } else {
 
-          await dispatch(thunkAddVanImage(formData, newVan.id));
-          navigate(`/vans/${newVan.id}`);
+            const formData = new FormData();
+            
+            formData.append("van_id", data.id);
+            formData.append("image", image);
+            formData.append("preview", true);
+            
+            await dispatch(thunkAddVanImage(formData, data.id))
+            .then(() => navigate(`/vans/${data.id}`))
+
+          }
         })
-        .catch(async (response) => {
-          setValidationErrors(response);
-        });
     }
   };
 

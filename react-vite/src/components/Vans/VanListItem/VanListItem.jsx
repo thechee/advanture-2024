@@ -90,7 +90,7 @@ export const VanListItem = ({ van }) => {
             )}
             {isOwner && (
               <OpenModalButton
-                className={"submit-btn"}
+                className={"btn"}
                 buttonText={"Remove"}
                 modalComponent={<DeleteVanModal van={van} />}
               />

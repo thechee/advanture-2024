@@ -12,7 +12,14 @@ def vans():
   """
   Query for all vans and returns them in a list of van dicts
   """
-  vans = Van.query.all()
+  sort = request.args.get("sort")
+  if not sort:
+    vans = Van.query.all()
+  else:
+    if sort == "low":
+      vans = Van.query.order_by(Van.rental_rate.asc())
+    if sort == "high":
+      vans = Van.query.order_by(Van.rental_rate.desc())
   return [van.to_dict() for van in vans]
 
 @van_routes.route('/<int:vanId>')
@@ -60,7 +67,7 @@ def create_van():
     db.session.add(new_van)
     db.session.commit()
     return new_van.to_dict()
-  return form.errors, 401
+  return form.errors, 400
 
 
 @login_required
@@ -97,7 +104,7 @@ def update_van(vanId):
     
     db.session.commit()
     return van.to_dict()
-  return form.errors, 401
+  return form.errors, 400
 
 
 @login_required

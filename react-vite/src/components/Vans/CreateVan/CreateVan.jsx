@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import "./CreateVan.css";
 import { thunkAddVan, thunkAddVanImage } from "../../../redux/van";
+import { setDefaults, fromAddress } from "react-geocode"
+import "./CreateVan.css";
 
 const yearsOptions = []
 for (let i = new Date().getFullYear() + 1; i >= 1950; i--) {
@@ -16,6 +17,7 @@ export const CreateVan = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);
+  const mapsApiKey = useSelector((state) => state.maps.key);
   const [year, setYear] = useState("placeholder");
   const [make, setMake] = useState("placeholder");
   const [model, setModel] = useState("");
@@ -35,6 +37,8 @@ export const CreateVan = () => {
   const [image, setImage] = useState(null);
   const [fileName, setFileName] = useState("");
   const [imageURL, setImageURL] = useState("");
+  const [lat, setLat] = useState("");
+  const [lng, setLng] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
 
   const maxFileError = "Image exceeds the maximum file size of 5Mb";
@@ -148,6 +152,20 @@ export const CreateVan = () => {
     if (Object.values(errors).length) {
       setValidationErrors(errors);
     } else {
+
+      setDefaults({
+        key: mapsApiKey,
+        language: "en",
+        region: "us",
+      });
+
+      fromAddress(`${address}, ${city}, ${state}`)
+      .then(({response}) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        setLat(lat);
+        setLng(lng);
+      })
+
       await dispatch(
         thunkAddVan({
           year,
@@ -165,6 +183,8 @@ export const CreateVan = () => {
           doors,
           seats,
           fuel_type_id: fuelTypeId,
+          lat,
+          lng
         })
       )
         .then(async (newVan) => {

@@ -30,35 +30,10 @@ export const VanDetail = () => {
   const [viewNewReview, setViewNewReview] = useState(false);
   const [from, setFrom] = useState(moment().format("YYYY-MM-DD"));
   const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
-  const [latLng, setLatLng] = useState({});
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
   }, [dispatch, vanId]);
-
-  useEffect(() => {
-    async function getLatLng(address, city, state) {
-      const { Geocoder } = await google.maps.importLibrary("geocoding");
-
-      const geocoder = new Geocoder();
-
-      geocoder.geocode(
-        {
-          address: `${address}, ${city}, ${state}`,
-        },
-        (results, status) => {
-          if (status == "OK") {
-            setLatLng({
-              lat: results[0].geometry.location.lat(),
-              lng: results[0].geometry.location.lng(),
-            });
-          }
-        }
-      );
-    }
-
-    if (van) getLatLng(van.address, van.city, van.state);
-  }, [van]);
 
   if (!van) return null;
   if (!ratingsObj) return null;
@@ -352,9 +327,9 @@ export const VanDetail = () => {
         </div>
       </div>
       <div className="van-detail-map-div">
-        {!!Object.values(latLng).length && (
+        {van && (
           <Map
-            center={latLng}
+            center={{lat: van.lat, lng: van.lng }}
             zoom={15}
             gestureHandling={"greedy"}
             controlled={true}
@@ -362,7 +337,7 @@ export const VanDetail = () => {
             style={{ height: "700px" }}
             mapId={mapId}
           >
-            <AdvancedMarker position={latLng} className={"custom"}>
+            <AdvancedMarker position={{lat: van.lat, lng: van.lng }} className={"custom"}>
               <div></div>
             </AdvancedMarker>
           </Map>

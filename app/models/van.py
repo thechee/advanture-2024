@@ -26,8 +26,8 @@ class Van(db.Model):
   doors = db.Column(db.Integer, nullable=False)
   seats = db.Column(db.Integer, nullable=False)
   fuel_type_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("fuel_types.id")), nullable=False)
-  lat = db.Column(db.Numeric(scale=6, asdecimal=False), nullable=False)
-  lng = db.Column(db.Numeric(scale=6, asdecimal=False), nullable=False)
+  lat = db.Column(db.Numeric(scale=10, asdecimal=False), nullable=False)
+  lng = db.Column(db.Numeric(scale=10, asdecimal=False), nullable=False)
   created_at = db.Column(db.DateTime, default=datetime.now)
   updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
@@ -85,6 +85,8 @@ class Van(db.Model):
     return_dict["numRatings"] = num_ratings
     return_dict["createdAt"] = self.created_at
     return_dict["updatedAt"] = self.updated_at
+    return_dict["lat"] = self.lat
+    return_dict["lng"] = self.lng
     if num_ratings != 0:
       return_dict["vanAvgRating"] = float("{:3.2f}".format(van_avg_rating / num_ratings))
       return_dict["vanAvgCleanliness"] = float("{:2.1f}".format(van_avg_cleanliness / num_ratings))

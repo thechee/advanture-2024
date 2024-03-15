@@ -12,7 +12,6 @@ export const VanList = () => {
   const userFavorites = useSelector((state) => state.session.user?.favorites);
   const mapId = useSelector(state => state.maps.mapId)
   const [latLng, setLatLng] = useState({});
-  const [vanPositions, setVanPositions] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [showSort, setShowSort] = useState(false)
   const [tempSort, setTempSort] = useState("")
@@ -40,35 +39,6 @@ export const VanList = () => {
     setIsLoaded(true);
   }, []);
 
-  useEffect(() => {
-    async function getVanLatLng(vans) {
-      const { Geocoder } = await google.maps.importLibrary("geocoding");
-  
-      const geocoder = new Geocoder();
-  
-      vans.forEach(async van => {
-
-        await geocoder.geocode(
-          {
-            address: `${van.address}, ${van.city}, ${van.state}`,
-          },
-          (results, status) => {
-            if (status == "OK") {
-              tempArr.push({
-                van: van,
-                lat: results[0].geometry.location.lat(),
-                lng: results[0].geometry.location.lng()
-              })
-            }
-          }
-        );
-      })
-    }
-    const tempArr = []
-    getVanLatLng(Object.values(vansObj))
-    setVanPositions(tempArr)
-
-  }, [vansObj, ])
 
   useEffect(() => {
     if (!showSort) return;
@@ -96,7 +66,7 @@ export const VanList = () => {
   if (sort == "low") vans = vans.sort((a, b) => (a.rentalRate - b.rentalRate))
   if (sort == "high") vans = vans.sort((a, b) => (b.rentalRate - a.rentalRate))
 
-  const handleReset = (e) => {
+  const handleReset = () => {
     // e.preventDefault()
     // e.stopPropagation();
     const form = document.getElementById("sort-form")
@@ -167,11 +137,11 @@ export const VanList = () => {
                     <FaMapMarkerAlt />
                     </div>
                   </AdvancedMarker>
-                {vanPositions.map(van => (
+                {vans.map(van => (
                   <>
-                  <AdvancedMarker key={van.van.id} position={{lat: van.lat, lng: van.lng}} className="price-marker" onClick={() => {}}>
+                  <AdvancedMarker key={van.id} position={{lat: van.lat, lng: van.lng}} className="price-marker" onClick={() => {}}>
                   <div>
-                    <span>${van.van.rentalRate}</span>
+                    <span>${van.rentalRate}</span>
                   </div>
                 </AdvancedMarker>
                   </>

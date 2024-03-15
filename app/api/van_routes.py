@@ -61,7 +61,9 @@ def create_van():
       mpg = form.data['mpg'],
       doors = form.data['doors'],
       seats = form.data['seats'],
-      fuel_type_id = form.data['fuel_type_id']
+      fuel_type_id = form.data['fuel_type_id'],
+      lat = form.data['lat'],
+      lng = form.data['lng']
     )
 
     db.session.add(new_van)
@@ -101,6 +103,8 @@ def update_van(vanId):
     van.doors = form.data["doors"] or van.doors
     van.seats = form.data["seats"] or van.seats
     van.fuel_type_id = form.data["fuel_type_id"] or van.fuel_type_id
+    van.lat = form.data["lat"] or van.lat
+    van.lng = form.data["lng"] or van.lng
     
     db.session.commit()
     return van.to_dict()

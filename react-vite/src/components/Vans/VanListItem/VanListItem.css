@@ -4,7 +4,7 @@
   border-radius: 10px;
   margin-bottom: 1rem;
   margin-right: 1.25rem;
-  width: 675px;
+  width: 700px;
 }
 
 .van-list-item-li:hover {
@@ -36,6 +36,11 @@
 .van-list-item-info h2 {
   font-size: large;
   margin: 0;
+}
+
+.van-list-item-rating-div {
+  display: flex;
+  align-items: center;
 }
 
 .van-list-item-location {
@@ -74,7 +79,11 @@
 .van-list-item-heart-div svg {
   position: relative;
   width: 20px;
-  left: 375px;
+  left: 392px;
   bottom: 145px;
   transform: scale(1.3);
+}
+
+#van-list-item-overall-stars {
+  font-weight: 400;
 }

@@ -56,10 +56,10 @@ export const VanListItem = ({ van }) => {
               {van.make} {van.model} {van.year}
             </h2>
           </div>
-          <div>
+          <div className="van-list-item-rating-div">
             {van.numRatings ? (
               <>
-                <span id="van-overall-stars">
+                <span id="van-list-item-overall-stars">
                   {van.vanAvgRating.toString().length <= 3
                     ? van.vanAvgRating.toFixed(1)
                     : van.vanAvgRating.toFixed(2)}{" "}
@@ -68,7 +68,7 @@ export const VanListItem = ({ van }) => {
                   rating={1}
                   starRatedColor="rgb(89, 60, 251)"
                   starEmptyColor="gray"
-                  starDimension="25px"
+                  starDimension="20px"
                   numberOfStars={1}
                 />
               </>

@@ -3,8 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { thunkGetVans } from "../../../redux/van";
 import { VanListItem } from "../VanListItem/VanListItem";
 import "./VanList.css";
-import { FaMapMarkerAlt, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaMapMarkerAlt, FaChevronDown, FaChevronUp, FaSlidersH } from "react-icons/fa";
 import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
+import { Sort } from "../../Filters/Sort";
+import { FiltersModal } from "../../Filters/FiltersModal";
+import OpenModalButton from "../../OpenModalButton";
 
 export const VanList = () => {
   const dispatch = useDispatch();
@@ -14,15 +17,20 @@ export const VanList = () => {
   const [latLng, setLatLng] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [showSort, setShowSort] = useState(false)
-  const [tempSort, setTempSort] = useState("")
   const [showPrice, setShowPrice] = useState(false)
   const [showFilters, setShowFilters] = useState(false)
   const [sort, setSort] = useState("")
-  const divRef = useRef()
+  const [tempSort, setTempSort] = useState("")
+  const sortRef = useRef()
+  const filterRef = useRef()
 
   useEffect(() => {
-    dispatch(thunkGetVans());
-  }, [dispatch]);
+    if (sort) {
+      dispatch(thunkGetVans(sort))
+    } else {
+      dispatch(thunkGetVans());
+    }
+  }, [dispatch, sort]);
 
   useEffect(() => {}, [userFavorites]);
 
@@ -41,10 +49,24 @@ export const VanList = () => {
 
 
   useEffect(() => {
+    if (!showFilters) return;
+
+    const closeMenu = (e) => {
+      if (filterRef.current && !filterRef.current.contains(e.target)) {
+        setShowFilters(false);
+      }
+    };
+
+    document.addEventListener("click", closeMenu);
+
+    return () => document.removeEventListener("click", closeMenu);
+  }, [showFilters]);
+
+  useEffect(() => {
     if (!showSort) return;
 
     const closeMenu = (e) => {
-      if (divRef.current && !divRef.current.contains(e.target)) {
+      if (sortRef.current && !sortRef.current.contains(e.target)) {
         setShowSort(false);
       }
     };
@@ -56,9 +78,21 @@ export const VanList = () => {
 
   const handleFiltersClick = (e, filter) => {
     e.stopPropagation();
-    if (filter == "sort") setShowSort(true)
-    if (filter == "price") setShowPrice(true)
-    if (filter == "filters") setShowFilters(true)
+    if (filter == "sort") {
+      setShowSort(true)
+      setShowFilters(false)
+      setShowPrice(false)
+    }
+    if (filter == "price") {
+      setShowPrice(true)
+      setShowFilters(false)
+      setShowSort(false)
+    }
+    if (filter == "filters") {
+      setShowFilters(true)
+      setShowSort(false)
+      setShowPrice(false)
+    }
   }
 
   if (!vansObj) return null;
@@ -66,54 +100,31 @@ export const VanList = () => {
   if (sort == "low") vans = vans.sort((a, b) => (a.rentalRate - b.rentalRate))
   if (sort == "high") vans = vans.sort((a, b) => (b.rentalRate - a.rentalRate))
 
-  const handleReset = () => {
-    // e.preventDefault()
-    // e.stopPropagation();
-    const form = document.getElementById("sort-form")
-    form.reset()
-    setSort("")
-    setShowSort(false)
-    dispatch(thunkGetVans())
-  }
-
-  const sortSubmitHandler = (e) => {
-    e.preventDefault()
-    dispatch(thunkGetVans(sort))
-    setShowSort(false)
-    setSort(tempSort)
-  }
-
   return (
     <>
       <div className="filters-nav">
         {showSort ? 
-        <button className="white-btn">Sort by <FaChevronUp /></button>
-        :
-        <button className="white-btn" onClick={(e) => handleFiltersClick(e, "sort")}>Sort by <FaChevronDown /></button>}
+          <button className="white-btn">Sort by <FaChevronUp /></button>
+          :
+          <button className="white-btn" onClick={(e) => handleFiltersClick(e, "sort")}>Sort by <FaChevronDown /></button>
+        }
         <button className="white-btn" onClick={(e) => handleFiltersClick(e, "price")}>Daily price <FaChevronDown /></button>
-        <button className="white-btn" onClick={(e) => handleFiltersClick(e, "filters")}>More filters <FaChevronDown /></button>
+        <OpenModalButton
+          className={"white-btn"}
+          buttonText={"More filters"}
+          leftSvg={<FaSlidersH />}
+          rightSvg={<FaChevronDown />}
+          modalComponent={<FiltersModal />}
+          id={"more-filters-btn"}
+        />
+        {/* {showFilters ? 
+        <button className="white-btn" id="more-filters-btn"><FaSlidersH /> More filters <FaChevronUp /></button>
+        :
+        <button className="white-btn" id="more-filters-btn" onClick={(e) => handleFiltersClick(e, "filters")}><FaSlidersH /> More filters <FaChevronDown /></button>
+        } */}
       </div>
-      {showSort && <div className="sort-div" ref={divRef}>
-        <form id="sort-form" onSubmit={sortSubmitHandler}>
-        <div className="sort-choice-radios">
-        <input type="radio" name="sort" value="low" id="sort-choice-low"
-        onChange={() => setTempSort("low")}/>
-        <label htmlFor="sort-choice-low">Daily price: low to high</label>
-        </div>
-        <div className="sort-choice-radios">
-        <input type="radio" name="sort" value="high" id="sort-choice-high"
-        onChange={() => setTempSort("high")}/>
-        <label htmlFor="sort-choice-high">Daily price: high to low</label>
-        </div>
-        <div className="sort-btns-div">
-          <button className="white-btn" onClick={handleReset}>Reset</button>
-          <button className="submit-btn">Apply</button>
-        </div>
-        </form>
-        </div>}
-      {showFilters && <div className="more-filters-div">
-
-        </div>}
+      {showSort && <Sort tempSort={tempSort} setTempSort={setTempSort} setSort={setSort} setShowSort={setShowSort} sortRef={sortRef}/>}
+      {/* {showFilters && <Filters filterRef={filterRef}/>} */}
       {isLoaded && (
         <div className="van-list-content">
           <ul className="van-list-ul">

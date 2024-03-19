@@ -1,0 +1,87 @@
+.more-filters-div {
+  height: 100%;
+  width: 600px;
+  border-radius: 10px;
+  background-color: white;
+  z-index: 100;
+}
+
+.year-slider {
+  height: 1rem;
+}
+
+.year-track {
+  height: 3px;
+  background-color: var(--purple);
+  border-radius: 0.25rem;
+  margin-top: 1rem;
+}
+.year-track-0, .year-track-2 {
+  background: lightgray;
+}
+
+.year-thumb {
+  background: var(--purple);
+  height: 13px;
+  border-right: 1px solid white;
+  border-left: 1px solid white;
+  margin-top: 11px;
+  cursor:grab;
+  width: 16px;
+}
+.year-thumb:before {
+  border-top: 7px solid var(--purple);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  content: "";
+  height: 0;
+  left: 0;
+  position: absolute;
+  top: 13px;
+  width: 0;
+}
+.year-thumb:hover {
+  background-color: #470ab4;
+}
+.year-thumb:active {
+  cursor: grabbing;
+}
+
+.more-filters-select {
+  width: 100%;
+  padding: .5rem;
+  border: 1px solid var(--light-border);
+}
+
+.fuel-types {
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+  /* padding: 1rem; */
+}
+
+.fuel-type-filter {
+  width: 174px;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid black;
+  padding: .5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.fuel-type-filter:hover {
+  /* background-color: var(--purple); */
+  color: var(--purple);
+  border: 1px solid var(--purple)
+}
+
+.fuel-type-filter.active {
+  background-color: var(--purple);
+  color: white;
+}

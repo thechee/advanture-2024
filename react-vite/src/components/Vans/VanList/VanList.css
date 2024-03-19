@@ -72,6 +72,16 @@
   padding-left: .5rem;
 }
 
+#more-filters-btn > svg:first-of-type {
+  padding-left: 0rem;
+  padding-right: .5rem;
+}
+
+#more-filters-btn > svg:last-of-type {
+  padding-left: .5rem;
+  padding-right: 0rem;
+}
+
 .sort-div {
   position: absolute;
   left: 1.5rem;
@@ -121,3 +131,4 @@
 .sort-btns-div button {
   width: fit-content;
 }
+

@@ -9,6 +9,7 @@ import { ManageRatings } from '../components/Ratings/ManageRatings/ManageRatings
 import { UpdateVan } from '../components/Vans/UpdateVan/UpdateVan';
 import { Favorites } from '../components/Favorites/Favorites';
 import { Errors } from '../components/Errors/Errors';
+import { VanListProvider } from '../context/VanListContext';
 
 
 export const router = createBrowserRouter([
@@ -48,7 +49,8 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <VanList />,
+            element: 
+              <VanList />,
           },
           {
             path: ":vanId",

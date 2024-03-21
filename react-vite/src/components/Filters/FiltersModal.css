@@ -6,21 +6,27 @@
   z-index: 100;
 }
 
-.year-slider {
+.year-slider,
+.mileage-slider {
   height: 1rem;
 }
 
-.year-track {
+.year-track,
+.mileage-track  {
   height: 3px;
   background-color: var(--purple);
   border-radius: 0.25rem;
   margin-top: 1rem;
 }
-.year-track-0, .year-track-2 {
+
+.year-track-0, .year-track-2,
+.mileage-track-1 {
   background: lightgray;
 }
 
-.year-thumb {
+
+
+.filters-thumb {
   background: var(--purple);
   height: 13px;
   border-right: 1px solid white;
@@ -29,7 +35,7 @@
   cursor:grab;
   width: 16px;
 }
-.year-thumb:before {
+.filters-thumb:before {
   border-top: 7px solid var(--purple);
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
@@ -40,10 +46,10 @@
   top: 13px;
   width: 0;
 }
-.year-thumb:hover {
+.filters-thumb:hover {
   background-color: #470ab4;
 }
-.year-thumb:active {
+.filters-thumb:active {
   cursor: grabbing;
 }
 
@@ -84,4 +90,19 @@
 .fuel-type-filter.active {
   background-color: var(--purple);
   color: white;
+}
+
+.more-filters-header {
+  display: flex;
+  align-items: center;
+}
+
+.more-filters-header-title {
+  display: flex;
+  margin: 0 auto;
+}
+
+#reset-span {
+  color: var(--purple);
+  cursor: pointer;
 }

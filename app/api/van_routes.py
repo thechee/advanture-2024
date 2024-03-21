@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 from app.models import Van, VanImage, Rating, db
 from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 from app.forms import VanForm, VanImageForm, RatingForm
+from sqlalchemy import or_
 
 van_routes = Blueprint('vans', __name__)
 
@@ -12,14 +13,49 @@ def vans():
   """
   Query for all vans and returns them in a list of van dicts
   """
-  sort = request.args.get("sort")
-  if not sort:
-    vans = Van.query.all()
-  else:
-    if sort == "low":
-      vans = Van.query.order_by(Van.rental_rate.asc())
-    if sort == "high":
-      vans = Van.query.order_by(Van.rental_rate.desc())
+
+  make = request.args.get("make")
+
+  years = request.args.get("years")
+  if years:
+    years = [int(year) for year in years.split(",")]
+
+  seats = request.args.get("seats")
+  if seats:
+    seats = int(seats)
+
+  fuel_types = request.args.get("fuelTypes")
+  if fuel_types:
+    fuel_types = [int(fuel_type) for fuel_type in fuel_types.split(",")]
+
+  miles = request.args.get("miles")
+  if miles:
+    miles = int(miles)
+
+
+  query = Van.query
+
+  if make:
+      query = query.filter(Van.make.ilike(f"%{make}%"))
+  if years:
+      query = query.filter(Van.year.between(years[0], years[1]))
+  if seats:
+      query = query.filter(Van.seats >= seats)
+  if fuel_types:
+      query = query.filter(Van.fuel_type_id.in_(fuel_types))
+  if miles:
+      query = query.filter(or_(Van.distance_allowed >= miles, Van.distance_allowed == None))
+
+  vans = query.all()
+
+  # sort = request.args.get("sort")
+  # if not sort:
+  #   vans = Van.query.all()
+  # else:
+  #   if sort == "low":
+  #     vans = Van.query.order_by(Van.rental_rate.asc())
+  #   if sort == "high":
+  #     vans = Van.query.order_by(Van.rental_rate.desc())
   return [van.to_dict() for van in vans]
 
 @van_routes.route('/<int:vanId>')

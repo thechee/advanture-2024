@@ -6,6 +6,7 @@ import { thunkAuthenticate } from "../redux/session";
 import Navigation from "../components/Navigation/Navigation";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { getKey } from "../redux/maps";
+import { VanListProvider } from "../context/VanListContext";
 
 export default function Layout() {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ export default function Layout() {
 
   return (
     <>
+    <VanListProvider>
       <ModalProvider>
         <APIProvider apiKey={key}>
 
@@ -37,6 +39,7 @@ export default function Layout() {
         </APIProvider>
         <Modal />
       </ModalProvider>
+      </VanListProvider>
     </>
   );
 }

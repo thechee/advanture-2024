@@ -65,9 +65,15 @@ button {
   font-size: 14px;
 }
 
+
+.submit-btn:hover {
+  background-color: var(--dark-purple);
+}
+
 :root {
   --hover: #F3F3F3;
   --purple: rgb(89, 60, 251);
+  --dark-purple: #470AB4;
   --light-border: rgba(211, 211, 211, .5);
 }
 
@@ -82,17 +88,26 @@ button {
   font-weight: 600;
   padding: .75rem;
   width: 100%;
+  background-color: rgb(227, 227, 227);
+}
+
+.btn:hover {
+  background-color: lightgray;
 }
 
 .white-btn {
   width: fit-content;
-  font-weight: 600;
+  font-weight: 500;
+  letter-spacing: .5px;
   border-radius: 5px;
-  padding: .4rem 1rem;
+  padding: .5rem 1rem;
   background-color: white;
   border: 1px solid lightgray;
-  font-size: 12px;
+  font-size: 11px;
   display: flex;
   align-items: center;
 }
 
+.white-btn:hover {
+  background-color: var(--hover);
+}

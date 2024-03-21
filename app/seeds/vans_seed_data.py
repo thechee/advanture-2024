@@ -230,7 +230,7 @@ vans = [
   "id": 8,
     "user_id": 5,
     "year": 2018,
-    "make": "VW",
+    "make": "Volkswagen",
     "model": "Transporter",
     "miles": 30000,
     "address": "567 Maple Street",

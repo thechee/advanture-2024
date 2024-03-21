@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkGetVans } from "../../../redux/van";
 import { VanListItem } from "../VanListItem/VanListItem";
-import "./VanList.css";
-import { FaMapMarkerAlt, FaChevronDown, FaChevronUp, FaSlidersH } from "react-icons/fa";
+import { FaMapMarkerAlt, FaChevronDown, FaChevronUp, FaSlidersH, FaCheck } from "react-icons/fa";
 import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import { Sort } from "../../Filters/Sort";
 import { FiltersModal } from "../../Filters/FiltersModal";
 import OpenModalButton from "../../OpenModalButton";
-
+import "./VanList.css";
+import { useVanListContext } from "../../../context/VanListContext";
 export const VanList = () => {
   const dispatch = useDispatch();
   const vansObj = useSelector((state) => state.vans);
@@ -18,19 +18,23 @@ export const VanList = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showSort, setShowSort] = useState(false)
   const [showPrice, setShowPrice] = useState(false)
-  const [showFilters, setShowFilters] = useState(false)
   const [sort, setSort] = useState("")
   const [tempSort, setTempSort] = useState("")
+  const [center, setCenter] = useState(null)
   const sortRef = useRef()
-  const filterRef = useRef()
+  const { make, years, seats, fuelTypes, mileage, handleReset, count } = useVanListContext()
 
   useEffect(() => {
-    if (sort) {
-      dispatch(thunkGetVans(sort))
-    } else {
-      dispatch(thunkGetVans());
-    }
-  }, [dispatch, sort]);
+    // if (sort) {
+    //   dispatch(thunkGetVans(sort))
+    // } else {
+    // }
+    const timer = setTimeout(() => {
+    dispatch(thunkGetVans(make, years, seats, fuelTypes, mileage));
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [dispatch, make, years, seats, fuelTypes, mileage]);
 
   useEffect(() => {}, [userFavorites]);
 
@@ -47,20 +51,6 @@ export const VanList = () => {
     setIsLoaded(true);
   }, []);
 
-
-  useEffect(() => {
-    if (!showFilters) return;
-
-    const closeMenu = (e) => {
-      if (filterRef.current && !filterRef.current.contains(e.target)) {
-        setShowFilters(false);
-      }
-    };
-
-    document.addEventListener("click", closeMenu);
-
-    return () => document.removeEventListener("click", closeMenu);
-  }, [showFilters]);
 
   useEffect(() => {
     if (!showSort) return;
@@ -80,27 +70,24 @@ export const VanList = () => {
     e.stopPropagation();
     if (filter == "sort") {
       setShowSort(true)
-      setShowFilters(false)
       setShowPrice(false)
     }
     if (filter == "price") {
       setShowPrice(true)
-      setShowFilters(false)
       setShowSort(false)
-    }
-    if (filter == "filters") {
-      setShowFilters(true)
-      setShowSort(false)
-      setShowPrice(false)
     }
   }
 
-  if (!vansObj) return null;
-  let vans = Object.values(vansObj);
-  if (sort == "low") vans = vans.sort((a, b) => (a.rentalRate - b.rentalRate))
-  if (sort == "high") vans = vans.sort((a, b) => (b.rentalRate - a.rentalRate))
+  let vans = useMemo(() => {
+    let vansArray = Object.values(vansObj);
+    if (sort === "low") return vansArray.sort((a, b) => (a.rentalRate - b.rentalRate));
+    if (sort === "high") return vansArray.sort((a, b) => (b.rentalRate - a.rentalRate));
+    return vansArray;
+  }, [vansObj, sort]);
+
 
   return (
+    
     <>
       <div className="filters-nav">
         {showSort ? 
@@ -109,6 +96,16 @@ export const VanList = () => {
           <button className="white-btn" onClick={(e) => handleFiltersClick(e, "sort")}>Sort by <FaChevronDown /></button>
         }
         <button className="white-btn" onClick={(e) => handleFiltersClick(e, "price")}>Daily price <FaChevronDown /></button>
+        {count ? 
+        <OpenModalButton
+          className={"filters-count-btn"}
+          buttonText={`More filters (${count})`}
+          leftSvg={<FaCheck />}
+          rightSvg={<FaChevronDown />}
+          modalComponent={<FiltersModal />}
+          id={"more-filters-btn"}
+        />
+        :
         <OpenModalButton
           className={"white-btn"}
           buttonText={"More filters"}
@@ -116,27 +113,32 @@ export const VanList = () => {
           rightSvg={<FaChevronDown />}
           modalComponent={<FiltersModal />}
           id={"more-filters-btn"}
-        />
-        {/* {showFilters ? 
-        <button className="white-btn" id="more-filters-btn"><FaSlidersH /> More filters <FaChevronUp /></button>
-        :
-        <button className="white-btn" id="more-filters-btn" onClick={(e) => handleFiltersClick(e, "filters")}><FaSlidersH /> More filters <FaChevronDown /></button>
-        } */}
+        />}
       </div>
       {showSort && <Sort tempSort={tempSort} setTempSort={setTempSort} setSort={setSort} setShowSort={setShowSort} sortRef={sortRef}/>}
-      {/* {showFilters && <Filters filterRef={filterRef}/>} */}
       {isLoaded && (
         <div className="van-list-content">
+          {vans.length ? 
           <ul className="van-list-ul">
             <h3>{vans.length} vans available</h3>
             {vans.map((van) => (
               <VanListItem key={van.id} van={van} />
             ))}
-          </ul>
+          </ul> :
+          <div className="no-vans-found">
+            <h3>No vans found</h3>
+            <p>Try changing your filters</p>
+            <button className="submit-btn" onClick={handleReset}>Reset filters</button>
+          </div>
+          }
+
+
           <div className="van-list-map-div">
-            {!!Object.values(latLng).length && (
+            {Object.values(latLng).length > 0 && (
               <Map
-                defaultCenter={latLng}
+                key={mapId}
+                defaultCenter={center || latLng}
+                // center={center || latLng}
                 defaultZoom={12}
                 gestureHandling={"greedy"}
                 disableDefaultUI={true}
@@ -149,13 +151,13 @@ export const VanList = () => {
                     </div>
                   </AdvancedMarker>
                 {vans.map(van => (
-                  <>
-                  <AdvancedMarker key={van.id} position={{lat: van.lat, lng: van.lng}} className="price-marker" onClick={() => {}}>
-                  <div>
-                    <span>${van.rentalRate}</span>
+                  <div key={van.id}>
+                    <AdvancedMarker position={{lat: van.lat, lng: van.lng}} className="price-marker" onClick={() => {setCenter({lat: van.lat, lng: van.lng})}}>
+                      <div>
+                        <span>${van.rentalRate}</span>
+                      </div>
+                    </AdvancedMarker>
                   </div>
-                </AdvancedMarker>
-                  </>
                 ))}
                 
                 </Map>
@@ -163,6 +165,6 @@ export const VanList = () => {
           </div>
         </div>
       )}
-      </>
+</>
   );
 };

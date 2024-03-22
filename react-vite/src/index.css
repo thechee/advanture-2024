@@ -41,13 +41,6 @@ button {
   cursor: pointer;
 }
 
-#modal-content {
-  border-radius: 5px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-}
-
 #modal-content h1 {
   margin-top: 0;
   margin-bottom: 1rem;

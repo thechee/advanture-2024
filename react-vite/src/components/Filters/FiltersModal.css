@@ -1,14 +1,48 @@
 .more-filters-div {
-  height: 100%;
-  width: 600px;
+  max-height: 100%;
+  width: 635px;
   border-radius: 10px;
   background-color: white;
   z-index: 100;
+  padding: 1.5rem 0 1rem 1rem;
+}
+
+.more-filters-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-right: 1rem;
+  overflow-y: scroll;
+  /* height: 80%; */
+  /* overflow: hidden; */
+}
+
+.more-filters-filters label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.more-filters-filters select {
+  margin-bottom: 1rem;
+}
+
+.more-filters-div h4 {
+  color: grey;
+  font-weight: 500;
+  font-size: 15px;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 
 .year-slider,
 .mileage-slider {
   height: 1rem;
+  /* margin-bottom: 1.5rem; */
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 90%;
+  margin: 0 auto 1.5rem;
 }
 
 .year-track,
@@ -95,14 +129,74 @@
 .more-filters-header {
   display: flex;
   align-items: center;
+  margin-bottom: 1rem;
+  padding-right: 1rem;
+}
+
+.more-filters-x-div {
+  flex: 1;
+}
+
+.more-filters-x-div > svg {
+  cursor: pointer;
+  font-size: 20px;
 }
 
 .more-filters-header-title {
   display: flex;
   margin: 0 auto;
+  flex: 1;
+  align-items: center;
+  /* justify-content: center; */
+}
+.more-filters-header-title > h3 {
+  margin: 0 auto;
+  font-size: 16px;
 }
 
 #reset-span {
   color: var(--purple);
+  cursor: pointer;
+  text-align: end;
+  font-size: 15px;
+  font-weight: 500;
+  flex: 1;
+}
+
+#more-filters-count {
+  background-color: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 500;
+  font-size: 12px;
+  width: 10px;
+  height: 10px;
+  padding: .5rem;
+  border-radius: 50%;
+  margin-left: 1rem;
+  position: absolute;
+  right: 15rem;
+}
+
+.filters-section,
+.more-filters-btns {
+  border-top: 1px solid var(--light-border);
+}
+
+.more-filters-btns {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  padding-right: 1rem;
+}
+
+.more-filters-btns button {
+  width: fit-content;
+  font-weight: 500;
+  letter-spacing: .5px;
+  display: flex;
+  align-items: center;
   cursor: pointer;
 }

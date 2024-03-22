@@ -178,6 +178,9 @@ h4 {
   font-weight: 600;
   color: #414143;
 }
+.add-to-favorites:hover {
+  background-color: var(--hover);
+}
 
 .add-to-favorites span {
   margin-right: .5rem;

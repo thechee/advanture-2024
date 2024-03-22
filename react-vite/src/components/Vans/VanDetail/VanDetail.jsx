@@ -18,18 +18,18 @@ import moment from "moment";
 import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import "./VanDetail.css";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv.jsx";
-import { CarDoor } from '../../../../icons/CarDoor.jsx'
-import { GasStation } from "../../../../icons/GasStation.jsx";
-import { CarSeat } from "../../../../icons/CarSeat.jsx";
-import { Gasoline } from "../../../../icons/Gasoline.jsx";
-import { Hybrid } from "../../../../icons/Hybrid.jsx";
-import { Electric } from "../../../../icons/Electric.jsx";
-import { MiscFeature } from "../../../../icons/MiscFeature.jsx";
-import { AutomaticTrans } from "../../../../icons/AutomaticTrans.jsx";
-import { Aux } from "../../../../icons/Aux.jsx";
-import { BikeRack } from "../../../../icons/BikeRack.jsx";
-import { USBCharger } from "../../../../icons/USBCharger.jsx";
-import { Bluetooth } from "../../../../icons/Bluetooth.jsx";
+import { CarDoor } from '../../Icons/CarDoor.jsx'
+import { GasStation } from "../../Icons/GasStation.jsx";
+import { CarSeat } from "../../Icons/CarSeat.jsx";
+import { Gasoline } from "../../Icons/Gasoline.jsx";
+import { Hybrid } from "../../Icons/Hybrid.jsx";
+import { Electric } from "../../Icons/Electric.jsx";
+import { MiscFeature } from "../../Icons/MiscFeature.jsx";
+import { AutomaticTrans } from "../../Icons/AutomaticTrans.jsx";
+import { Aux } from "../../Icons/Aux.jsx";
+import { BikeRack } from "../../Icons/BikeRack.jsx";
+import { USBCharger } from "../../Icons/USBCharger.jsx";
+import { Bluetooth } from "../../Icons/Bluetooth.jsx";
 
 export const VanDetail = () => {
   const navigate = useNavigate();

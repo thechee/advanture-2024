@@ -23,7 +23,9 @@ def seed_van_features():
     mpg=van['mpg'],
     doors=van['doors'],
     seats=van['seats'],
-    fuel_type_id=van['fuel_type_id']
+    fuel_type_id=van['fuel_type_id'],
+    lat=van['lat'],
+    lng=van['lng']
     )
 
     newVans.append(newVan)

@@ -19,6 +19,29 @@
   height: 100%;
 }
 
+.no-vans-found {
+  margin: 5rem auto;
+  text-align: center;
+  font-size: 22px;
+  display: flex;
+  flex-direction: column;
+  min-width: 725px;
+  height: 100%;
+}
+
+.no-vans-found > .submit-btn {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.no-vans-found > h3 {
+  margin-bottom: 0;
+}
+
+.no-vans-found > p {
+  font-size: 16px;
+}
+
 .van-list-ul a {
   display: flex;
   width: fit-content;
@@ -34,7 +57,7 @@
   background-color: white;
   border-radius: 20px;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .price-marker:hover {
@@ -70,6 +93,16 @@
 
 .filters-nav button > svg {
   padding-left: .5rem;
+}
+
+#more-filters-btn > svg:first-of-type {
+  padding-left: 0rem;
+  padding-right: .5rem;
+}
+
+#more-filters-btn > svg:last-of-type {
+  padding-left: .5rem;
+  padding-right: 0rem;
 }
 
 .sort-div {
@@ -120,4 +153,21 @@
 
 .sort-btns-div button {
   width: fit-content;
+}
+
+.filters-count-btn {
+  width: fit-content;
+  font-weight: 500;
+  border-radius: 5px;
+  padding: .5rem 1rem;
+  background-color: #414143;
+  border: 1px solid lightgray;
+  letter-spacing: .5px;
+  color: white;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+}
+.filters-count-btn:hover {
+  background-color: #2d2d2f;
 }

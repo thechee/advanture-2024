@@ -1,5 +1,10 @@
 #login-div {
   width: 250px;
+  padding: 2rem;
+}
+
+.signup-div {
+  padding: 2rem;
 }
 
 .login-signup-form {

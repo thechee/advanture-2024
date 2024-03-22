@@ -23,3 +23,5 @@ class VanForm(FlaskForm):
   doors = IntegerField('doors', validators=[DataRequired(), NumberRange(min=1, max=9)])
   seats = IntegerField('seats', validators=[DataRequired(), NumberRange(min=1, max=12)])
   fuel_type_id = SelectField('fuel type', validators=[DataRequired()], choices=fuel_types)
+  lat = StringField('lat', validators=[DataRequired()])
+  lng = StringField('lng', validators=[DataRequired()])

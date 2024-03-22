@@ -1,0 +1,206 @@
+.more-filters-div {
+  max-height: 100%;
+  /* height: clamp(10rem, 60vh, 1000rem); */
+  width: 635px;
+  border-radius: 10px;
+  background-color: white;
+  z-index: 100;
+  padding: 1.5rem 0 1rem 1rem;
+  /* border: 5px solid red; */
+}
+
+.more-filters-filters {
+  display: flex;
+  flex-direction: column;
+  height: clamp(10rem, 60vh, 45rem);
+  gap: 1rem;
+  padding-right: 1rem;
+  overflow-y: scroll;
+  /* height: 80%; */
+  /* overflow: hidden; */
+  /* border: 5px solid green; */
+}
+
+.more-filters-filters label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.more-filters-filters select {
+  margin-bottom: 1rem;
+}
+
+.more-filters-div h4 {
+  color: grey;
+  font-weight: 500;
+  font-size: 15px;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.year-slider,
+.mileage-slider {
+  height: 1rem;
+  /* margin-bottom: 1.5rem; */
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 90%;
+  margin: 0 auto 1.5rem;
+}
+
+.year-track,
+.mileage-track  {
+  height: 3px;
+  background-color: var(--purple);
+  border-radius: 0.25rem;
+  margin-top: 1rem;
+}
+
+.year-track-0, .year-track-2,
+.mileage-track-1 {
+  background: lightgray;
+}
+
+
+
+.filters-thumb {
+  background: var(--purple);
+  height: 13px;
+  border-right: 1px solid white;
+  border-left: 1px solid white;
+  margin-top: 11px;
+  cursor:grab;
+  width: 16px;
+}
+.filters-thumb:before {
+  border-top: 7px solid var(--purple);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  content: "";
+  height: 0;
+  left: 0;
+  position: absolute;
+  top: 13px;
+  width: 0;
+}
+.filters-thumb:hover {
+  background-color: #470ab4;
+}
+.filters-thumb:active {
+  cursor: grabbing;
+}
+
+.more-filters-select {
+  width: 100%;
+  padding: .5rem;
+  border: 1px solid var(--light-border);
+}
+
+.fuel-types {
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+  /* padding: 1rem; */
+}
+
+.fuel-type-filter {
+  width: 174px;
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid black;
+  padding: .5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.fuel-type-filter:hover {
+  /* background-color: var(--purple); */
+  color: var(--purple);
+  border: 1px solid var(--purple)
+}
+
+.fuel-type-filter.active {
+  background-color: var(--purple);
+  color: white;
+}
+
+.more-filters-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-right: 1rem;
+}
+
+.more-filters-x-div {
+  flex: 1;
+}
+
+.more-filters-x-div > svg {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.more-filters-header-title {
+  display: flex;
+  margin: 0 auto;
+  flex: 1;
+  align-items: center;
+  /* justify-content: center; */
+}
+.more-filters-header-title > h3 {
+  margin: 0 auto;
+  font-size: 16px;
+}
+
+#reset-span {
+  color: var(--purple);
+  cursor: pointer;
+  text-align: end;
+  font-size: 15px;
+  font-weight: 500;
+  flex: 1;
+}
+
+#more-filters-count {
+  background-color: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 500;
+  font-size: 12px;
+  width: 10px;
+  height: 10px;
+  padding: .5rem;
+  border-radius: 50%;
+  margin-left: 1rem;
+  position: absolute;
+  right: 15rem;
+}
+
+.filters-section,
+.more-filters-btns {
+  border-top: 1px solid var(--light-border);
+}
+
+.more-filters-btns {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 1rem;
+  padding-right: 1rem;
+}
+
+.more-filters-btns button {
+  width: fit-content;
+  font-weight: 500;
+  letter-spacing: .5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

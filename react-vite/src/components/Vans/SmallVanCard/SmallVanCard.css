@@ -7,10 +7,15 @@
   cursor: pointer;
 }
 
+.small-van-card:hover {
+  background-color: var(--hover);
+}
+
 .small-van-card-img-div {
   width: 100%;
   height: 165px;
 }
+
 
 .small-van-card-img-div img {
   width: 100%;
@@ -64,4 +69,8 @@
   bottom: 260px;
   left: 255px;
   cursor: pointer;
+}
+
+.small-van-card-heart-div:hover {
+  background-color: var(--hover);
 }

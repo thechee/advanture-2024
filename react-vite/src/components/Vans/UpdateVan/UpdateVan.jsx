@@ -205,6 +205,26 @@ export const UpdateVan = () => {
     if (Object.values(errors).length) {
       setValidationErrors(errors);
     } else {
+      let lat;
+      let lng;
+
+      const { Geocoder } = await google.maps.importLibrary("geocoding");
+
+      const geocoder = new Geocoder();
+
+      await geocoder.geocode(
+        {
+          address: `${address}, ${city}, ${state}`,
+        },
+        (results, status) => {
+          if (status == "OK") {
+            lat = results[0].geometry.location.lat()
+            lng = results[0].geometry.location.lng()
+          }
+        }
+      )
+
+
       await dispatch(
         thunkUpdateVan(
           {
@@ -223,6 +243,8 @@ export const UpdateVan = () => {
             doors,
             seats,
             fuel_type_id: fuelTypeId,
+            lat,
+            lng
           },
           vanId
         )

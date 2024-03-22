@@ -30,6 +30,7 @@ import { Aux } from "../../Icons/Aux.jsx";
 import { BikeRack } from "../../Icons/BikeRack.jsx";
 import { USBCharger } from "../../Icons/USBCharger.jsx";
 import { Bluetooth } from "../../Icons/Bluetooth.jsx";
+import { Carousel } from 'react-responsive-carousel';
 
 export const VanDetail = () => {
   const navigate = useNavigate();
@@ -88,7 +89,14 @@ export const VanDetail = () => {
   return (
     <div>
       <div className="van-images-div">
-        <img src={previewImage} alt="" />
+        <Carousel showArrows={true} showThumbs={false} showStatus={false} infiniteLoop={true}>
+          {Object.values(van.images).map((image) => (
+            <div key={image.id}>
+              <img src={image.imageUrl} alt="" />
+            </div>
+          ))}
+        </Carousel>
+        {/* // <img src={previewImage} alt="" /> */}
       </div>
       {!owner && (
         <div>

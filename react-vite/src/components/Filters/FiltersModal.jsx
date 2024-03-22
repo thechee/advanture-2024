@@ -4,9 +4,9 @@ import './FiltersModal.css';
 import { useSelector } from 'react-redux';
 import { useVanListContext } from '../../context/VanListContext';
 import { FaTimes } from "react-icons/fa";
-import { Gasoline } from '../../../icons/Gasoline';
-import { Electric } from '../../../icons/Electric';
-import { Hybrid } from '../../../icons/Hybrid';
+import { Gasoline } from '../Icons/Gasoline';
+import { Electric } from '../Icons/Electric';
+import { Hybrid } from '../Icons/Hybrid';
 
 
 export const FiltersModal = () => {

@@ -4,6 +4,9 @@ import './FiltersModal.css';
 import { useSelector } from 'react-redux';
 import { useVanListContext } from '../../context/VanListContext';
 import { FaTimes } from "react-icons/fa";
+import { Gasoline } from '../../../icons/Gasoline';
+import { Electric } from '../../../icons/Electric';
+import { Hybrid } from '../../../icons/Hybrid';
 
 
 export const FiltersModal = () => {
@@ -41,7 +44,7 @@ export const FiltersModal = () => {
         <div>
           <h4>Vehicle attributes</h4>
           <label htmlFor="">Make</label>
-          <select className="more-filters-select" value={make} o onChange={e => setMake(e.target.value)}>
+          <select className="more-filters-select" value={make} onChange={e => setMake(e.target.value)}>
             <option value="placeholder" disabled>- Select -</option>
             <option value="Chevy">Chevy</option>
             <option value="Dodge">Dodge</option>
@@ -80,11 +83,11 @@ export const FiltersModal = () => {
         <div className='filters-section'>
           <h4>Fuel type</h4>
           <div className='fuel-types'>
-          <div className={'fuel-type-filter' + (fuelTypes.includes(1) ? " active" : "")} onClick={() => handleFuelTypes(1)}><span>Gasoline</span></div>
-          <div className={'fuel-type-filter' + (fuelTypes.includes(2) ? " active" : "")} onClick={() => handleFuelTypes(2)}><span>Diesel</span></div>
-          <div className={'fuel-type-filter' + (fuelTypes.includes(3) ? " active" : "")} onClick={() => handleFuelTypes(3)}><span>Bio-diesel</span></div>
-          <div className={'fuel-type-filter' + (fuelTypes.includes(4) ? " active" : "")} onClick={() => handleFuelTypes(4)}><span>Electric</span></div>
-          <div className={'fuel-type-filter' + (fuelTypes.includes(5) ? " active" : "")} onClick={() => handleFuelTypes(5)}><span>Hybrid</span></div>
+          <div className={'fuel-type-filter' + (fuelTypes.includes(1) ? " active" : "")} onClick={() => handleFuelTypes(1)}><Gasoline /> <span>Gasoline</span></div>
+          <div className={'fuel-type-filter' + (fuelTypes.includes(2) ? " active" : "")} onClick={() => handleFuelTypes(2)}><Gasoline /><span>Diesel</span></div>
+          <div className={'fuel-type-filter' + (fuelTypes.includes(3) ? " active" : "")} onClick={() => handleFuelTypes(3)}><Gasoline /><span>Bio-diesel</span></div>
+          <div className={'fuel-type-filter' + (fuelTypes.includes(4) ? " active" : "")} onClick={() => handleFuelTypes(4)}><Electric /><span>Electric</span></div>
+          <div className={'fuel-type-filter' + (fuelTypes.includes(5) ? " active" : "")} onClick={() => handleFuelTypes(5)}><Hybrid /><span> Hybrid</span></div>
           </div>
         </div>
         <div className='filters-section'>

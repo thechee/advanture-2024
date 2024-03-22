@@ -18,6 +18,18 @@ import moment from "moment";
 import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import "./VanDetail.css";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv.jsx";
+import { CarDoor } from '../../../../icons/CarDoor.jsx'
+import { GasStation } from "../../../../icons/GasStation.jsx";
+import { CarSeat } from "../../../../icons/CarSeat.jsx";
+import { Gasoline } from "../../../../icons/Gasoline.jsx";
+import { Hybrid } from "../../../../icons/Hybrid.jsx";
+import { Electric } from "../../../../icons/Electric.jsx";
+import { MiscFeature } from "../../../../icons/MiscFeature.jsx";
+import { AutomaticTrans } from "../../../../icons/AutomaticTrans.jsx";
+import { Aux } from "../../../../icons/Aux.jsx";
+import { BikeRack } from "../../../../icons/BikeRack.jsx";
+import { USBCharger } from "../../../../icons/USBCharger.jsx";
+import { Bluetooth } from "../../../../icons/Bluetooth.jsx";
 
 export const VanDetail = () => {
   const navigate = useNavigate();
@@ -125,10 +137,14 @@ export const VanDetail = () => {
           )}
           <div className="van-detail-details">
             <ul className="details-ul">
-              {van.mpg && <li>{van.mpg} MPG</li>}
-              <li>{van.fuelType}</li>
-              <li>{van.doors} doors</li>
-              <li>{van.seats} seats</li>
+              {van.mpg && <li><GasStation /> {van.mpg} MPG</li>}
+              {van.fuelType == 'Gasoline' && <li><Gasoline />{van.fuelType}</li>}
+              {van.fuelType == 'Diesel' && <li><Gasoline />{van.fuelType}</li>}
+              {van.fuelType == 'Bio-Diesel' && <li><Gasoline />{van.fuelType}</li>}
+              {van.fuelType == 'Electric' && <li><Electric />{van.fuelType}</li>}
+              {van.fuelType == 'Hybrid' && <li><Hybrid />{van.fuelType}</li>}
+              <li><CarDoor />{van.doors} doors</li>
+              <li><CarSeat />{van.seats} seats</li>
             </ul>
           </div>
           <h4>HOSTED BY</h4>
@@ -146,9 +162,18 @@ export const VanDetail = () => {
           <h4>FEATURES</h4>
           <div className="van-details-features">
             <ul className="feature-ul">
-              {van.features.map((feature) => (
-                <li key={feature}>{feature}</li>
-              ))}
+              {van.features.map((feature) => 
+                feature == 'Automatic transmission' ? <li key={feature}><AutomaticTrans /> {feature}</li>
+                :
+                feature == 'AUX input' ? <li key={feature}><Aux /> {feature}</li>
+                :
+                feature == "Bike rack" ? <li key={feature}><BikeRack /> {feature}</li>
+                :
+                feature == "USB charger" ? <li key={feature}><USBCharger /> {feature}</li>
+                :
+                feature == "Bluetooth" ? <li key={feature}><Bluetooth /> {feature}</li>
+                : <li key={feature}><MiscFeature /> {feature}</li>
+              )}
             </ul>
           </div>
           <h4>RATINGS AND REVIEWS</h4>

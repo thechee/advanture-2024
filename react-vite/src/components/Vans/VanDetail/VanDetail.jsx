@@ -268,7 +268,7 @@ export const VanDetail = () => {
               <span className="van-detail-price">${van.rentalRate}</span> / day
             </p>
           </div>
-          {!owner && (
+          {/* {!owner && (
             <div className="van-detail-trip-div">
               <label>Trip Start</label>
               <input
@@ -289,7 +289,7 @@ export const VanDetail = () => {
                 Continue
               </button>
             </div>
-          )}
+          )} */}
           <div className="van-detail-distance-div">
             <span>Distance included</span>
             <span>

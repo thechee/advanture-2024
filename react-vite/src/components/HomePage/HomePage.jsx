@@ -16,7 +16,7 @@ export const HomePage = () => {
   return (
     <div className="home-page">
       <div className="splash-image-div">
-        <form className="home-page-search" onSubmit={e => e.preventDefault()}>
+        {/* <form className="home-page-search" onSubmit={e => e.preventDefault()}>
           <div id="where-div">
             <label>Where</label> 
             <input type="text" placeholder="City, address or airport" value={where} onChange={e => setWhere(e.target.value)}/>
@@ -30,7 +30,7 @@ export const HomePage = () => {
             <input type="date" value={until} onChange={e => setUntil(e.target.value)}/>
           </div>
           <button className="home-page-search-btn" onClick={() => alert("Feature coming soon!")}><FaSearch /></button>
-        </form>
+        </form> */}
         <img
           src="https://advanture-capstone.s3.us-west-1.amazonaws.com/fe3d192c918c49a38377d564bfeff287.webp"
           alt=""

@@ -6,6 +6,9 @@ import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../LoginFormModal";
 import SignupFormModal from "../SignupFormModal";
+import { CamperVan } from "../Icons/CamperVan";
+import { Logout } from "../Icons/Logout";
+import { Heart } from "../Icons/Heart";
 
 function ProfileButton() {
   const navigate = useNavigate()
@@ -62,24 +65,24 @@ function ProfileButton() {
             <div className="profile-dropdown-links-div">
               <NavLink to={`/users/${user.id}/favorites`}
               onClick={toggleMenu}>
-                <li>Favorites</li>
+                <li><Heart />  Favorites</li>
               </NavLink>
-              <NavLink to={`trips`} onClick={toggleMenu}>
+              {/* <NavLink to={`trips`} onClick={toggleMenu}>
                 <li>Trips</li>
               </NavLink>
               <NavLink to={`/notifications`} onClick={toggleMenu}>
                 <li>Notifications</li>
-              </NavLink>
+              </NavLink> */}
             </div>
             <div className="profile-dropdown-user-div">
-              <NavLink to={`/users/${user.id}`} onClick={toggleMenu}>
-                <li id='profile-navlink'>Profile</li>
+              <NavLink to={`/users/${user.id}`} onClick={toggleMenu} end>
+                <li id='profile-navlink'><img src={user.profileImage} alt="" /> Profile</li>
               </NavLink>
-              <NavLink to={`/account`} onClick={toggleMenu}>
+              {/* <NavLink to={`/account`} onClick={toggleMenu}>
                 <li>Account</li>
-              </NavLink>
+              </NavLink> */}
               <NavLink to={`/vans/new`} onClick={toggleMenu}>
-                <li>Add a van</li>
+                <li><CamperVan /> Add a van</li>
               </NavLink>
             </div>
             <div className="profile-dropdown-manage-div">
@@ -91,7 +94,7 @@ function ProfileButton() {
               </NavLink>
             </div>
             <div className="profile-dropdown-logout-div">
-              <li id='logout-li' onClick={logout}>Log Out</li>
+              <li id='logout-li' onClick={logout}><Logout /> Log Out</li>
             </div>
             </>
           ) : (

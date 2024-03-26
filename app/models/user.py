@@ -40,6 +40,7 @@ class User(db.Model, UserMixin):
       return {
           'id': self.id,
           'firstName': self.first_name,
+          'lastName': self.last_name,
           'profileImage': self.profile_image_url,
           'favorites': favorites,
           'createdAt': self.created_at,

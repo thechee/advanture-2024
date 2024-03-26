@@ -1,0 +1,5 @@
+.profile-banner {
+  background: url(/banner-bg6ca604dee6032faf4f91.png);
+  height: 200px;
+  border-bottom: 1px solid var(--light-border);
+}

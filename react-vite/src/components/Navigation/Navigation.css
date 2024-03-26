@@ -108,10 +108,28 @@
   cursor: pointer;
   padding: .5rem;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.profile-dropdown .active {
+  color: var(--purple);
 }
 
 .profile-dropdown-links-div{
   padding-bottom: 1rem;
+}
+
+.profile-dropdown svg,
+.profile-dropdown img {
+  width: 25px;
+  height: 25px;
+  margin-right: 1rem;
+}
+
+.profile-dropdown img {
+  border-radius: 50%;
+
 }
 
 .profile-dropdown-user-div {

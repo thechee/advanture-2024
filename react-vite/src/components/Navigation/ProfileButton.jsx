@@ -85,14 +85,14 @@ function ProfileButton() {
                 <li><CamperVan /> Add a van</li>
               </NavLink>
             </div>
-            <div className="profile-dropdown-manage-div">
+            {/* <div className="profile-dropdown-manage-div">
               <NavLink to={'/vans/manage'} onClick={toggleMenu}>
                 <li>Manage vans</li>
               </NavLink>
               <NavLink to={'/reviews/manage'} onClick={toggleMenu}>
                 <li>Manage reviews</li>
               </NavLink>
-            </div>
+            </div> */}
             <div className="profile-dropdown-logout-div">
               <li id='logout-li' onClick={logout}><Logout /> Log Out</li>
             </div>

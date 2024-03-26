@@ -35,6 +35,9 @@
 .small-van-card-lower-div h3 {
   margin: 0;
   font-size: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .small-van-card-ratings-div {

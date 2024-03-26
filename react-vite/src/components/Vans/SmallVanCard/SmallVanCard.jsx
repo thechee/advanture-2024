@@ -4,9 +4,11 @@ import { FaHeart } from "react-icons/fa";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv";
 import { RemoveFavoritesModal } from "../../Favorites/RemoveFavoritesModal/RemoveFavoritesModal";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export const SmallVanCard = ({van}) => {
   const navigate = useNavigate()
+  const user = useSelector((state) => state.session.user);
 
   let previewImage;
   for (const image in van.images) {
@@ -16,20 +18,21 @@ export const SmallVanCard = ({van}) => {
     }
   }
 
-  const vanString = `${van.make} ${van.model} ${van.year}`.length > 22 ? 
-  `${van.make} ${van.model} ${van.year}`.slice(0, 21) + "..." :
-  `${van.make} ${van.model} ${van.year}`
+  const vanString = `${van.make} ${van.model} ${van.year}`
+  // .length > 25 ? 
+  // `${van.make} ${van.model} ${van.year}`.slice(0, 25) + "..." :
+  // `${van.make} ${van.model} ${van.year}`
 
   return (
     <li className="small-van-card" onClick={() => navigate(`/vans/${van.id}`)}>
       <div className="small-van-card-img-div">
         <img src={previewImage} alt="" />
       </div>
-      <OpenModalDiv
+      {user.id !== van.owner.id && <OpenModalDiv
       className="small-van-card-heart-div"
       divText={<FaHeart style={{ color: "red" }}/>}
       modalComponent={<RemoveFavoritesModal van={van}/>}
-      />
+      />}
       <div className="small-van-card-lower-div">
         <div>
         <h3>{vanString}</h3>

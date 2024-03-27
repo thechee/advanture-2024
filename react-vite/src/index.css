@@ -109,3 +109,95 @@ button {
 .white-btn:hover {
   background-color: var(--hover);
 }
+
+/*** MEDIA QUERIES ***/
+
+@media screen and (max-width: 1024px) {
+  .profile-container {
+    width: 650px;
+    padding: 0 1rem;
+  }
+
+  .profile-content {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .profile-profile-image {
+    margin: -50px auto 0;
+  }
+
+  .profile-user-info {
+    width: 100%;
+    text-align: center;
+  }
+
+  .profile-right-div {
+    width: 100%;
+  }
+
+  .profile-right-div-info {
+    width: 100%;
+  }
+
+  .profile-vans .small-van-card:first-of-type .small-van-card-img-div {
+    max-height: 300px;
+  }
+}
+
+@media screen and (max-width: 975px) {
+  .favorites-div {
+    width: 750px;
+  }
+
+  .favorites-div .small-van-card {
+    width: 360px;
+  }
+}
+
+
+@media screen and (max-width: 770px) {
+  .profile-container {
+    width: 630px;
+    padding-right: 1rem;
+    box-sizing: border-box;
+  }
+
+  .profile-vans .small-van-card {
+    width: 100%;
+  }
+
+  .profile-vans .small-van-card-img-div {
+    height: 300px;
+  }
+
+  #host-div {
+    display: none;
+  }
+
+  .profile-dropdown {
+    width: 100%;
+    right: 0;
+    top: 3.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--light-border);
+  }
+
+  .favorites-div {
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+  }
+
+  .favorites-div .small-van-card {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .profile-container {
+    width: 100%;
+    padding-right: 1rem;
+    box-sizing: border-box;
+  }
+}

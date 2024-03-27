@@ -2,7 +2,7 @@ import StarRatings from "react-star-ratings"
 import './SmallVanCard.css'
 import { FaHeart } from "react-icons/fa";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv";
-import { RemoveFavoritesModal } from "../../Favorites/RemoveFavoritesModal/RemoveFavoritesModal";
+import { RemoveFavoritesModal } from "../../Users/Favorites/RemoveFavoritesModal/RemoveFavoritesModal";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -28,11 +28,11 @@ export const SmallVanCard = ({van}) => {
       <div className="small-van-card-img-div">
         <img src={previewImage} alt="" />
       </div>
-      {user.id !== van.owner.id && <OpenModalDiv
+      {/* {user.id !== van.owner.id && <OpenModalDiv
       className="small-van-card-heart-div"
       divText={<FaHeart style={{ color: "red" }}/>}
       modalComponent={<RemoveFavoritesModal van={van}/>}
-      />}
+      />} */}
       <div className="small-van-card-lower-div">
         <div>
         <h3>{vanString}</h3>
@@ -53,6 +53,11 @@ export const SmallVanCard = ({van}) => {
   }
         </div>
       <div className="small-van-card-price-div">
+      {user.id !== van.owner.id && <OpenModalDiv
+      className="small-van-card-heart-div"
+      divText={<FaHeart style={{ color: "red" }}/>}
+      modalComponent={<RemoveFavoritesModal van={van}/>}
+      />}
         <span>${van.rentalRate}/day</span>
       </div>
       </div>

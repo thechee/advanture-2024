@@ -162,6 +162,92 @@ export const VanDetail = () => {
               />
             </div>
           )}
+
+        <div className="van-detail-inner-right-div-repeat">
+          {/* {!owner && (
+            <div className="van-detail-trip-div">
+              <label>Trip Start</label>
+              <input
+                type="date"
+                value={from}
+                onChange={(e) => setFrom(e.target.value)}
+              />
+              <label>Trip End</label>
+              <input
+                type="date"
+                value={until}
+                onChange={(e) => setUntil(e.target.value)}
+              />
+              <button
+                onClick={() => alert("Feature coming soon!")}
+                className="submit-btn"
+              >
+                Continue
+              </button>
+            </div>
+          )} */}
+          <div className="van-detail-distance-right-div">
+            <span>Distance included</span>
+            <span>
+              {van.distanceAllowed
+                ? van.distanceAllowed + " miles"
+                : "Unlimited"}
+            </span>
+          </div>
+
+          {owner ? (
+            <div className="owner-div">
+              <button onClick={() => navigate(`/vans/${vanId}/update`)}>
+                Update Van
+              </button>
+              <OpenModalButton
+                buttonText="Remove Van"
+                modalComponent={<DeleteVanModal van={van} />}
+              />
+            </div>
+          ) : (
+            <div className="favorite-div">
+              {favorited ? (
+                <button className="add-to-favorites" onClick={handleUnfavorite}>
+                  <span>
+                    <FaHeart style={{ color: "red" }} />
+                  </span>
+                  Remove from favorites
+                </button>
+              ) : (
+                <>
+                  {user && (
+                    <button
+                      className="add-to-favorites"
+                      onClick={handleFavorite}
+                    >
+                      <span>
+                        <FaRegHeart />
+                      </span>
+                      Add to Favorites
+                    </button>
+                  )}
+                  {!user && (
+                    <OpenModalButton
+                      modalComponent={<LoginFormModal />}
+                      buttonText={
+                        <>
+                          <span>
+                            <FaRegHeart />
+                          </span>
+                          Add to Favorites
+                        </>
+                      }
+                      className={"add-to-favorites"}
+                    />
+                  )}
+                </>
+              )}
+            </div>
+          )}
+          </div>
+
+
           <div className="van-detail-details">
             <ul className="details-ul">
               {van.mpg && <li><GasStation /> {van.mpg} MPG</li>}
@@ -229,35 +315,35 @@ export const VanDetail = () => {
               </div>
               <div>
                 <div className="rating">
-                  <span>Cleanliness</span>
+                  <span className="rating-name">Cleanliness</span>
                   <RatingsBar ratingAvg={van.vanAvgCleanliness} />
                   <span className="avg-rating-num">
                     {van.vanAvgCleanliness.toFixed(1)}
                   </span>
                 </div>
                 <div className="rating">
-                  <span>Maintenance</span>
+                  <span className="rating-name">Maintenance</span>
                   <RatingsBar ratingAvg={van.vanAvgMaintenance} />
                   <span className="avg-rating-num">
                     {van.vanAvgMaintenance.toFixed(1)}
                   </span>
                 </div>
                 <div className="rating">
-                  <span>Communication</span>
+                  <span className="rating-name">Communication</span>
                   <RatingsBar ratingAvg={van.vanAvgCommunication} />
                   <span className="avg-rating-num">
                     {van.vanAvgCommunication.toFixed(1)}
                   </span>
                 </div>
                 <div className="rating">
-                  <span>Convenience</span>
+                  <span className="rating-name">Convenience</span>
                   <RatingsBar ratingAvg={van.vanAvgConvenience} />
                   <span className="avg-rating-num">
                     {van.vanAvgConvenience.toFixed(1)}
                   </span>
                 </div>
                 <div className="rating">
-                  <span>Accuracy</span>
+                  <span className="rating-name">Accuracy</span>
                   <RatingsBar ratingAvg={van.vanAvgAccuracy} />
                   <span className="avg-rating-num">
                     {van.vanAvgAccuracy.toFixed(1)}
@@ -293,13 +379,16 @@ export const VanDetail = () => {
             </button>
           )}
         </div>
-
         <div className="van-detail-right-div">
-          <div>
-            <p>
+          <div className="van-detail-price-div">
+            <div className="van-detail-price-gradient"></div>
+            <div className="van-detail-price-inner-div">
               <span className="van-detail-price">${van.rentalRate}</span> / day
-            </p>
+            </div>
+            <div className="van-detail-price-bottom-blocker"></div>
           </div>
+
+          <div className="van-detail-inner-right-div">
           {/* {!owner && (
             <div className="van-detail-trip-div">
               <label>Trip Start</label>
@@ -322,7 +411,7 @@ export const VanDetail = () => {
               </button>
             </div>
           )} */}
-          <div className="van-detail-distance-div">
+          <div className="van-detail-distance-right-div">
             <span>Distance included</span>
             <span>
               {van.distanceAllowed
@@ -381,6 +470,7 @@ export const VanDetail = () => {
               )}
             </div>
           )}
+          </div>
         </div>
       </div>
       <div className="van-detail-map-div">

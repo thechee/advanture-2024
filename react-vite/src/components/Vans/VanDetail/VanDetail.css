@@ -26,7 +26,7 @@
   display: flex;
   justify-content: center;
   margin: 3rem auto;
-  width: 950px;
+  width: 100vw;
 }
 
 .van-detail-left-div {
@@ -74,9 +74,7 @@
   bottom: 0;
   height: 5rem;
   width: 100%;
-  content: "";
   background: linear-gradient(to bottom, transparent 5%, white 100%);
-  pointer-events: none;
 }
 
 .van-detail-right-div {
@@ -194,7 +192,9 @@ h4 {
   padding-bottom: 1.5rem;
 }
 
-.van-detail-distance-div {
+.van-detail-distance-right-div {
+  display: flex;
+  justify-content: space-between;
   margin-top: 1.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid lightgray;
@@ -257,7 +257,7 @@ h4 {
 }
 
 .overall-ratings-stars-div svg {
-  padding-left: .25rem;
+  margin-left: .25rem;
 }
 
 .overall-ratings-stars-div span:last-of-type {
@@ -271,8 +271,9 @@ h4 {
   justify-content: space-between;
 }
 
-.rating span:first-of-type {
-  width: 135px;
+.rating-name {
+  min-width: 130px;
+  padding-right: 1rem;
 }
 
 .rating span {
@@ -302,4 +303,14 @@ h4 {
   margin-right: auto;
   margin-left: 0;
   margin-top: 1rem;
+}
+
+.van-detail-inner-right-div-repeat {
+  display: none;
+}
+
+.avg-rating-num {
+  flex: 1 0 62px;
+  max-width: 62px;
+  text-align: right;
 }

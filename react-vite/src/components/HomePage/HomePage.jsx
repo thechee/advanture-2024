@@ -1,17 +1,44 @@
 import { useNavigate } from "react-router";
-import { FaSearch } from "react-icons/fa";
-import "./HomePage.css";
-import { useState } from "react";
+import { FaAngleLeft, FaAngleRight, FaSearch } from "react-icons/fa";
+import { useRef, useState } from "react";
 import moment from 'moment';
 import { useVanListContext } from "../../context/VanListContext";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import "./HomePage.css";
 
 export const HomePage = () => {
   const navigate = useNavigate();
   const [where, setWhere] = useState("")
   const [from, setFrom] = useState(moment().format("YYYY-MM-DD"))
   const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"))
-
   const {setMake} = useVanListContext()
+  const carouselRef = useRef();
+
+  const next = () => { 
+    carouselRef.current.next()
+  }
+  const previous = () => { 
+    carouselRef.current.previous() 
+  }
+
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 5,
+      slidesToSlide: 1 // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 5,
+      slidesToSlide: 1 // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 5,
+      slidesToSlide: 1 // optional, default to 1.
+    }
+  };
 
   return (
     <div className="home-page">
@@ -46,15 +73,36 @@ export const HomePage = () => {
       </div>
 
       <div className="home-page-makes-div">
-      <h3>Vans by make</h3>
-      <div className="makes-cards-div">
-        <div className="home-page-make-card" onClick={() => {
+      <div className="carousel-header">
+        <h3>Vans by make</h3>
+        <div className="carousel-header-arrows">
+          <FaAngleLeft onClick={previous}/>
+          <FaAngleRight onClick={next}/>  
+        </div>
+      </div>
+
+        <Carousel
+          ref={carouselRef}
+          arrows={false}
+          responsive={responsive}
+          infinite={true}
+          itemClass="carousel-item"  
+          containerClass="carousel-container"
+          // renderButtonGroupOutside={true}
+          // customButtonGroup={<ButtonGroup />}
+        >
+
+
+        <div className="home-page-make-card" 
+        onClick={() => {
           setMake("Mercedes")
           navigate("/vans")
-        }}>
+        }}
+        >
           <img src="https://advanture-capstone.s3.us-west-1.amazonaws.com/outside-van-mercedes-sprinter-camper.jpeg" alt="" />
           <h4>Mercedes</h4>
         </div>
+
         <div className="home-page-make-card" onClick={() => {
           setMake("Ford")
           navigate("/vans")
@@ -62,6 +110,7 @@ export const HomePage = () => {
           <img src="https://advanture-capstone.s3.us-west-1.amazonaws.com/20-Caravan-Outfitter-Free-Bird-Ford-Transit-Connect-Camper-Van-Conversion.webp" alt="" />
           <h4>Ford</h4>
         </div>
+
         <div className="home-page-make-card" onClick={() => {
           setMake("Ram")
           navigate("/vans")
@@ -69,6 +118,7 @@ export const HomePage = () => {
           <img src="https://advanture-capstone.s3.us-west-1.amazonaws.com/rrrrr.webp" alt="" />
           <h4>Ram</h4>
         </div>
+
         <div className="home-page-make-card" onClick={() => {
           setMake("Volkswagen")
           navigate("/vans")
@@ -76,6 +126,7 @@ export const HomePage = () => {
           <img src="https://advanture-capstone.s3.us-west-1.amazonaws.com/What%2Byou%2Bneed%2Bto%2Bknow%2Bbefore%2Binvesting%2Bin%2Ba%2Bcamper%2Bvan.jpeg" alt="" />
           <h4>Volkswagen</h4>
         </div>
+
         <div className="home-page-make-card" onClick={() => {
           setMake("Chevy")
           navigate("/vans")
@@ -83,7 +134,9 @@ export const HomePage = () => {
           <img src="https://advanture-capstone.s3.us-west-1.amazonaws.com/1997%2BChevy%2BExpress%2BGeneva%2BConversion%2BVan%2BClark%2BFork%2BRiver.jpeg" alt="" />
           <h4>Chevy</h4>
         </div>
-        </div>
+
+        </Carousel>
+
       </div>
       {/* <div className="home-page-hosts-div">
         <h3>Meet the hosts</h3>

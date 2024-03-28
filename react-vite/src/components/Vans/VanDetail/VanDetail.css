@@ -1,5 +1,6 @@
 .van-images-div {
   width: 100%;
+  position: relative;
 }
 
 .van-images-div img {
@@ -7,6 +8,18 @@
   height: 100%;
   object-fit: cover;
   aspect-ratio: 2.25;
+}
+
+.current-slide-display {
+  position: absolute;
+  bottom: 1rem;
+  left: 5rem;
+  width: fit-content;
+  background-color: rgba(65, 65, 67, .7);
+  border: 1px solid white;
+  color: white;
+  padding: .25rem .5rem;
+  border-radius: 5px;
 }
 
 .van-detail-content {
@@ -39,9 +52,31 @@
 }
 
 .van-description {
-  font-size: 14px;
+  font-size: 15px;
   margin: 0;
   line-height: 22px;
+  position: relative;
+  letter-spacing: .25px;
+  white-space: pre-line;
+}
+
+.van-description.hide {
+  height: 6rem;
+  overflow: hidden;
+}
+
+.van-description.show {
+  height: fit-content;
+}
+
+.gradient-overlay {
+  position: absolute;
+  bottom: 0;
+  height: 5rem;
+  width: 100%;
+  content: "";
+  background: linear-gradient(to bottom, transparent 5%, white 100%);
+  pointer-events: none;
 }
 
 .van-detail-right-div {
@@ -258,4 +293,13 @@ h4 {
   height: 100px;
   width: 100px;
   border-radius: 50%;
+}
+
+.collapse-btn {
+  width: fit-content;
+  font-weight: 500;
+  padding: .25rem .75rem;
+  margin-right: auto;
+  margin-left: 0;
+  margin-top: 1rem;
 }

@@ -30,6 +30,8 @@ import { Aux } from "../../Icons/Aux.jsx";
 import { BikeRack } from "../../Icons/BikeRack.jsx";
 import { USBCharger } from "../../Icons/USBCharger.jsx";
 import { Bluetooth } from "../../Icons/Bluetooth.jsx";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 export const VanDetail = () => {
   const navigate = useNavigate();
@@ -42,6 +44,8 @@ export const VanDetail = () => {
   const [viewNewReview, setViewNewReview] = useState(false);
   const [from, setFrom] = useState(moment().format("YYYY-MM-DD"));
   const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [showDescription, setShowDescription] = useState(false);
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
@@ -71,13 +75,23 @@ export const VanDetail = () => {
     await dispatch(thunkDeleteFavorite(van.id));
   };
 
-  let previewImage;
-  for (const image in van.images) {
-    if (van.images[image].preview == true) {
-      previewImage = van.images[image].imageUrl;
-      break;
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 1,
+      slidesToSlide: 1 // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 1,
+      slidesToSlide: 1 // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      slidesToSlide: 1 // optional, default to 1.
     }
-  }
+  };
 
   const joinedDate = formatShortDate(van.owner.createdAt);
   const owner = user?.id == van.owner.id;
@@ -85,10 +99,23 @@ export const VanDetail = () => {
   let favorited;
   if (user) favorited = van.id in user.favorites;
 
+  const handleBeforeChange = (currentSlide) => {
+    setCurrentSlide(currentSlide);
+  };
+
+
   return (
     <div>
       <div className="van-images-div">
-        <img src={previewImage} alt="" />
+        <Carousel
+        responsive={responsive}
+        beforeChange={handleBeforeChange}
+        >
+          {Object.values(van.images).map((image) => (
+            <img key={image.id} src={image.imageUrl} alt="" />
+          ))}
+        </Carousel>
+        <div className="current-slide-display">{currentSlide + 1} of {Object.values(van.images).length}</div>
       </div>
       {!owner && (
         <div>
@@ -157,8 +184,13 @@ export const VanDetail = () => {
               <span>Joined {joinedDate}</span>
             </div>
           </div>
+
           <h4>DESCRIPTION</h4>
-          <p className="van-description">{van.description}</p>
+          <p className={showDescription ? "van-description show" : "van-description hide"} >
+            {!showDescription && <div className="gradient-overlay"></div>}
+            {van.description}</p>
+          <button className="collapse-btn white-square-btn" onClick={() => setShowDescription(!showDescription)}>{showDescription ? "Less" : "More"}</button>
+
           <h4>FEATURES</h4>
           <div className="van-details-features">
             <ul className="feature-ul">

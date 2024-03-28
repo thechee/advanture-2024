@@ -143,6 +143,14 @@ button {
   .profile-vans .small-van-card:first-of-type .small-van-card-img-div {
     max-height: 300px;
   }
+
+  .home-page-makes-div {
+    width: 100%;
+    padding: 0 1rem;
+  }
+  .carousel-header-arrows {
+    padding-right: 3rem;
+  }
 }
 
 @media screen and (max-width: 975px) {
@@ -171,7 +179,7 @@ button {
     height: 300px;
   }
 
-  #host-div {
+  .white-square-btn {
     display: none;
   }
 

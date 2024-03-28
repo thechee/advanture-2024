@@ -19,6 +19,14 @@
   height: 100%;
 }
 
+.van-list-ul,
+.van-list-ul a,
+.van-list-item-info,
+.van-list-item-li  {
+  box-sizing: border-box;
+}
+
+
 .no-vans-found {
   margin: 5rem auto;
   text-align: center;
@@ -44,7 +52,7 @@
 
 .van-list-ul a {
   display: flex;
-  width: fit-content;
+  width: 97%;
 }
 
 .van-list-map-div {

@@ -87,7 +87,6 @@ export const VanList = () => {
 
 
   return (
-    
     <>
       <div className="filters-nav">
         {showSort ? 

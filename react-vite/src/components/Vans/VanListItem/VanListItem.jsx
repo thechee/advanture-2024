@@ -51,11 +51,9 @@ export const VanListItem = ({ van }) => {
           <img src={previewImage} alt="" />
         </div>
         <div className="van-list-item-info">
-          <div>
             <h2>
               {van.make} {van.model} {van.year}
             </h2>
-          </div>
           <div className="van-list-item-rating-div">
             {van.numRatings ? (
               <>

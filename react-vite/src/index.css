@@ -107,6 +107,28 @@ button {
 
 /*** MEDIA QUERIES ***/
 
+@media screen and (max-width: 1200px){
+  .van-list-ul {
+    width: 55%;
+    min-width: 55%;
+  }
+  .van-list-ul a {
+    width: 97%;
+    min-width: 97%;
+  }
+  .van-list-map-div {
+    width: calc(100vw - 45%);
+  }
+
+  .van-list-item-info {
+    width: calc(100% - 260px);
+  }
+
+  .van-list-item-info h2 {
+    width: calc(100% - 30px);
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .profile-container {
     width: 650px;
@@ -225,6 +247,42 @@ button {
   .van-detail-inner-right-div-repeat {
     display: block;
     margin-bottom: 1rem;
+  }
+
+  .van-list-map-div {
+    width: 100%;
+    z-index: 1;
+    display: none;
+  }
+  .van-list-ul {
+    width: 100%;
+    z-index: 2;
+  }
+  .van-list-item-li {
+    flex-direction: column;
+  }
+  .van-list-item-image-div {
+    width: 100%;
+    height: 350px;
+  }
+  .van-list-item-image-div img {
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 10px;
+  }
+  .van-list-item-info {
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .van-list-item-heart-div {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    padding: .3rem;
+    top: 10px;
   }
 }
 

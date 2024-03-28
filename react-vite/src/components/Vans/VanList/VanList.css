@@ -155,7 +155,7 @@
   width: fit-content;
 }
 
-.filters-count-btn {
+.filters-active-btn {
   width: fit-content;
   font-weight: 500;
   border-radius: 5px;
@@ -168,6 +168,6 @@
   display: flex;
   align-items: center;
 }
-.filters-count-btn:hover {
+.filters-active-btn:hover {
   background-color: #2d2d2f;
 }

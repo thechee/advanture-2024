@@ -14,6 +14,10 @@ def vans():
   Query for all vans and returns them in a list of van dicts
   """
 
+  price = request.args.get("price")
+  if price:
+    price = [int(p) for p in price.split(",")]
+
   make = request.args.get("make")
 
   years = request.args.get("years")
@@ -35,6 +39,8 @@ def vans():
 
   query = Van.query
 
+  if price:
+      query = query.filter(Van.rental_rate.between(price[0], price[1]))
   if make:
       query = query.filter(Van.make.ilike(f"%{make}%"))
   if years:

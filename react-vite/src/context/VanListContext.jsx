@@ -9,6 +9,8 @@ export const VanListProvider = (props) => {
   const [seats, setSeats] = useState("placeholder")
   const [fuelTypes, setFuelTypes] = useState([])
   const [mileage, setMilage] = useState(100)
+  const [sort, setSort] = useState("")
+  const [price, setPrice] = useState([10, 250])
 
   const handleReset = () => {
     setMake("placeholder")
@@ -28,7 +30,7 @@ export const VanListProvider = (props) => {
   if (mileage !== 100) count++;
 
   return (
-    <VanListContext.Provider value={{ make, setMake, years, setYears, seats, setSeats, fuelTypes, setFuelTypes, mileage, setMilage, handleReset, count, allYears }} >
+    <VanListContext.Provider value={{ price, setPrice, sort, setSort, make, setMake, years, setYears, seats, setSeats, fuelTypes, setFuelTypes, mileage, setMilage, handleReset, count, allYears }} >
       {props.children}
     </VanListContext.Provider>
   )

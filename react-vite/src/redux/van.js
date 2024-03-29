@@ -77,9 +77,10 @@ const deleteVanRating = (vanId, ratingId) => ({
 
 /* ========== Thunks ========== */
 
-export const thunkGetVans = (make, years, seats, fuelTypes, miles) => async dispatch => {
+export const thunkGetVans = (price, make, years, seats, fuelTypes, miles) => async dispatch => {
   let url = "/api/vans?"
   // if (sort) url += `?sort=${sort}`
+  if (price) url += `&price=${price}`
   if (make && make !== "placeholder") url += `&make=${make}`
   if (years) url += `&years=${years}`
   if (seats && seats !== "placeholder") url += `&seats=${seats}`

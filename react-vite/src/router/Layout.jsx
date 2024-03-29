@@ -7,6 +7,13 @@ import Navigation from "../components/Navigation/Navigation";
 import { APIProvider } from "@vis.gl/react-google-maps";
 import { getKey } from "../redux/maps";
 import { VanListProvider } from "../context/VanListContext";
+import ReactGA from 'react-ga';
+
+const TRACKING_ID = "G-PLRG23QSQK";
+ReactGA.initialize(TRACKING_ID, {
+  siteSpeedSampleRate: 100
+});
+
 
 export default function Layout() {
   const dispatch = useDispatch();
@@ -33,7 +40,6 @@ export default function Layout() {
     <VanListProvider>
       <ModalProvider>
         <APIProvider apiKey={key}>
-
         <Navigation />
         {isLoaded && <Outlet />}
         </APIProvider>

@@ -1,16 +1,10 @@
+/* global google */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { thunkAddVan, thunkAddVanImage } from "../../../redux/van";
 import "./CreateVan.css";
 
-const yearsOptions = [];
-for (let i = new Date().getFullYear() + 1; i >= 1950; i--) {
-  yearsOptions.push(i);
-}
-
-const doorsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const seatsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export const CreateVan = () => {
   const dispatch = useDispatch();
@@ -36,9 +30,16 @@ export const CreateVan = () => {
   const [fileName, setFileName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
-
+  
   const maxFileError = "Image exceeds the maximum file size of 5Mb";
+
   const automotiveYear = new Date().getFullYear() + 1;
+  const yearsOptions = [];
+  for (let i = automotiveYear; i >= 1950; i--) {
+    yearsOptions.push(i);
+  }
+  const doorsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const seatsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const makes = ["Ford", "Dodge", "Ram", "Volkswagen", "Mercedes", "Toyota"];
   const zipCodeRegex = /\d{5}/;
 

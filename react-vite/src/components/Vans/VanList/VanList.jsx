@@ -119,7 +119,6 @@ export const VanList = () => {
     return vansArray;
   }, [vansObj, sort]);
 
-  console.log(allPrices)
   return (
     <>
       <div className="filters-nav">
@@ -183,7 +182,6 @@ export const VanList = () => {
               <Map
                 key={mapId}
                 defaultCenter={center || latLng}
-                // center={center || latLng}
                 defaultZoom={12}
                 gestureHandling={"greedy"}
                 disableDefaultUI={true}

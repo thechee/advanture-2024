@@ -7,13 +7,52 @@ Chase Agee
 [GitHub](https://github.com/thechee) |
 [LinkedIn](https://www.linkedin.com/in/chase-agee/)
 
-### Technologies
-Python, Javascript, HTML, CSS, Flask, SQLAlchemy, SQLite3, PostgreSQL, React, Redux, Render
-
 ### Summary
 Have an adventure-ready camper van sitting around? Want to get out into nature without having to worry about accomodations? Advanture is the answer, a website dedicated to connecting people looking to rent camper vans and those who have vans!
 
 This is a capstone project for the appAcademy 24-week program.
+
+#### Home Page
+![image](./public/van-home.png)
+
+#### Van List
+![image](./public/van-list.png)
+
+#### Van Favorites
+![image](./public/van-favorites-gif.gif)
+
+#### Van Details/Reviews
+![image](./public/van-details-gif.gif)
+
+## Technologies
+#### Languages
+![image](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![image](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![image](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![image](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+
+#### Frameworks/Libraries
+![image](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
+![image](https://img.shields.io/badge/SQLAlchemy-red?style=for-the-badge&logo=SQLAlchemy&logoColor=white)
+![image](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![image](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+
+#### Database
+![image](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+![image](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![image](https://img.shields.io/badge/Alembic-%23F79A32.svg?style=for-the-badge&logo=alembic&logoColor=white)
+
+#### APIs and Services
+![image](https://img.shields.io/badge/Google_Maps-4285F4?style=for-the-badge&logo=google-maps&logoColor=white)
+![image](https://img.shields.io/badge/Amazon_S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white)
+
+#### Development Tools
+![image](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
+
+#### Hosting
+![image](https://img.shields.io/badge/Render-%236086D6.svg?style=for-the-badge&logo=render&logoColor=white)
+
+
 
 ## Getting started
 
@@ -60,3 +99,14 @@ This is a capstone project for the appAcademy 24-week program.
    command includes the `--watch` flag. This flag will rebuild the __dist__
    folder whenever you change your code, keeping the production version up to
    date.
+
+## Features
+1. Vans
+2. Reviews
+3. Favorites
+
+### Feature Features
+1. Bookings
+2. Notifications
+3. Search by Location
+4. Van Features

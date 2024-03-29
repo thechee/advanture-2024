@@ -6,6 +6,7 @@
   border-radius: 10px;
   width: 525px;
   margin: 1rem auto;
+  box-shadow: 0px 2px 4px lightgray;
 }
 
 .user-review-li h2 {
@@ -19,8 +20,9 @@
 }
 
 .user-review-data-div {
-  width: 500px;
+  width: 100%;
   padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 .user-review-van-img {

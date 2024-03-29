@@ -87,18 +87,20 @@ export const VanList = () => {
 
 
   return (
-    
     <>
       <div className="filters-nav">
         {showSort ? 
-          <button className="white-btn">Sort by <FaChevronUp /></button>
+          sort ? 
+            (<button className="filters-active-btn">Sort • Daily price: {sort} to {sort == 'high' ? "low" : "high"} <FaChevronUp /></button>) 
+            : 
+            (<button className="white-btn">Sort by <FaChevronUp /></button>)
           :
-          <button className="white-btn" onClick={(e) => handleFiltersClick(e, "sort")}>Sort by <FaChevronDown /></button>
+          <button className={sort ? "filters-active-btn" : "white-btn"} onClick={(e) => handleFiltersClick(e, "sort")}>{sort ? `Sort • Daily price: ${sort} to ${sort == 'high' ? "low" : "high"}` : "Sort by" }<FaChevronDown /></button>
         }
         <button className="white-btn" onClick={(e) => handleFiltersClick(e, "price")}>Daily price <FaChevronDown /></button>
         {count ? 
         <OpenModalButton
-          className={"filters-count-btn"}
+          className={"filters-active-btn"}
           buttonText={`More filters (${count})`}
           leftSvg={<FaCheck />}
           rightSvg={<FaChevronDown />}

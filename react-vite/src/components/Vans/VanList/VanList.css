@@ -2,8 +2,8 @@
 
 .van-list-content {
   display: flex;
-  margin-top: 2.5rem;
-  height: calc(100vh - 113px);
+  /* margin-top: 2.5rem; */
+  height: calc(100vh - 120px);
   width: 100vw;
   overflow-x: hidden;
 }
@@ -92,13 +92,13 @@
   /* height: 1rem; */
   width: 100%;
   box-shadow: 0px 2px 5px lightgray;
-  position: absolute;
+  position: relative;
   z-index: 4;
   background-color: white;
   padding: .5rem 0 .5rem 1.5rem;
   display: flex;
   gap: .5rem;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 .filters-nav button > svg {
@@ -119,8 +119,9 @@
   position: absolute;
   border: 1px solid var(--light-border);
   border-radius: 10px;
-  top: 8rem;
+  top: 3.5rem;
   /* height: 20rem; */
+  left: auto;
   width: 20rem;
   background-color: white;
   display: flex;
@@ -130,11 +131,11 @@
 }
 
 .sort-div {
-  left: 1.5rem;
+  left: 0rem;
 }
 
 .price-div {
-  left: 16rem;
+  left: 0rem;
 }
 
 .sort-choice-radios {

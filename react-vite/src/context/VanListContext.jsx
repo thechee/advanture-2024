@@ -21,6 +21,7 @@ export const VanListProvider = (props) => {
   }
 
   const allYears = JSON.stringify(years) === JSON.stringify([1950, new Date().getFullYear() + 1])
+  const allPrices = JSON.stringify(price) === JSON.stringify([10, 250])
 
   let count = 0;
   if (make !== "placeholder") count++;
@@ -30,7 +31,7 @@ export const VanListProvider = (props) => {
   if (mileage !== 100) count++;
 
   return (
-    <VanListContext.Provider value={{ price, setPrice, sort, setSort, make, setMake, years, setYears, seats, setSeats, fuelTypes, setFuelTypes, mileage, setMilage, handleReset, count, allYears }} >
+    <VanListContext.Provider value={{ price, setPrice, allPrices, sort, setSort, make, setMake, years, setYears, seats, setSeats, fuelTypes, setFuelTypes, mileage, setMilage, handleReset, count, allYears }} >
       {props.children}
     </VanListContext.Provider>
   )

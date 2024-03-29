@@ -8,6 +8,7 @@ import * as sessionActions from "./redux/session";
 import "./index.css";
 
 
+
 const store = configureStore();
 
 if (import.meta.env.MODE !== "production") {

@@ -1,17 +1,19 @@
 import { useNavigate } from "react-router";
-import { FaAngleLeft, FaAngleRight, FaSearch } from "react-icons/fa";
+// import { FaAngleLeft, FaAngleRight, FaSearch } from "react-icons/fa";
 import { useRef, useState } from "react";
-import moment from 'moment';
+// import moment from 'moment';
 import { useVanListContext } from "../../context/VanListContext";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "./HomePage.css";
+import { RightArrow } from "../Icons/RIghtArrow";
+import { LeftArrow } from "../Icons/LeftArrow";
 
 export const HomePage = () => {
   const navigate = useNavigate();
-  const [where, setWhere] = useState("")
-  const [from, setFrom] = useState(moment().format("YYYY-MM-DD"))
-  const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"))
+  // const [where, setWhere] = useState("")
+  // const [from, setFrom] = useState(moment().format("YYYY-MM-DD"))
+  // const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"))
   const {setMake} = useVanListContext()
   const carouselRef = useRef();
 
@@ -76,8 +78,8 @@ export const HomePage = () => {
       <div className="carousel-header">
         <h3>Vans by make</h3>
         <div className="carousel-header-arrows">
-          <FaAngleLeft onClick={previous}/>
-          <FaAngleRight onClick={next}/>  
+          <LeftArrow onClick={previous}/>
+          <RightArrow onClick={next}/>  
         </div>
       </div>
 

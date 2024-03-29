@@ -2,8 +2,8 @@
 
 .van-list-content {
   display: flex;
-  margin-top: 2.5rem;
-  height: calc(100vh - 113px);
+  /* margin-top: 2.5rem; */
+  height: calc(100vh - 120px);
   width: 100vw;
   overflow-x: hidden;
 }
@@ -86,17 +86,19 @@
   width: 10px;
 }
 
+/*** Filters ***/
+
 .filters-nav {
   /* height: 1rem; */
   width: 100%;
   box-shadow: 0px 2px 5px lightgray;
-  position: absolute;
+  position: relative;
   z-index: 4;
   background-color: white;
   padding: .5rem 0 .5rem 1.5rem;
   display: flex;
   gap: .5rem;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
 }
 
 .filters-nav button > svg {
@@ -113,19 +115,27 @@
   padding-right: 0rem;
 }
 
-.sort-div {
+.filters {
   position: absolute;
-  left: 1.5rem;
   border: 1px solid var(--light-border);
   border-radius: 10px;
-  top: 8rem;
+  top: 3.5rem;
   /* height: 20rem; */
+  left: auto;
   width: 20rem;
   background-color: white;
   display: flex;
   flex-direction: column;
   z-index: 4;
   padding-top: 1rem;
+}
+
+.sort-div {
+  left: 0rem;
+}
+
+.price-div {
+  left: 0rem;
 }
 
 .sort-choice-radios {
@@ -138,7 +148,6 @@
   margin: 0 1rem 0 0;
   cursor: pointer;
   color: var(--purple);
-
   appearance: none;
   border-radius: 50%;
   width: 18px;
@@ -150,7 +159,7 @@
   border: 5.5px solid var(--purple);
 }
 
-.sort-btns-div {
+.filters-btns-div {
   display: flex;
   justify-content: space-between;
   margin-top: auto;
@@ -159,8 +168,12 @@
   margin-top: 1rem;
 }
 
-.sort-btns-div button {
+.filters-btns-div button {
   width: fit-content;
+}
+
+.price-input-div {
+  padding: 1rem 1.5rem 0.5rem 1.5rem;
 }
 
 .filters-active-btn {

@@ -5,10 +5,12 @@ import { VanListItem } from "../VanListItem/VanListItem";
 import { FaMapMarkerAlt, FaChevronDown, FaChevronUp, FaSlidersH, FaCheck } from "react-icons/fa";
 import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
 import { Sort } from "../../Filters/Sort";
+import { Price } from "../../Filters/Price";
 import { FiltersModal } from "../../Filters/FiltersModal";
 import OpenModalButton from "../../OpenModalButton";
-import "./VanList.css";
 import { useVanListContext } from "../../../context/VanListContext";
+import "./VanList.css";
+
 export const VanList = () => {
   const dispatch = useDispatch();
   const vansObj = useSelector((state) => state.vans);
@@ -18,11 +20,11 @@ export const VanList = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showSort, setShowSort] = useState(false)
   const [showPrice, setShowPrice] = useState(false)
-  const [sort, setSort] = useState("")
   const [tempSort, setTempSort] = useState("")
   const [center, setCenter] = useState(null)
   const sortRef = useRef()
-  const { make, years, seats, fuelTypes, mileage, handleReset, count } = useVanListContext()
+  const priceRef = useRef()
+  const { sort, setSort, price, setPrice, allPrices, make, years, seats, fuelTypes, mileage, handleReset, count } = useVanListContext()
 
   useEffect(() => {
     // if (sort) {
@@ -30,11 +32,11 @@ export const VanList = () => {
     // } else {
     // }
     const timer = setTimeout(() => {
-    dispatch(thunkGetVans(make, years, seats, fuelTypes, mileage));
+    dispatch(thunkGetVans(price, make, years, seats, fuelTypes, mileage));
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [dispatch, make, years, seats, fuelTypes, mileage]);
+  }, [dispatch, price, make, years, seats, fuelTypes, mileage]);
 
   useEffect(() => {}, [userFavorites]);
 
@@ -66,6 +68,38 @@ export const VanList = () => {
     return () => document.removeEventListener("click", closeMenu);
   }, [showSort]);
 
+  useEffect(() => {
+    if (!showPrice) return;
+
+    const closeMenu = (e) => {
+      if (priceRef.current && !priceRef.current.contains(e.target)) {
+        setShowPrice(false);
+      }
+    };
+
+    document.addEventListener("click", closeMenu);
+
+    return () => document.removeEventListener("click", closeMenu);
+  }, [showPrice]);
+
+  useEffect(() => {
+    if (!showSort) return;
+
+    const sortButton = document.querySelector(".sort-btn");
+    const buttonOffset = sortButton.getBoundingClientRect().left;
+    const sortMenu = document.querySelector(".sort-div");
+    sortMenu.style.left = `${buttonOffset}px`;
+  }, [showSort])
+
+  useEffect(() => {
+    if (!showPrice) return;
+
+    const priceButton = document.querySelector(".price-btn");
+    const buttonOffset = priceButton.getBoundingClientRect().left;
+    const priceMenu = document.querySelector(".price-div");
+    priceMenu.style.left = `${buttonOffset}px`;
+  }, [showPrice])
+
   const handleFiltersClick = (e, filter) => {
     e.stopPropagation();
     if (filter == "sort") {
@@ -85,19 +119,25 @@ export const VanList = () => {
     return vansArray;
   }, [vansObj, sort]);
 
-
   return (
     <>
       <div className="filters-nav">
         {showSort ? 
           sort ? 
-            (<button className="filters-active-btn">Sort • Daily price: {sort} to {sort == 'high' ? "low" : "high"} <FaChevronUp /></button>) 
+            (<button className="filters-active-btn sort-btn">Sort • Daily price: {sort} to {sort == 'high' ? "low" : "high"} <FaChevronUp /></button>) 
             : 
-            (<button className="white-btn">Sort by <FaChevronUp /></button>)
+            (<button className="white-btn sort-btn">Sort by <FaChevronUp /></button>)
           :
-          <button className={sort ? "filters-active-btn" : "white-btn"} onClick={(e) => handleFiltersClick(e, "sort")}>{sort ? `Sort • Daily price: ${sort} to ${sort == 'high' ? "low" : "high"}` : "Sort by" }<FaChevronDown /></button>
+          <button className={"sort-btn" + (sort ? " filters-active-btn" : " white-btn")} onClick={(e) => handleFiltersClick(e, "sort")}>{sort ? `Sort • Daily price: ${sort} to ${sort == 'high' ? "low" : "high"}` : "Sort by" }<FaChevronDown /></button>
         }
-        <button className="white-btn" onClick={(e) => handleFiltersClick(e, "price")}>Daily price <FaChevronDown /></button>
+        {showPrice ?
+          allPrices ?
+          <button className="white-btn price-btn">Daily price <FaChevronUp /></button>
+          :
+          <button className="filters-active-btn price-btn">Price • ${price[0]} - ${price[1]}+ <FaChevronUp /></button>
+          :
+          <button className={"price-btn" + (allPrices ? " white-btn" : " filters-active-btn")} onClick={(e) => handleFiltersClick(e, "price")}>{allPrices ? "Daily price" : `Price • $${price[0]} - $${price[1]}+` }<FaChevronDown /></button>
+        }
         {count ? 
         <OpenModalButton
           className={"filters-active-btn"}
@@ -116,8 +156,10 @@ export const VanList = () => {
           modalComponent={<FiltersModal />}
           id={"more-filters-btn"}
         />}
-      </div>
       {showSort && <Sort tempSort={tempSort} setTempSort={setTempSort} setSort={setSort} setShowSort={setShowSort} sortRef={sortRef}/>}
+      {showPrice && <Price setShowPrice={setShowPrice} price={price} setPrice={setPrice} priceRef={priceRef}/>}
+      </div>
+
       {isLoaded && (
         <div className="van-list-content">
           {vans.length ? 
@@ -140,7 +182,6 @@ export const VanList = () => {
               <Map
                 key={mapId}
                 defaultCenter={center || latLng}
-                // center={center || latLng}
                 defaultZoom={12}
                 gestureHandling={"greedy"}
                 disableDefaultUI={true}

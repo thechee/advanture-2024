@@ -17,7 +17,7 @@ export const Sort = ({ tempSort, setTempSort, setSort, setShowSort, sortRef }) =
   }
 
   return (
-    <div className="sort-div" ref={sortRef}>
+    <div className="filters sort-div" ref={sortRef}>
       <form id="sort-form" onSubmit={sortSubmitHandler}>
         <div className="sort-choice-radios">
           <input
@@ -41,7 +41,7 @@ export const Sort = ({ tempSort, setTempSort, setSort, setShowSort, sortRef }) =
           />
           <label htmlFor="sort-choice-high">Daily price: high to low</label>
         </div>
-        <div className="sort-btns-div">
+        <div className="filters-btns-div">
           <button className="white-btn" onClick={handleReset}>
             Reset
           </button>

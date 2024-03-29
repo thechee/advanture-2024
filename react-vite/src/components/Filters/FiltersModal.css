@@ -39,10 +39,8 @@
   margin-top: 1rem;
 }
 
-.year-slider,
-.mileage-slider {
+.slider {
   height: 1rem;
-  /* margin-bottom: 1.5rem; */
   padding-left: 1rem;
   padding-right: 1rem;
   width: 90%;
@@ -50,18 +48,21 @@
 }
 
 .year-track,
-.mileage-track  {
+.mileage-track,
+.price-track  {
   height: 3px;
   background-color: var(--purple);
   border-radius: 0.25rem;
   margin-top: 1rem;
 }
 
-.year-track-0, .year-track-2,
-.mileage-track-1 {
+.year-track-0, 
+.year-track-2,
+.mileage-track-1,
+.price-track-0,
+.price-track-2 {
   background: lightgray;
 }
-
 
 
 .filters-thumb {
@@ -84,8 +85,12 @@
   top: 13px;
   width: 0;
 }
+
 .filters-thumb:hover {
   background-color: #470ab4;
+}
+.filters-thumb:hover:before {
+  border-top: 7px solid #470ab4;
 }
 .filters-thumb:active {
   cursor: grabbing;

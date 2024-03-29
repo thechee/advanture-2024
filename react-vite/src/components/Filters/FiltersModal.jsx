@@ -57,7 +57,7 @@ export const FiltersModal = () => {
           <ReactSlider 
             value={years}
             onChange={(value) => setYears(value)}
-            className="year-slider"
+            className="slider"
             thumbClassName="filters-thumb"
             trackClassName="year-track"
             min={1950}
@@ -96,7 +96,7 @@ export const FiltersModal = () => {
           <ReactSlider
             value={mileage}
             onChange={(value) => setMilage(value)}
-            className="mileage-slider"
+            className="slider"
             thumbClassName="filters-thumb"
             trackClassName="mileage-track"
             min={100}

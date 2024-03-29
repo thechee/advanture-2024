@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux"
-import { SmallVanCard } from "../Vans/SmallVanCard/SmallVanCard"
+import { SmallVanCard } from "../../Vans/SmallVanCard/SmallVanCard"
 import { FaSearch } from "react-icons/fa";
 import './Favorites.css'
 import { useNavigate } from "react-router-dom";

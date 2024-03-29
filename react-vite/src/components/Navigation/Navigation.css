@@ -6,7 +6,7 @@
   position: fixed;
   top: 0;
   background-color: white;
-  z-index: 5;
+  z-index: 1001;
   width: 100%;
   box-sizing: border-box;
 }
@@ -27,8 +27,9 @@
   flex-grow: 1;
 }
 
-#host-div {
+.white-square-btn {
   border: 1px solid black;
+  background-color: white;
   padding: .4rem;
   margin-left: auto;
   margin-right: 1rem;
@@ -37,11 +38,11 @@
   color: black
 }
 
-#host-div:hover {
+.white-square-btn:hover {
   background-color: var(--hover)
 }
 
-#host-div span {
+.white-square-btn span {
   font-size: 11px;
   font-weight: 600;
 }
@@ -108,10 +109,28 @@
   cursor: pointer;
   padding: .5rem;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.profile-dropdown .active {
+  color: var(--purple);
 }
 
 .profile-dropdown-links-div{
   padding-bottom: 1rem;
+}
+
+.profile-dropdown svg,
+.profile-dropdown img {
+  width: 25px;
+  height: 25px;
+  margin-right: 1rem;
+}
+
+.profile-dropdown img {
+  border-radius: 50%;
+
 }
 
 .profile-dropdown-user-div {
@@ -126,7 +145,7 @@
 
 .profile-dropdown-logout-div {
   padding-top: 1rem;
-  border-top: 1px solid lightgray;
+  /* border-top: 1px solid lightgray; */
 }
 
 .profile-dropdown li:hover {

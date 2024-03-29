@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
-import { useModal } from "../../../context/Modal";
+import { useModal } from "../../../../context/Modal";
 import './RemoveFavoritesModal.css'
-import { thunkDeleteFavorite } from "../../../redux/session";
+import { thunkDeleteFavorite } from "../../../../redux/session";
 
 export const RemoveFavoritesModal = ({ van }) => {
   const dispatch = useDispatch()

@@ -67,7 +67,7 @@ This is a capstone project for the appAcademy 24-week program.
 3. Create a __.env__ file based on the example with proper settings for your
    development environment.
 
-4. Make sure the SQLite3 database connection URL is in the __.env__ file.
+4. Make sure the SQLite3 database connection uRL is in the __.env__ file.
 
 5. This starter organizes all tables inside the `flask_schema` schema, defined
    by the `SCHEMA` environment variable.  Replace the value for
@@ -101,12 +101,45 @@ This is a capstone project for the appAcademy 24-week program.
    date.
 
 ## Features
-1. Vans
-2. Reviews
-3. Favorites
+1. Users
+    - users can create an account
+    - users can Log-in and Logout of their created account with authentication
+2. Vans
+    - Logged in users can create new vans
+    - Users can view vans
+    - Logged in users can update their vans
+    - Logged in users can delete their vans
+3. Reviews
+    - Logged in users can create new reviews
+    - Users can view reviews
+    - Logged in users can update their reviews
+    - Logged in users can delete their reviews
+4. Favorites
+    - Logged in users can create new favorites
+    - Logged in users can view their favorites
+    - Logged in users can delete their favorites
 
 ### Feature Features
-1. Bookings
+1. Bookings/Availibilty
+    - Logged in users can create new booking
+    - Users can view availablity of vans (absence of bookings)
+    - Users can view bookings of their vans (past and future)
+    - Logged in users can update their booking (before the start date)
+    - Logged in users can delete their booking (before the start date)
 2. Notifications
-3. Search by Location
+    - Logged in users receive a notification when their requested booking is approved
+    - Logged in users receive a notification when a booking of their van is requested
+    - Logged in users receive a notification when a update to a booking is requested
+    - Logged in users receive a notification when a deletion of a booking is requested
+3. Search by Location & Availability
+    - Users can search for available vans within a date range, by location
 4. Van Features
+    - Logged in users can create new van features to their van
+    - Logged in users can delete van features to their van
+5. Multiple Van Images
+    - Logged in users can create new van images of their van
+    - Logged in users can delete van images of their van
+6. User Account 
+    - Logged in users can view their account details
+    - Logged in users can update their account details
+    - Logged in users can delete their account

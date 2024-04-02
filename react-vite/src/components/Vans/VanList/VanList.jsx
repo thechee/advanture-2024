@@ -8,7 +8,7 @@ import { Sort } from "../../Filters/Sort";
 import { Price } from "../../Filters/Price";
 import { FiltersModal } from "../../Filters/FiltersModal";
 import OpenModalButton from "../../OpenModalButton";
-import { useVanListContext } from "../../../context/VanListContext";
+import { useVanListContext } from "../../../hooks/VanListContext";
 import "./VanList.css";
 
 export const VanList = () => {

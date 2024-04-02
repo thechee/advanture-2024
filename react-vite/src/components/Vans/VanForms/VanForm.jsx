@@ -1,81 +1,36 @@
+/* global google */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
-import "../CreateVan/CreateVan.css";
-import {
-  thunkGetOneVan,
-  thunkUpdateVan,
-  thunkUpdateVanImage,
-} from "../../../redux/van";
+import { useNavigate } from "react-router";
+import { thunkAddVan, thunkAddVanImage } from "../../../../redux/van";
+import { useVanFormContext } from "../../../../hooks/useVanFormContext";
+import "./CreateVan.css";
 
-const yearsOptions = [];
-for (let i = new Date().getFullYear() + 1; i >= 1950; i--) {
-  yearsOptions.push(i);
-}
 
-const doorsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const seatsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+export const VanForm = () => {
 
-export const UpdateVan = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { vanId } = useParams();
-  const van = useSelector((state) => state.vans[vanId]);
-  const user = useSelector((state) => state.session.user);
-  const [year, setYear] = useState("");
-  const [make, setMake] = useState("placeholder");
-  const [model, setModel] = useState("");
-  const [miles, setMiles] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("placeholder");
-  const [zipCode, setZipCode] = useState("");
-  const [rentalRate, setRentalRate] = useState("");
-  const [description, setDescription] = useState("");
-  const [distanceIncluded, setDistanceIncluded] = useState("");
-  const [unlimited, setUnlimited] = useState(false);
-  const [mpg, setMpg] = useState("");
-  const [doors, setDoors] = useState("");
-  const [seats, setSeats] = useState("");
-  const [fuelTypeId, setFuelTypeId] = useState("placeholder");
-  const [image, setImage] = useState("");
-  const [fileName, setFileName] = useState("");
-  const [imageURL, setImageURL] = useState("");
-  const [validationErrors, setValidationErrors] = useState({});
-  const [loading, setLoading] = useState(false);
 
-  const maxFileError = "Image exceeds the maximum file size of 5Mb";
-  const automotiveYear = new Date().getFullYear() + 1;
-  const makes = ["Ford", "Dodge", "Ram", "Volkswagen", "Mercedes", "Toyota"];
-  const zipCodeRegex = /\d{5}/;
 
-  useEffect(() => {
-    if (!van) dispatch(thunkGetOneVan(vanId));
-  }, [dispatch, vanId, van]);
 
   useEffect(() => {
     const mpgInput = document.querySelector("#MPG-input");
-    if (van && mpgInput) {
-      if (fuelTypeId == 4) {
-        mpgInput.setAttribute("disabled", "");
-        setMpg("");
-      } else if (mpgInput.hasAttribute("disabled")) {
-        mpgInput.removeAttribute("disabled");
-      }
+    if (fuelTypeId == 4) {
+      mpgInput.setAttribute("disabled", "");
+      setMpg("");
+    } else {
+      mpgInput.removeAttribute("disabled");
     }
-  }, [fuelTypeId, van]);
+  }, [fuelTypeId]);
 
   useEffect(() => {
     const distanceInput = document.querySelector("#distance-input");
-    if (van && distanceInput) {
-      if (unlimited) {
-        distanceInput.setAttribute("disabled", "");
-        setDistanceIncluded("");
-      } else if (distanceInput.hasAttribute("disabled")) {
-        distanceInput.removeAttribute("disabled");
-      }
+    if (unlimited) {
+      distanceInput.setAttribute("disabled", "");
+      setDistanceIncluded("");
+    } else {
+      distanceInput.removeAttribute("disabled");
     }
-  }, [unlimited, van]);
+  }, [unlimited]);
 
   useEffect(() => {
     if (image && typeof image === "object" && image.name) {
@@ -89,212 +44,7 @@ export const UpdateVan = () => {
     }
   }, [validationErrors, image]);
 
-  useEffect(() => {
-    if (van?.id) {
-      let previewImage;
-      for (const image in van.images) {
-        if (van.images[image].preview == true) {
-          previewImage = van.images[image].imageUrl;
-          break;
-        }
-      }
 
-      setYear(van.year);
-      setMake(van.make);
-      setModel(van.model);
-      setMiles(van.miles);
-      setAddress(van.address);
-      setCity(van.city);
-      setState(van.state);
-      setZipCode(van.zipCode);
-      setRentalRate(van.rentalRate);
-      setDescription(van.description);
-      if (van.distanceAllowed == null) {
-        setUnlimited(true);
-      } else {
-        setDistanceIncluded(van.distanceAllowed);
-      }
-      if (van.fuelTypeId != 4) setMpg(van.mpg);
-      setDoors(van.doors);
-      setSeats(van.seats);
-      setFuelTypeId(van.fuelTypeId);
-      setImage(previewImage);
-    }
-  }, [van]);
-
-  if (!van) return null;
-
-  if (!user || user.id !== van.owner.id) {
-    return (
-      <h1 style={{ marginTop: "5rem", textAlign: "center" }}>
-        You are not authorized to update this van!
-      </h1>
-    );
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    setValidationErrors({});
-    const errors = {};
-    if (!year || year == "placeholder") errors.year = "Van year is required";
-    if (year > automotiveYear)
-      errors.year = "Year can not be after the current automotive year";
-    if (year && year < 1950)
-      errors.year = "We do not accept vans this old on Advanture";
-    if (make == "placeholder") errors.make = "Van make is required";
-    if (!makes.includes(make) && make !== "placeholder")
-      errors.make = "YOU ARE UP TO NO GOOD!";
-    if (!model) errors.model = "Van model is required";
-    if (model.length > 30)
-      errors.model = "Van model must be shorter than 30 characters";
-    if (!miles) errors.miles = "Milage is required";
-    if (miles < 1) errors.miles = "Milage must be a positive number";
-    if (miles > 500000) errors.miles = "YOU ARE LYING";
-    if (!address) errors.address = "Address is required";
-    if (!city) errors.city = "City is required";
-    if (city.length < 3)
-      errors.city = "City name must be at least 3 characters";
-    if (city.length > 30)
-      errors.city = "City name must less than 30 characters";
-    if (state == "placeholder") errors.state = "State is required";
-    if (!zipCode) errors.zipCode = "Zip code is required";
-    if (!zipCodeRegex.test(zipCode))
-      errors.zipCode = "Must be a valid zip code";
-    if (!rentalRate) errors.rentalRate = "Daily rental rate is required";
-    if (rentalRate < 1)
-      errors.rentalRate = "Daily rental rate must be a positive number";
-    if (rentalRate > 500)
-      errors.rentalRate = "We do not accept rental rates greater than $500/day";
-    if (!Number.isInteger(parseInt(rentalRate))) errors.rentalRate = "Must be a whole dollar amount"
-    if (!description) errors.description = "Description is required";
-    if (description.length < 50)
-      errors.description = "Description must be at least 50 characters";
-    if (description.length > 9999)
-      errors.description = "Description must not be a book";
-    if (!distanceIncluded && unlimited == false)
-      errors.distanceIncluded = "Distance included is required";
-    if (!mpg && fuelTypeId != 4)
-      errors.mpg = "MPG is required for non-electric vehicles";
-    if (distanceIncluded <= 0 && unlimited == false) errors.distanceIncluded = "Must be a positive number"
-    if (mpg < 1 && fuelTypeId != 4)
-      errors.mpg = "MPG is must be a positive number";
-    if (mpg > 150 && fuelTypeId != 4) errors.mpg = "MPG can not be over 150";
-    if (!doors || doors == "placeholder") errors.doors = "Doors is required";
-    if (doors < 1) errors.doors = "Van must have at least 1 door";
-    if (doors > 9) errors.doors = "Your van has too many doors";
-    if (!seats) errors.seats = "Seats is required";
-    if (!seats || seats == "placeholder") errors.seats = "Seats is required";
-    if (seats < 1) errors.seats = "Van must have at least 1 seat";
-    if (seats > 12) errors.seats = "This is a website for vans, not buses";
-    if (fuelTypeId == "placeholder")
-      errors.fuelTypeId = "Fuel type is required";
-    if (fuelTypeId > 5 || fuelTypeId < 1)
-      errors.fuelTypeId = "YOU ARE UP TO NO GOOD!";
-    if (!image) errors.image = "Image is required";
-    if (
-      image &&
-      typeof image === "object" &&
-      image.name &&
-      !image?.name.endsWith(".jpeg") &&
-      !image?.name.endsWith(".jpg") &&
-      !image?.name.endsWith(".png")
-    ) {
-      validationErrors.image = "Image must be in .jpeg, .jpg, or .png format";
-    }
-
-    if (Object.values(errors).length) {
-      setValidationErrors(errors);
-    } else {
-      setLoading(true);
-
-      let lat;
-      let lng;
-
-      const { Geocoder } = await google.maps.importLibrary("geocoding");
-
-      const geocoder = new Geocoder();
-
-      await geocoder.geocode(
-        {
-          address: `${address}, ${city}, ${state}`,
-        },
-        (results, status) => {
-          if (status == "OK") {
-            lat = results[0].geometry.location.lat()
-            lng = results[0].geometry.location.lng()
-          }
-        }
-      )
-
-
-      await dispatch(
-        thunkUpdateVan(
-          {
-            year,
-            make,
-            model,
-            miles,
-            address,
-            city,
-            state,
-            zip_code: zipCode,
-            rental_rate: rentalRate,
-            description,
-            distance_allowed: distanceIncluded,
-            mpg,
-            doors,
-            seats,
-            fuel_type_id: fuelTypeId,
-            lat,
-            lng
-          },
-          vanId
-        )
-      )
-        .then(async (data) => {
-          if (!data.id) {
-            if (data.fuel_type_id) data.fuelTypeId = data.fuel_type_id
-            if (data.rental_rate) data.rentalRate = data.rental_rate
-            if (data.zip_code) data.zipCode = data.zip_code
-            
-            setValidationErrors(data);
-            setLoading(false);
-          } else {
-
-            if (image && typeof image === "object" && image.name) {
-              const formData = new FormData();
-              
-              formData.append("van_id", data.id);
-              formData.append("image", image);
-              formData.append("preview", true);
-              
-              await dispatch(thunkUpdateVanImage(formData, data.id))
-              .then(() => navigate(`/vans/${data.id}`))
-            }
-          }
-          navigate(`/vans/${data.id}`)
-        })
-    }
-  };
-
-  const fileWrap = (e) => {
-    e.stopPropagation();
-
-    const tempFile = e.target.files[0];
-
-    // Check for max image size of 5Mb
-    if (tempFile.size > 5000000) {
-      setFileName(maxFileError);
-      return;
-    }
-
-    const newImageURL = URL.createObjectURL(tempFile); // Generate a local URL to render the image file inside of the <img> tag.
-    setImageURL(newImageURL);
-    setFileName(tempFile.name);
-    setImage(tempFile);
-    // setOptional("");
-  };
 
   return (
     <form
@@ -304,6 +54,23 @@ export const UpdateVan = () => {
     >
       <div className="van-form-body">
         <div className="create-van-left-div">
+          <label>Year</label>
+          <div>
+            <select value={year} onChange={(e) => setYear(e.target.value)}>
+              <option disabled value={"placeholder"}>
+                Select year
+              </option>
+              {yearsOptions.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="errors">
+            {validationErrors.year && <p>{validationErrors.year}</p>}
+          </div>
+
           <label>Make</label>
           <select value={make} onChange={(e) => setMake(e.target.value)}>
             <option disabled value={"placeholder"}>
@@ -330,20 +97,6 @@ export const UpdateVan = () => {
             {validationErrors.model && <p>{validationErrors.model}</p>}
           </div>
 
-          <label>Year</label>
-          <div>
-            <select value={year} onChange={(e) => setYear(e.target.value)}>
-              {yearsOptions.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="errors">
-            {validationErrors.year && <p>{validationErrors.year}</p>}
-          </div>
-
           <label>Miles</label>
           <input
             type="number"
@@ -356,6 +109,9 @@ export const UpdateVan = () => {
 
           <label>Doors</label>
           <select value={doors} onChange={(e) => setDoors(e.target.value)}>
+            <option disabled value={"placeholder"}>
+              Select doors
+            </option>
             {doorsOptions.map((door) => (
               <option key={door} value={door}>
                 {door}
@@ -368,6 +124,9 @@ export const UpdateVan = () => {
 
           <label>Seats</label>
           <select value={seats} onChange={(e) => setSeats(e.target.value)}>
+            <option disabled value={"placeholder"}>
+              Select seats
+            </option>
             {seatsOptions.map((seat) => (
               <option key={seat} value={seat}>
                 {seat}
@@ -583,9 +342,6 @@ export const UpdateVan = () => {
             {validationErrors.image && <p>{validationErrors.image}</p>}
           </div>
           <div>
-            {image && !imageURL && (
-              <img src={image} className="van-upload-thumbnail"></img>
-            )}
             {imageURL && (
               <img src={imageURL} className="van-upload-thumbnail"></img>
             )}
@@ -593,15 +349,7 @@ export const UpdateVan = () => {
         </div>
       </div>
       <div className="van-form-btns-div">
-        <button type="submit" className="submit-btn" disabled={loading}>
-        {loading ? "Loading..." : "Update van"}
-        </button>
-        <button
-          onClick={() => navigate(`/vans/${vanId}`)}
-          className="cancel btn"
-        >
-          Cancel
-        </button>
+        <button className="submit-btn" disabled={loading}>{loading ? "Loading..." : "Add van"}</button>
       </div>
     </form>
   );

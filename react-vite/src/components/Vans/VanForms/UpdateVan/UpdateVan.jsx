@@ -1,16 +1,28 @@
-/* global google */
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { thunkAddVan, thunkAddVanImage } from "../../../redux/van";
-import "./CreateVan.css";
+import { useNavigate, useParams } from "react-router";
+import "../VanForms/CreateVan/CreateVan.css";
+import {
+  thunkGetOneVan,
+  thunkUpdateVan,
+  thunkUpdateVanImage,
+} from "../../../../redux/van";
 
+const yearsOptions = [];
+for (let i = new Date().getFullYear() + 1; i >= 1950; i--) {
+  yearsOptions.push(i);
+}
 
-export const CreateVan = () => {
+const doorsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const seatsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+export const UpdateVan = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { vanId } = useParams();
+  const van = useSelector((state) => state.vans[vanId]);
   const user = useSelector((state) => state.session.user);
-  const [year, setYear] = useState("placeholder");
+  const [year, setYear] = useState("");
   const [make, setMake] = useState("placeholder");
   const [model, setModel] = useState("");
   const [miles, setMiles] = useState("");
@@ -23,46 +35,47 @@ export const CreateVan = () => {
   const [distanceIncluded, setDistanceIncluded] = useState("");
   const [unlimited, setUnlimited] = useState(false);
   const [mpg, setMpg] = useState("");
-  const [doors, setDoors] = useState("placeholder");
-  const [seats, setSeats] = useState("placeholder");
+  const [doors, setDoors] = useState("");
+  const [seats, setSeats] = useState("");
   const [fuelTypeId, setFuelTypeId] = useState("placeholder");
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
   const [fileName, setFileName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  
-  const maxFileError = "Image exceeds the maximum file size of 5Mb";
 
+  const maxFileError = "Image exceeds the maximum file size of 5Mb";
   const automotiveYear = new Date().getFullYear() + 1;
-  const yearsOptions = [];
-  for (let i = automotiveYear; i >= 1950; i--) {
-    yearsOptions.push(i);
-  }
-  const doorsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  const seatsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   const makes = ["Ford", "Dodge", "Ram", "Volkswagen", "Mercedes", "Toyota"];
   const zipCodeRegex = /\d{5}/;
 
   useEffect(() => {
+    if (!van) dispatch(thunkGetOneVan(vanId));
+  }, [dispatch, vanId, van]);
+
+  useEffect(() => {
     const mpgInput = document.querySelector("#MPG-input");
-    if (fuelTypeId == 4) {
-      mpgInput.setAttribute("disabled", "");
-      setMpg("");
-    } else {
-      mpgInput.removeAttribute("disabled");
+    if (van && mpgInput) {
+      if (fuelTypeId == 4) {
+        mpgInput.setAttribute("disabled", "");
+        setMpg("");
+      } else if (mpgInput.hasAttribute("disabled")) {
+        mpgInput.removeAttribute("disabled");
+      }
     }
-  }, [fuelTypeId]);
+  }, [fuelTypeId, van]);
 
   useEffect(() => {
     const distanceInput = document.querySelector("#distance-input");
-    if (unlimited) {
-      distanceInput.setAttribute("disabled", "");
-      setDistanceIncluded("");
-    } else {
-      distanceInput.removeAttribute("disabled");
+    if (van && distanceInput) {
+      if (unlimited) {
+        distanceInput.setAttribute("disabled", "");
+        setDistanceIncluded("");
+      } else if (distanceInput.hasAttribute("disabled")) {
+        distanceInput.removeAttribute("disabled");
+      }
     }
-  }, [unlimited]);
+  }, [unlimited, van]);
 
   useEffect(() => {
     if (image && typeof image === "object" && image.name) {
@@ -76,8 +89,47 @@ export const CreateVan = () => {
     }
   }, [validationErrors, image]);
 
-  if (!user) {
-    return <h1>You must be logged in to add a van!</h1>;
+  useEffect(() => {
+    if (van?.id) {
+      let previewImage;
+      for (const image in van.images) {
+        if (van.images[image].preview == true) {
+          previewImage = van.images[image].imageUrl;
+          break;
+        }
+      }
+
+      setYear(van.year);
+      setMake(van.make);
+      setModel(van.model);
+      setMiles(van.miles);
+      setAddress(van.address);
+      setCity(van.city);
+      setState(van.state);
+      setZipCode(van.zipCode);
+      setRentalRate(van.rentalRate);
+      setDescription(van.description);
+      if (van.distanceAllowed == null) {
+        setUnlimited(true);
+      } else {
+        setDistanceIncluded(van.distanceAllowed);
+      }
+      if (van.fuelTypeId != 4) setMpg(van.mpg);
+      setDoors(van.doors);
+      setSeats(van.seats);
+      setFuelTypeId(van.fuelTypeId);
+      setImage(previewImage);
+    }
+  }, [van]);
+
+  if (!van) return null;
+
+  if (!user || user.id !== van.owner.id) {
+    return (
+      <h1 style={{ marginTop: "5rem", textAlign: "center" }}>
+        You are not authorized to update this van!
+      </h1>
+    );
   }
 
   const handleSubmit = async (e) => {
@@ -114,8 +166,7 @@ export const CreateVan = () => {
       errors.rentalRate = "Daily rental rate must be a positive number";
     if (rentalRate > 500)
       errors.rentalRate = "We do not accept rental rates greater than $500/day";
-    if (!Number.isInteger(parseInt(rentalRate)))
-      errors.rentalRate = "Must be a whole dollar amount";
+    if (!Number.isInteger(parseInt(rentalRate))) errors.rentalRate = "Must be a whole dollar amount"
     if (!description) errors.description = "Description is required";
     if (description.length < 50)
       errors.description = "Description must be at least 50 characters";
@@ -123,16 +174,16 @@ export const CreateVan = () => {
       errors.description = "Description must not be a book";
     if (!distanceIncluded && unlimited == false)
       errors.distanceIncluded = "Distance included is required";
-    if (distanceIncluded <= 0 && unlimited == false)
-      errors.distanceIncluded = "Must be a positive number";
     if (!mpg && fuelTypeId != 4)
       errors.mpg = "MPG is required for non-electric vehicles";
+    if (distanceIncluded <= 0 && unlimited == false) errors.distanceIncluded = "Must be a positive number"
     if (mpg < 1 && fuelTypeId != 4)
       errors.mpg = "MPG is must be a positive number";
     if (mpg > 150 && fuelTypeId != 4) errors.mpg = "MPG can not be over 150";
     if (!doors || doors == "placeholder") errors.doors = "Doors is required";
     if (doors < 1) errors.doors = "Van must have at least 1 door";
     if (doors > 9) errors.doors = "Your van has too many doors";
+    if (!seats) errors.seats = "Seats is required";
     if (!seats || seats == "placeholder") errors.seats = "Seats is required";
     if (seats < 1) errors.seats = "Van must have at least 1 seat";
     if (seats > 12) errors.seats = "This is a website for vans, not buses";
@@ -142,6 +193,9 @@ export const CreateVan = () => {
       errors.fuelTypeId = "YOU ARE UP TO NO GOOD!";
     if (!image) errors.image = "Image is required";
     if (
+      image &&
+      typeof image === "object" &&
+      image.name &&
       !image?.name.endsWith(".jpeg") &&
       !image?.name.endsWith(".jpg") &&
       !image?.name.endsWith(".png")
@@ -173,46 +227,54 @@ export const CreateVan = () => {
         }
       )
 
+
       await dispatch(
-        thunkAddVan({
-          year,
-          make,
-          model,
-          miles,
-          address,
-          city,
-          state,
-          zip_code: zipCode,
-          rental_rate: rentalRate,
-          description,
-          distance_allowed: distanceIncluded,
-          mpg,
-          doors,
-          seats,
-          fuel_type_id: fuelTypeId,
-          lat,
-          lng,
-        }))
+        thunkUpdateVan(
+          {
+            year,
+            make,
+            model,
+            miles,
+            address,
+            city,
+            state,
+            zip_code: zipCode,
+            rental_rate: rentalRate,
+            description,
+            distance_allowed: distanceIncluded,
+            mpg,
+            doors,
+            seats,
+            fuel_type_id: fuelTypeId,
+            lat,
+            lng
+          },
+          vanId
+        )
+      )
         .then(async (data) => {
           if (!data.id) {
-            if (data.fuel_type_id) data.fuelTypeId = data.fuel_type_id;
-            if (data.rental_rate) data.rentalRate = data.rental_rate;
-            if (data.zip_code) data.zipCode = data.zip_code;
-
+            if (data.fuel_type_id) data.fuelTypeId = data.fuel_type_id
+            if (data.rental_rate) data.rentalRate = data.rental_rate
+            if (data.zip_code) data.zipCode = data.zip_code
+            
             setValidationErrors(data);
             setLoading(false);
           } else {
-            const formData = new FormData();
 
-            formData.append("van_id", data.id);
-            formData.append("image", image);
-            formData.append("preview", true);
-
-            await dispatch(thunkAddVanImage(formData, data.id)).then(() =>
-              navigate(`/vans/${data.id}`)
-            );
+            if (image && typeof image === "object" && image.name) {
+              const formData = new FormData();
+              
+              formData.append("van_id", data.id);
+              formData.append("image", image);
+              formData.append("preview", true);
+              
+              await dispatch(thunkUpdateVanImage(formData, data.id))
+              .then(() => navigate(`/vans/${data.id}`))
+            }
           }
-        });
+          navigate(`/vans/${data.id}`)
+        })
     }
   };
 
@@ -229,8 +291,8 @@ export const CreateVan = () => {
 
     const newImageURL = URL.createObjectURL(tempFile); // Generate a local URL to render the image file inside of the <img> tag.
     setImageURL(newImageURL);
-    setImage(tempFile);
     setFileName(tempFile.name);
+    setImage(tempFile);
     // setOptional("");
   };
 
@@ -242,23 +304,6 @@ export const CreateVan = () => {
     >
       <div className="van-form-body">
         <div className="create-van-left-div">
-          <label>Year</label>
-          <div>
-            <select value={year} onChange={(e) => setYear(e.target.value)}>
-              <option disabled value={"placeholder"}>
-                Select year
-              </option>
-              {yearsOptions.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="errors">
-            {validationErrors.year && <p>{validationErrors.year}</p>}
-          </div>
-
           <label>Make</label>
           <select value={make} onChange={(e) => setMake(e.target.value)}>
             <option disabled value={"placeholder"}>
@@ -285,6 +330,20 @@ export const CreateVan = () => {
             {validationErrors.model && <p>{validationErrors.model}</p>}
           </div>
 
+          <label>Year</label>
+          <div>
+            <select value={year} onChange={(e) => setYear(e.target.value)}>
+              {yearsOptions.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="errors">
+            {validationErrors.year && <p>{validationErrors.year}</p>}
+          </div>
+
           <label>Miles</label>
           <input
             type="number"
@@ -297,9 +356,6 @@ export const CreateVan = () => {
 
           <label>Doors</label>
           <select value={doors} onChange={(e) => setDoors(e.target.value)}>
-            <option disabled value={"placeholder"}>
-              Select doors
-            </option>
             {doorsOptions.map((door) => (
               <option key={door} value={door}>
                 {door}
@@ -312,9 +368,6 @@ export const CreateVan = () => {
 
           <label>Seats</label>
           <select value={seats} onChange={(e) => setSeats(e.target.value)}>
-            <option disabled value={"placeholder"}>
-              Select seats
-            </option>
             {seatsOptions.map((seat) => (
               <option key={seat} value={seat}>
                 {seat}
@@ -530,6 +583,9 @@ export const CreateVan = () => {
             {validationErrors.image && <p>{validationErrors.image}</p>}
           </div>
           <div>
+            {image && !imageURL && (
+              <img src={image} className="van-upload-thumbnail"></img>
+            )}
             {imageURL && (
               <img src={imageURL} className="van-upload-thumbnail"></img>
             )}
@@ -537,7 +593,15 @@ export const CreateVan = () => {
         </div>
       </div>
       <div className="van-form-btns-div">
-        <button className="submit-btn" disabled={loading}>{loading ? "Loading..." : "Add van"}</button>
+        <button type="submit" className="submit-btn" disabled={loading}>
+        {loading ? "Loading..." : "Update van"}
+        </button>
+        <button
+          onClick={() => navigate(`/vans/${vanId}`)}
+          className="cancel btn"
+        >
+          Cancel
+        </button>
       </div>
     </form>
   );

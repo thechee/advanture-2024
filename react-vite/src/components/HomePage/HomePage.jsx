@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router";
-// import { FaAngleLeft, FaAngleRight, FaSearch } from "react-icons/fa";
+// import { FaSearch } from "react-icons/fa";
 import { useRef, useState } from "react";
 // import moment from 'moment';
-import { useVanListContext } from "../../context/VanListContext";
+import { useVanListContext } from "../../hooks/VanListContext";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "./HomePage.css";

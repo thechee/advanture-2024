@@ -24,14 +24,9 @@ import { CarSeat } from "../../Icons/CarSeat.jsx";
 import { Gasoline } from "../../Icons/Gasoline.jsx";
 import { Hybrid } from "../../Icons/Hybrid.jsx";
 import { Electric } from "../../Icons/Electric.jsx";
-import { MiscFeature } from "../../Icons/MiscFeature.jsx";
-import { AutomaticTrans } from "../../Icons/AutomaticTrans.jsx";
-import { Aux } from "../../Icons/Aux.jsx";
-import { BikeRack } from "../../Icons/BikeRack.jsx";
-import { USBCharger } from "../../Icons/USBCharger.jsx";
-import { Bluetooth } from "../../Icons/Bluetooth.jsx";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { VanFeature } from "../VanFeature/VanFeature.jsx";
 
 export const VanDetail = () => {
   const navigate = useNavigate();
@@ -146,7 +141,7 @@ export const VanDetail = () => {
           <h1>
             {van.make} {van.model} {van.year}
           </h1>
-          {ratings.length > 0 && (
+          {van.vanAvgRating && (
             <div className="van-overall-ratings-div">
               <span id="van-overall-stars">
                 {van.vanAvgRating.toString().length <= 3
@@ -281,22 +276,13 @@ export const VanDetail = () => {
           <div className="van-details-features">
             <ul className="feature-ul">
               {van.features.map((feature) => 
-                feature == 'Automatic transmission' ? <li key={feature}><AutomaticTrans /> {feature}</li>
-                :
-                feature == 'AUX input' ? <li key={feature}><Aux /> {feature}</li>
-                :
-                feature == "Bike rack" ? <li key={feature}><BikeRack /> {feature}</li>
-                :
-                feature == "USB charger" ? <li key={feature}><USBCharger /> {feature}</li>
-                :
-                feature == "Bluetooth" ? <li key={feature}><Bluetooth /> {feature}</li>
-                : <li key={feature}><MiscFeature /> {feature}</li>
+                <VanFeature key={feature} feature={feature} />
               )}
             </ul>
           </div>
           <h4>RATINGS AND REVIEWS</h4>
 
-          {ratings.length ? (
+          {van.vanAvgRating ? (
             <div>
               <div className="overall-ratings-stars-div">
                 <span>
@@ -314,41 +300,11 @@ export const VanDetail = () => {
                 <span>({ratings.length} ratings)</span>
               </div>
               <div>
-                <div className="rating">
-                  <span className="rating-name">Cleanliness</span>
-                  <RatingsBar ratingAvg={van.vanAvgCleanliness} />
-                  <span className="avg-rating-num">
-                    {van.vanAvgCleanliness.toFixed(1)}
-                  </span>
-                </div>
-                <div className="rating">
-                  <span className="rating-name">Maintenance</span>
-                  <RatingsBar ratingAvg={van.vanAvgMaintenance} />
-                  <span className="avg-rating-num">
-                    {van.vanAvgMaintenance.toFixed(1)}
-                  </span>
-                </div>
-                <div className="rating">
-                  <span className="rating-name">Communication</span>
-                  <RatingsBar ratingAvg={van.vanAvgCommunication} />
-                  <span className="avg-rating-num">
-                    {van.vanAvgCommunication.toFixed(1)}
-                  </span>
-                </div>
-                <div className="rating">
-                  <span className="rating-name">Convenience</span>
-                  <RatingsBar ratingAvg={van.vanAvgConvenience} />
-                  <span className="avg-rating-num">
-                    {van.vanAvgConvenience.toFixed(1)}
-                  </span>
-                </div>
-                <div className="rating">
-                  <span className="rating-name">Accuracy</span>
-                  <RatingsBar ratingAvg={van.vanAvgAccuracy} />
-                  <span className="avg-rating-num">
-                    {van.vanAvgAccuracy.toFixed(1)}
-                  </span>
-                </div>
+                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Cleanliness"/>
+                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Maintenance"/>
+                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Communication"/>
+                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Convenience"/>
+                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Accuracy"/>
               </div>
               <div>
                 <h4 style={{ color: "#808080" }}>REVIEWS</h4>
@@ -361,7 +317,18 @@ export const VanDetail = () => {
             </div>
           ) : (
             <div>
-              <h3>This van is not yet rated or reviewed!</h3>
+              <div style={{marginBottom: "1rem"}}>
+                <span>(0 ratings)</span>
+              </div>
+              <RatingsBar ratingAvg={0} name="Cleanliness"/>
+              <RatingsBar ratingAvg={0} name="Maintenance"/>
+              <RatingsBar ratingAvg={0} name="Communication"/>
+              <RatingsBar ratingAvg={0} name="Convenience"/>
+              <RatingsBar ratingAvg={0} name="Accuracy"/>
+              <div style={{marginBottom: "2rem", fontSize: "12px", color: "gray"}}>
+                <span>More guest ratings needed</span>
+              </div>
+              <p>Book this van and be the first to review it.</p>
             </div>
           )}
           {viewNewReview && (

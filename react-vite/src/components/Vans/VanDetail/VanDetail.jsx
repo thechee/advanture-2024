@@ -24,14 +24,9 @@ import { CarSeat } from "../../Icons/CarSeat.jsx";
 import { Gasoline } from "../../Icons/Gasoline.jsx";
 import { Hybrid } from "../../Icons/Hybrid.jsx";
 import { Electric } from "../../Icons/Electric.jsx";
-import { MiscFeature } from "../../Icons/MiscFeature.jsx";
-import { AutomaticTrans } from "../../Icons/AutomaticTrans.jsx";
-import { Aux } from "../../Icons/Aux.jsx";
-import { BikeRack } from "../../Icons/BikeRack.jsx";
-import { USBCharger } from "../../Icons/USBCharger.jsx";
-import { Bluetooth } from "../../Icons/Bluetooth.jsx";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { VanFeature } from "../VanFeature/VanFeature.jsx";
 
 export const VanDetail = () => {
   const navigate = useNavigate();
@@ -281,16 +276,7 @@ export const VanDetail = () => {
           <div className="van-details-features">
             <ul className="feature-ul">
               {van.features.map((feature) => 
-                feature == 'Automatic transmission' ? <li key={feature}><AutomaticTrans /> {feature}</li>
-                :
-                feature == 'AUX input' ? <li key={feature}><Aux /> {feature}</li>
-                :
-                feature == "Bike rack" ? <li key={feature}><BikeRack /> {feature}</li>
-                :
-                feature == "USB charger" ? <li key={feature}><USBCharger /> {feature}</li>
-                :
-                feature == "Bluetooth" ? <li key={feature}><Bluetooth /> {feature}</li>
-                : <li key={feature}><MiscFeature /> {feature}</li>
+                <VanFeature key={feature} feature={feature} />
               )}
             </ul>
           </div>

@@ -10,3 +10,18 @@ import { Hybrid } from "./Hybrid";
 import { GasStation } from "./GasStation";
 import { MiscFeature } from "./MiscFeature";
 import { USBCharger } from "./USBCharger";
+
+export {
+  AutomaticTrans,
+  Aux,
+  BikeRack,
+  Bluetooth,
+  CarDoor,
+  CarSeat,
+  Electric,
+  Gasoline,
+  Hybrid,
+  GasStation,
+  MiscFeature,
+  USBCharger,
+};

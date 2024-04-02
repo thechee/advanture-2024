@@ -68,6 +68,10 @@ button {
   background-color: var(--dark-purple);
 }
 
+.submit-btn:disabled {
+  background-color: grey;
+}
+
 :root {
   --hover: #F3F3F3;
   --purple: rgb(89, 60, 251);

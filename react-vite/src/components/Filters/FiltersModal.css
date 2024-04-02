@@ -1,24 +1,19 @@
 .more-filters-div {
   max-height: 100%;
-  /* height: clamp(10rem, 60vh, 1000rem); */
   width: 635px;
   border-radius: 10px;
   background-color: white;
   z-index: 100;
   padding: 1.5rem 0 1rem 1rem;
-  /* border: 5px solid red; */
 }
 
 .more-filters-filters {
   display: flex;
   flex-direction: column;
-  height: clamp(10rem, 60vh, 45rem);
   gap: 1rem;
   padding-right: 1rem;
   overflow-y: scroll;
-  /* height: 80%; */
-  /* overflow: hidden; */
-  /* border: 5px solid green; */
+  max-height: 60vh;
 }
 
 .more-filters-filters label {

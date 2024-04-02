@@ -42,6 +42,7 @@ export const UpdateVan = () => {
   const [fileName, setFileName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const maxFileError = "Image exceeds the maximum file size of 5Mb";
   const automotiveYear = new Date().getFullYear() + 1;
@@ -205,6 +206,8 @@ export const UpdateVan = () => {
     if (Object.values(errors).length) {
       setValidationErrors(errors);
     } else {
+      setLoading(true);
+
       let lat;
       let lng;
 
@@ -256,6 +259,7 @@ export const UpdateVan = () => {
             if (data.zip_code) data.zipCode = data.zip_code
             
             setValidationErrors(data);
+            setLoading(false);
           } else {
 
             if (image && typeof image === "object" && image.name) {
@@ -589,8 +593,8 @@ export const UpdateVan = () => {
         </div>
       </div>
       <div className="van-form-btns-div">
-        <button type="submit" className="submit-btn">
-          Update van
+        <button type="submit" className="submit-btn" disabled={loading}>
+        {loading ? "Loading..." : "Update van"}
         </button>
         <button
           onClick={() => navigate(`/vans/${vanId}`)}

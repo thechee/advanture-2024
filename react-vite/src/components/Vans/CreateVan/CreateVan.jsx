@@ -30,6 +30,7 @@ export const CreateVan = () => {
   const [fileName, setFileName] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [validationErrors, setValidationErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   
   const maxFileError = "Image exceeds the maximum file size of 5Mb";
 
@@ -151,6 +152,8 @@ export const CreateVan = () => {
     if (Object.values(errors).length) {
       setValidationErrors(errors);
     } else {
+      setLoading(true);
+
       let lat;
       let lng;
 
@@ -197,6 +200,7 @@ export const CreateVan = () => {
             if (data.zip_code) data.zipCode = data.zip_code;
 
             setValidationErrors(data);
+            setLoading(false);
           } else {
             const formData = new FormData();
 
@@ -533,7 +537,7 @@ export const CreateVan = () => {
         </div>
       </div>
       <div className="van-form-btns-div">
-        <button className="submit-btn">Add van</button>
+        <button className="submit-btn" disabled={loading}>{loading ? "Loading..." : "Add van"}</button>
       </div>
     </form>
   );

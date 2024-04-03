@@ -6,7 +6,7 @@ import "./VanImages.css";
 
 const imageTypes = ["image/jpg", "image/png", "image/jpeg"]
 
-export const VanImages = () => {
+export const VanImages = ({ type }) => {
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState("")
   const { data, setData, validationErrors } = useVanFormContext()
@@ -47,6 +47,7 @@ export const VanImages = () => {
     };
   }, [data.images]);
 
+  console.log(data.images)
 
   return (
     <div className="van-images">
@@ -74,7 +75,7 @@ export const VanImages = () => {
                   className="image-preview"
                   onClick={browseFiles}
                 >
-                  <img src={image.preview} />
+                  {type === "update" ? <img src={image.imageUrl} /> : <img src={image.preview} />}
                   <div 
                     className="remove-image"
                     onClick={(e) => handleRemove(e, image)}

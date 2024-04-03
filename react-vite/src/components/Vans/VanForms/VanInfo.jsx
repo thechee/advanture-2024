@@ -2,7 +2,7 @@ import { useVanFormContext } from '../../../hooks/useVanFormContext';
 import { useEffect } from 'react';
 
 export const VanInfo = () => {
-  const { data, setData, handleChange, yearsOptions, seatsOptions, doorsOptions, validationErrors } = useVanFormContext();
+  const { data, setData, handleChange, yearsOptions, makesOptions, seatsOptions, doorsOptions, validationErrors } = useVanFormContext();
 
   useEffect(() => {
     const mpgInput = document.querySelector("#MPG-input");
@@ -48,12 +48,11 @@ export const VanInfo = () => {
             <option disabled value={"placeholder"}>
               Select your van&apos;s make
             </option>
-            <option value="Ford">Ford</option>
-            <option value="Dodge">Dodge</option>
-            <option value="Ram">Ram</option>
-            <option value="Volkswagen">Volkswagen</option>
-            <option value="Mercedes">Mercedes</option>
-            <option value="Toyota">Toyota</option>
+            {makesOptions.map((make) => (
+              <option key={make} value={make}>
+                {make}
+              </option>
+            ))}
           </select>
           <div className="errors">
             {validationErrors.make && <p>{validationErrors.make}</p>}

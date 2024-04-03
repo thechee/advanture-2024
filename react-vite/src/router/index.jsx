@@ -72,7 +72,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "update",
-                // element: <UpdateVan />
+                element: <VanForm type={"update"}/>
               }
             ]
           },

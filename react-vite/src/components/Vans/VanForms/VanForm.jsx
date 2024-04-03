@@ -2,16 +2,20 @@
 import { FormInputs } from "./FormInputs";
 import { useVanFormContext } from "../../../hooks/useVanFormContext";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { LeftArrow } from "../../Icons/LeftArrow";
 import { RightArrow } from "../../Icons/RightArrow";
-import { thunkAddVan, thunkAddVanImages } from "../../../redux/van";
+import { thunkAddVan, thunkAddVanImages, thunkGetOneVan } from "../../../redux/van";
 import "./VanForm.css";
+import { useEffect } from "react";
+import { set } from "react-ga";
 
-export const VanForm = () => {
+export const VanForm = ({ type }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { vanId } = useParams();
   const user = useSelector((state) => state.session.user);
+  const van = useSelector((state) => state.vans[vanId]);
 
   const {
     page,
@@ -19,7 +23,7 @@ export const VanForm = () => {
     data,
     setData,
     title,
-    makes,
+    makesOptions,
     zipCodeRegex,
     automotiveYear,
     loading,
@@ -27,8 +31,60 @@ export const VanForm = () => {
     setValidationErrors,
   } = useVanFormContext();
 
+  useEffect(() => {
+    if (type === "update") {
+      if (!van) {
+        dispatch(thunkGetOneVan(vanId));
+      } else {
+        setData({
+          year: van.year,
+          make: van.make,
+          model: van.model,
+          miles: van.miles,
+          doors: van.doors,
+          seats: van.seats,
+          fuelTypeId: van.fuelTypeId,
+          mpg: van.mpg,
+          rentalRate: van.rentalRate,
+          distanceIncluded: van.distanceAllowed,
+          address: van.address,
+          city: van.city,
+          state: van.state,
+          zipCode: van.zipCode,
+          description: van.description,
+          images: Object.values(van.images),
+        });
+        setPage(0);
+        setValidationErrors({});
+      }
+    } else {
+        setData({
+        year: "placeholder",
+        make: "placeholder",
+        model: "",
+        miles: "",
+        address: "",
+        city: "",
+        state: "placeholder",
+        zipCode: "",
+        rentalRate: "",
+        description: "",
+        distanceIncluded: "",
+        unlimited: false,
+        mpg: "",
+        doors: "placeholder",
+        seats: "placeholder",
+        fuelTypeId: "placeholder",
+        images: [],
+      })
+      setPage(0);
+      setValidationErrors({});
+    }
+  }, [type, van, vanId]);
+
+
   if (!user) {
-    return <h1>You must be logged in to add a van!</h1>;
+    return <h1>You must be logged in to add/update a van</h1>;
   }
 
   const handlePrev = () => {
@@ -47,7 +103,7 @@ export const VanForm = () => {
       if (data.year && data.year < 1950)
         errors.year = "We do not accept vans this old on Advanture";
       if (data.make == "placeholder") errors.make = "Van make is required";
-      if (!makes.includes(data.make) && data.make !== "placeholder")
+      if (!makesOptions.includes(data.make) && data.make !== "placeholder")
         errors.make = "YOU ARE UP TO NO GOOD!";
       if (!data.model) errors.model = "Van model is required";
       if (data.model.length > 30)
@@ -195,6 +251,7 @@ export const VanForm = () => {
     }
   };
 
+
   return (
     <form
       className="van-form"
@@ -205,7 +262,7 @@ export const VanForm = () => {
         <h2>{title[page]}</h2>
       </header>
 
-      <FormInputs />
+      <FormInputs type={type}/>
 
       <div className="van-form-btns-div">
         {page !== 0 && (
@@ -222,7 +279,7 @@ export const VanForm = () => {
         )}
         {page == Object.keys(title).length - 1 && (
           <button className="submit-btn" type="submit" disabled={loading}>
-            {loading ? "Loading..." : "Add van"}
+            {loading ? "Loading..." : type === "update" ? "Update van" : "Add van"}
           </button>
         )}
       </div>

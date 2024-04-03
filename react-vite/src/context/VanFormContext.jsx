@@ -44,7 +44,7 @@ export const VanFormProvider = ({ children }) => {
   }
   const doorsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const seatsOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-  const makes = ["Ford", "Dodge", "Ram", "Volkswagen", "Mercedes", "Toyota"];
+  const makesOptions = ["Ford", "Dodge", "Ram", "Volkswagen", "Mercedes", "Toyota"];
   const zipCodeRegex = /\d{5}/;
 
   const handleChange = (e) => {
@@ -72,7 +72,7 @@ export const VanFormProvider = ({ children }) => {
         yearsOptions,
         doorsOptions,
         seatsOptions,
-        makes,
+        makesOptions,
         zipCodeRegex,
         handleChange,
       }}

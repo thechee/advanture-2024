@@ -1,8 +1,8 @@
 import { createContext, useState } from "react";
 
-export const FormContext = createContext({});
+export const VanFormContext = createContext();
 
-export const FormProvider = ({ children }) => {
+export const VanFormProvider = ({ children }) => {
 
   const title = {
     0: "Van Information",
@@ -30,35 +30,12 @@ export const FormProvider = ({ children }) => {
     doors: "placeholder",
     seats: "placeholder",
     fuelTypeId: "placeholder",
-    image: null,
-    fileName: "",
-    imageURL: "",
+    images: [],
   });
 
-  // const [year, setYear] = useState("placeholder");
-  // const [make, setMake] = useState("placeholder");
-  // const [model, setModel] = useState("");
-  // const [miles, setMiles] = useState("");
-  // const [address, setAddress] = useState("");
-  // const [city, setCity] = useState("");
-  // const [state, setState] = useState("placeholder");
-  // const [zipCode, setZipCode] = useState("");
-  // const [rentalRate, setRentalRate] = useState("");
-  // const [description, setDescription] = useState("");
-  // const [distanceIncluded, setDistanceIncluded] = useState("");
-  // const [unlimited, setUnlimited] = useState(false);
-  // const [mpg, setMpg] = useState("");
-  // const [doors, setDoors] = useState("placeholder");
-  // const [seats, setSeats] = useState("placeholder");
-  // const [fuelTypeId, setFuelTypeId] = useState("placeholder");
-  // const [image, setImage] = useState(null);
-  // const [fileName, setFileName] = useState("");
-  // const [imageURL, setImageURL] = useState("");
 
   const [validationErrors, setValidationErrors] = useState({});
   const [loading, setLoading] = useState(false);
-
-  const maxFileError = "Image exceeds the maximum file size of 5Mb";
 
   const automotiveYear = new Date().getFullYear() + 1;
   const yearsOptions = [];
@@ -74,11 +51,14 @@ export const FormProvider = ({ children }) => {
     const { type, name } = e.target;
     const value = type === "checkbox" ? e.target.checked : e.target.value;
 
+    console.log("inside handleChange", type, name, value)
+
     setData({ ...data, [name]: value });
   }
 
+
   return (
-    <FormContext.Provider 
+    <VanFormContext.Provider 
       value={{
         title,
         page,
@@ -89,16 +69,15 @@ export const FormProvider = ({ children }) => {
         setValidationErrors,
         loading,
         setLoading,
-        maxFileError,
         yearsOptions,
         doorsOptions,
         seatsOptions,
         makes,
         zipCodeRegex,
-        handleChange
+        handleChange,
       }}
     >
       {children}
-    </FormContext.Provider>
+    </VanFormContext.Provider>
   );
 }

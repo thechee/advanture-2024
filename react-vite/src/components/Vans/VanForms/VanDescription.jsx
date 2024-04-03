@@ -1,0 +1,21 @@
+import { useVanFormContext } from "../../../hooks/useVanFormContext";
+
+export const VanDescription = () => {
+  const { data, handleChange, validationErrors } = useVanFormContext();
+
+  return (
+    <div className="van-form-description-div">
+    <label>Description</label>
+          <textarea
+            value={data.description}
+            name="description"
+            onChange={handleChange}
+          />
+          <div className="errors">
+            {validationErrors.description && (
+              <p>{validationErrors.description}</p>
+            )}
+          </div>
+    </div>
+  )
+}

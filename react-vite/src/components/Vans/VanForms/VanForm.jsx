@@ -1,355 +1,230 @@
 /* global google */
-import { useEffect, useState } from "react";
+import { FormInputs } from "./FormInputs";
+import { useVanFormContext } from "../../../hooks/useVanFormContext";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { thunkAddVan, thunkAddVanImage } from "../../../../redux/van";
-import { useVanFormContext } from "../../../../hooks/useVanFormContext";
-import "./CreateVan.css";
-
+import { useNavigate } from "react-router-dom";
+import { LeftArrow } from "../../Icons/LeftArrow";
+import { RightArrow } from "../../Icons/RightArrow";
+import { thunkAddVan, thunkAddVanImages } from "../../../redux/van";
+import "./VanForm.css";
 
 export const VanForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.session.user);
 
+  const {
+    page,
+    setPage,
+    data,
+    setData,
+    title,
+    makes,
+    zipCodeRegex,
+    automotiveYear,
+    loading,
+    setLoading,
+    setValidationErrors,
+  } = useVanFormContext();
 
+  if (!user) {
+    return <h1>You must be logged in to add a van!</h1>;
+  }
 
+  const handlePrev = () => {
+    setPage((page) => page - 1);
+  };
 
-  useEffect(() => {
-    const mpgInput = document.querySelector("#MPG-input");
-    if (fuelTypeId == 4) {
-      mpgInput.setAttribute("disabled", "");
-      setMpg("");
+  const handleNext = () => {
+    setValidationErrors({});
+
+    const errors = {};
+    if (page === 0) {
+      if (!data.year || data.year == "placeholder")
+        errors.year = "Van year is required";
+      if (data.year > automotiveYear)
+        errors.year = "Year can not be after the current automotive year";
+      if (data.year && data.year < 1950)
+        errors.year = "We do not accept vans this old on Advanture";
+      if (data.make == "placeholder") errors.make = "Van make is required";
+      if (!makes.includes(data.make) && data.make !== "placeholder")
+        errors.make = "YOU ARE UP TO NO GOOD!";
+      if (!data.model) errors.model = "Van model is required";
+      if (data.model.length > 30)
+        errors.model = "Van model must be shorter than 30 characters";
+      if (!data.miles) errors.miles = "Milage is required";
+      if (data.miles < 1) errors.miles = "Milage must be a positive number";
+      if (data.miles > 500000) errors.miles = "YOU ARE LYING";
+      if (!data.doors || data.doors == "placeholder")
+        errors.doors = "Doors is required";
+      if (data.doors < 1) errors.doors = "Van must have at least 1 door";
+      if (data.doors > 9) errors.doors = "Your van has too many doors";
+      if (!data.seats || data.seats == "placeholder")
+        errors.seats = "Seats is required";
+      if (data.seats < 1) errors.seats = "Van must have at least 1 seat";
+      if (data.seats > 12)
+        errors.seats = "This is a website for vans, not buses";
+      if (data.fuelTypeId == "placeholder")
+        errors.fuelTypeId = "Fuel type is required";
+      if (data.fuelTypeId > 5 || data.fuelTypeId < 1)
+        errors.fuelTypeId = "YOU ARE UP TO NO GOOD!";
+      if (!data.mpg && data.fuelTypeId != 4)
+        errors.mpg = "MPG is required for non-electric vehicles";
+      if (data.mpg < 1 && data.fuelTypeId != 4)
+        errors.mpg = "MPG is must be a positive number";
+      if (data.mpg > 150 && data.fuelTypeId != 4)
+        errors.mpg = "MPG can not be over 150";
+      if (!data.rentalRate) errors.rentalRate = "Daily rental rate is required";
+      if (data.rentalRate < 1)
+        errors.rentalRate = "Daily rental rate must be a positive number";
+      if (data.rentalRate > 500)
+        errors.rentalRate =
+          "We do not accept rental rates greater than $500/day";
+      if (!Number.isInteger(parseInt(data.rentalRate)))
+        errors.rentalRate = "Must be a whole dollar amount";
+      if (!data.distanceIncluded && data.unlimited == false)
+        errors.distanceIncluded = "Distance included is required";
+      if (data.distanceIncluded <= 0 && data.unlimited == false)
+        errors.distanceIncluded = "Must be a positive number";
+    }
+    if (page === 1) {
+      if (!data.address) errors.address = "Address is required";
+      if (!data.city) errors.city = "City is required";
+      if (data.city.length < 3)
+        errors.city = "City name must be at least 3 characters";
+      if (data.city.length > 30)
+        errors.city = "City name must less than 30 characters";
+      if (data.state == "placeholder") errors.state = "State is required";
+      if (!data.zipCode) errors.zipCode = "Zip code is required";
+      if (!zipCodeRegex.test(data.zipCode))
+        errors.zipCode = "Must be a valid zip code";
+    }
+    if (page === 2) {
+      if (!data.description) errors.description = "Description is required";
+      if (data.description.length < 50)
+        errors.description = "Description must be at least 50 characters";
+      if (data.description.length > 9999)
+        errors.description = "Description must not be a book";
+    }
+
+    if (Object.values(errors).length) {
+      setValidationErrors(errors);
     } else {
-      mpgInput.removeAttribute("disabled");
+      setPage((page) => page + 1);
     }
-  }, [fuelTypeId]);
+  };
 
-  useEffect(() => {
-    const distanceInput = document.querySelector("#distance-input");
-    if (unlimited) {
-      distanceInput.setAttribute("disabled", "");
-      setDistanceIncluded("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setValidationErrors({});
+    const errors = {};
+
+    if (!data.images) errors.image = "At least one image is required";
+
+    if (Object.values(errors).length) {
+      setValidationErrors(errors);
     } else {
-      distanceInput.removeAttribute("disabled");
+      setLoading(true);
+
+      let lat;
+      let lng;
+
+      const { Geocoder } = await google.maps.importLibrary("geocoding");
+
+      const geocoder = new Geocoder();
+
+      await geocoder.geocode(
+        {
+          address: `${data.address}, ${data.city}, ${data.state}`,
+        },
+        (results, status) => {
+          if (status == "OK") {
+            lat = results[0].geometry.location.lat();
+            lng = results[0].geometry.location.lng();
+          }
+        }
+      );
+
+      await dispatch(
+        thunkAddVan({
+          year: data.year,
+          make: data.make,
+          model: data.model,
+          miles: data.miles,
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          zip_code: data.zipCode,
+          rental_rate: data.rentalRate,
+          description: data.description,
+          distance_allowed: data.distanceIncluded,
+          mpg: data.mpg,
+          doors: data.doors,
+          seats: data.seats,
+          fuel_type_id: data.fuelTypeId,
+          lat,
+          lng,
+        })
+      ).then(async (resData) => {
+        if (!resData.id) {
+          if (resData.fuel_type_id) resData.fuelTypeId = resData.fuel_type_id;
+          if (resData.rental_rate) resData.rentalRate = resData.rental_rate;
+          if (resData.zip_code) resData.zipCode = resData.zip_code;
+
+          setValidationErrors(resData);
+          setLoading(false);
+        } else {
+          const formData = new FormData();
+
+          formData.append("van_id", resData.id);
+
+          data.images.forEach((image, index) => {
+            formData.append("image", image.src.file);
+            formData.append("preview", index === 0);
+          });
+
+          await dispatch(thunkAddVanImages(formData, resData.id)).then(() => {
+            setLoading(false);
+            setData({});
+            setPage(0);
+            navigate(`/vans/${resData.id}`);
+          });
+        }
+      });
     }
-  }, [unlimited]);
-
-  useEffect(() => {
-    if (image && typeof image === "object" && image.name) {
-      if (
-        !image.name.toLowerCase().endsWith(".jpeg") &&
-        !image.name.toLowerCase().endsWith(".jpg") &&
-        !image.name.toLowerCase().endsWith(".png")
-      ) {
-        validationErrors.image = "Image must be in .jpeg, .jpg, or .png format";
-      }
-    }
-  }, [validationErrors, image]);
-
-
+  };
 
   return (
     <form
-      className="create-van-form"
+      className="van-form"
       onSubmit={handleSubmit}
       encType="multipart/form-data"
     >
-      <div className="van-form-body">
-        <div className="create-van-left-div">
-          <label>Year</label>
-          <div>
-            <select value={year} onChange={(e) => setYear(e.target.value)}>
-              <option disabled value={"placeholder"}>
-                Select year
-              </option>
-              {yearsOptions.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="errors">
-            {validationErrors.year && <p>{validationErrors.year}</p>}
-          </div>
+      <header>
+        <h2>{title[page]}</h2>
+      </header>
 
-          <label>Make</label>
-          <select value={make} onChange={(e) => setMake(e.target.value)}>
-            <option disabled value={"placeholder"}>
-              Select your van&apos;s make
-            </option>
-            <option value="Ford">Ford</option>
-            <option value="Dodge">Dodge</option>
-            <option value="Ram">Ram</option>
-            <option value="Volkswagen">Volkswagen</option>
-            <option value="Mercedes">Mercedes</option>
-            <option value="Toyota">Toyota</option>
-          </select>
-          <div className="errors">
-            {validationErrors.make && <p>{validationErrors.make}</p>}
-          </div>
+      <FormInputs />
 
-          <label>Model</label>
-          <input
-            type="text"
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-          />
-          <div className="errors">
-            {validationErrors.model && <p>{validationErrors.model}</p>}
-          </div>
-
-          <label>Miles</label>
-          <input
-            type="number"
-            value={miles}
-            onChange={(e) => setMiles(e.target.value)}
-          />
-          <div className="errors">
-            {validationErrors.miles && <p>{validationErrors.miles}</p>}
-          </div>
-
-          <label>Doors</label>
-          <select value={doors} onChange={(e) => setDoors(e.target.value)}>
-            <option disabled value={"placeholder"}>
-              Select doors
-            </option>
-            {doorsOptions.map((door) => (
-              <option key={door} value={door}>
-                {door}
-              </option>
-            ))}
-          </select>
-          <div className="errors">
-            {validationErrors.doors && <p>{validationErrors.doors}</p>}
-          </div>
-
-          <label>Seats</label>
-          <select value={seats} onChange={(e) => setSeats(e.target.value)}>
-            <option disabled value={"placeholder"}>
-              Select seats
-            </option>
-            {seatsOptions.map((seat) => (
-              <option key={seat} value={seat}>
-                {seat}
-              </option>
-            ))}
-          </select>
-          <div className="errors">
-            {validationErrors.seats && <p>{validationErrors.seats}</p>}
-          </div>
-
-          <label>Fuel type</label>
-          <select
-            value={fuelTypeId}
-            onChange={(e) => setFuelTypeId(e.target.value)}
-          >
-            <option disabled value={"placeholder"}>
-              Select a fuel type
-            </option>
-            <option value="1">Gasoline</option>
-            <option value="2">Diesel</option>
-            <option value="3">Bio-Diesel</option>
-            <option value="4">Electric</option>
-            <option value="5">Hybrid</option>
-          </select>
-          <div className="errors">
-            {validationErrors.fuelTypeId ||
-              (validationErrors.fuel_type_id && (
-                <p>{validationErrors.fuelTypeId}</p>
-              ))}
-          </div>
-
-          <label>
-            MPG <span>(leave blank for electric vehicles)</span>
-          </label>
-          <input
-            type="number"
-            id="MPG-input"
-            value={mpg}
-            onChange={(e) => setMpg(e.target.value)}
-          />
-          <div className="errors">
-            {validationErrors.mpg && <p>{validationErrors.mpg}</p>}
-          </div>
-        </div>
-
-        <div className="create-van-right-div">
-          <label>Address</label>
-          <input
-            type="text"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          <div className="errors">
-            {validationErrors.address && <p>{validationErrors.address}</p>}
-          </div>
-
-          <label>City</label>
-          <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-          />
-          <div className="errors">
-            {validationErrors.city && <p>{validationErrors.city}</p>}
-          </div>
-
-          <label>State</label>
-          <select
-            name="state"
-            id="state"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-          >
-            <option disabled value={"placeholder"}>
-              Select your state
-            </option>
-            <option value="AL">Alabama</option>
-            <option value="AK">Alaska</option>
-            <option value="AZ">Arizona</option>
-            <option value="AR">Arkansas</option>
-            <option value="CA">California</option>
-            <option value="CO">Colorado</option>
-            <option value="CT">Connecticut</option>
-            <option value="DE">Delaware</option>
-            <option value="DC">District Of Columbia</option>
-            <option value="FL">Florida</option>
-            <option value="GA">Georgia</option>
-            <option value="HI">Hawaii</option>
-            <option value="ID">Idaho</option>
-            <option value="IL">Illinois</option>
-            <option value="IN">Indiana</option>
-            <option value="IA">Iowa</option>
-            <option value="KS">Kansas</option>
-            <option value="KY">Kentucky</option>
-            <option value="LA">Louisiana</option>
-            <option value="ME">Maine</option>
-            <option value="MD">Maryland</option>
-            <option value="MA">Massachusetts</option>
-            <option value="MI">Michigan</option>
-            <option value="MN">Minnesota</option>
-            <option value="MS">Mississippi</option>
-            <option value="MO">Missouri</option>
-            <option value="MT">Montana</option>
-            <option value="NE">Nebraska</option>
-            <option value="NV">Nevada</option>
-            <option value="NH">New Hampshire</option>
-            <option value="NJ">New Jersey</option>
-            <option value="NM">New Mexico</option>
-            <option value="NY">New York</option>
-            <option value="NC">North Carolina</option>
-            <option value="ND">North Dakota</option>
-            <option value="OH">Ohio</option>
-            <option value="OK">Oklahoma</option>
-            <option value="OR">Oregon</option>
-            <option value="PA">Pennsylvania</option>
-            <option value="RI">Rhode Island</option>
-            <option value="SC">South Carolina</option>
-            <option value="SD">South Dakota</option>
-            <option value="TN">Tennessee</option>
-            <option value="TX">Texas</option>
-            <option value="UT">Utah</option>
-            <option value="VT">Vermont</option>
-            <option value="VA">Virginia</option>
-            <option value="WA">Washington</option>
-            <option value="WV">West Virginia</option>
-            <option value="WI">Wisconsin</option>
-            <option value="WY">Wyoming</option>
-          </select>
-          <div className="errors">
-            {validationErrors.state && <p>{validationErrors.state}</p>}
-          </div>
-
-          <label>Zip code</label>
-          <input
-            type="text"
-            value={zipCode}
-            minLength={5}
-            maxLength={5}
-            onChange={(e) => setZipCode(e.target.value)}
-          />
-          <div className="errors">
-            {validationErrors.zipCode ||
-              (validationErrors.zip_code && <p>{validationErrors.zipCode}</p>)}
-          </div>
-
-          <label>Daily rental rate</label>
-          <input
-            type="number"
-            value={rentalRate}
-            onChange={(e) => setRentalRate(e.target.value)}
-          />
-          <div className="errors">
-            {validationErrors.rentalRate ||
-              (validationErrors.rental_rate && (
-                <p>{validationErrors.rentalRate}</p>
-              ))}
-          </div>
-
-          <label>Distance included</label>
-          <input
-            type="number"
-            id="distance-input"
-            value={distanceIncluded}
-            onChange={(e) => setDistanceIncluded(e.target.value)}
-          />
-          <label id="unlimited-label">
-            Unlimited
-            <input
-              id="unlimited-checkbox"
-              type="checkbox"
-              checked={unlimited}
-              onChange={() => setUnlimited(!unlimited)}
-            ></input>
-          </label>
-          <div className="errors">
-            {validationErrors.distanceIncluded ||
-              (validationErrors.distance_allowed && (
-                <p>{validationErrors.distanceIncluded}</p>
-              ))}
-          </div>
-        </div>
-
-        <div className="create-van-bottom-div">
-          <label>Description</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <div className="errors">
-            {validationErrors.description && (
-              <p>{validationErrors.description}</p>
-            )}
-          </div>
-
-          <div>
-            <label>Main image</label>
-            <input
-              id="file-input"
-              type="file"
-              accept="image/*"
-              onChange={fileWrap}
-            />
-          </div>
-          <div className="errors">
-            {fileName === maxFileError && <p>{fileName}</p>}
-            {fileName !== maxFileError && (
-              <p style={{ color: "#B7BBBF" }}>
-                {fileName.length < 45
-                  ? fileName
-                  : fileName.slice(0, 45) + "..."}
-              </p>
-            )}
-            {validationErrors.image && <p>{validationErrors.image}</p>}
-          </div>
-          <div>
-            {imageURL && (
-              <img src={imageURL} className="van-upload-thumbnail"></img>
-            )}
-          </div>
-        </div>
-      </div>
       <div className="van-form-btns-div">
-        <button className="submit-btn" disabled={loading}>{loading ? "Loading..." : "Add van"}</button>
+        {page !== 0 && (
+          <button type="button" className="submit-btn" onClick={handlePrev}>
+            <LeftArrow />
+            Prev
+          </button>
+        )}
+        {Object.keys(title).length - 1 !== page && (
+          <button type="button" className="submit-btn" onClick={handleNext}>
+            Next
+            <RightArrow />
+          </button>
+        )}
+        {page == Object.keys(title).length - 1 && (
+          <button className="submit-btn" type="submit" disabled={loading}>
+            {loading ? "Loading..." : "Add van"}
+          </button>
+        )}
       </div>
     </form>
   );

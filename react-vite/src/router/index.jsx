@@ -3,11 +3,13 @@ import Layout from './Layout';
 import { HomePage } from '../components/HomePage/HomePage';
 import { VanList } from '../components/Vans/VanList/VanList';
 import { VanDetail } from '../components/Vans/VanDetail/VanDetail';
-import { CreateVan } from '../components/Vans/CreateVan/CreateVan';
-import { UpdateVan } from '../components/Vans/UpdateVan/UpdateVan';
+// import { CreateVan } from '../components/Vans/CreateVan/CreateVan';
+// import { UpdateVan } from '../components/Vans/UpdateVan/UpdateVan';
 import { Favorites } from '../components/Users/Favorites/Favorites';
 import { Errors } from '../components/Errors/Errors';
 import { Profile } from '../components/Users/Profile/Profile';
+import { VanForm } from '../components/Vans/VanForms/VanForm';
+import { VanFormProvider } from '../context/VanFormContext';
 
 
 export const router = createBrowserRouter([
@@ -33,12 +35,14 @@ export const router = createBrowserRouter([
       },
       {
         path: "vans",
-        element: <Outlet />,
+        element: 
+        <VanFormProvider>
+          <Outlet />
+        </VanFormProvider>,
         children: [
           {
             index: true,
-            element: 
-              <VanList />,
+            element: <VanList />
           },
           {
             path: ":vanId",
@@ -68,13 +72,13 @@ export const router = createBrowserRouter([
               },
               {
                 path: "update",
-                element: <UpdateVan />
+                // element: <UpdateVan />
               }
             ]
           },
           {
             path: "new",
-            element: <CreateVan />
+            element: <VanForm />
           },
         ]
       },

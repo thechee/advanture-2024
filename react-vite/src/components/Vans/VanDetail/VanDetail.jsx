@@ -6,10 +6,7 @@ import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
 import { Rating } from "../../Ratings/Rating/Rating.jsx";
-import {
-  thunkAddFavorite,
-  thunkDeleteFavorite,
-} from "../../../redux/session.js";
+import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session.js";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
 import LoginFormModal from "../../LoginFormModal";
@@ -216,9 +213,7 @@ export const VanDetail = () => {
                       className="add-to-favorites"
                       onClick={handleFavorite}
                     >
-                      <span>
-                        <FaRegHeart />
-                      </span>
+                      <span><FaRegHeart /></span>
                       Add to Favorites
                     </button>
                   )}
@@ -227,9 +222,7 @@ export const VanDetail = () => {
                       modalComponent={<LoginFormModal />}
                       buttonText={
                         <>
-                          <span>
-                            <FaRegHeart />
-                          </span>
+                          <span><FaRegHeart /></span>
                           Add to Favorites
                         </>
                       }
@@ -268,7 +261,7 @@ export const VanDetail = () => {
 
           <h4>DESCRIPTION</h4>
           <p className={showDescription ? "van-description show" : "van-description hide"} >
-            {!showDescription && <div className="gradient-overlay"></div>}
+          {!showDescription && <div className="gradient-overlay"></div>}
             {van.description}</p>
           <button className="collapse-btn white-square-btn" onClick={() => setShowDescription(!showDescription)}>{showDescription ? "Less" : "More"}</button>
 
@@ -301,10 +294,10 @@ export const VanDetail = () => {
               </div>
               <div>
                 <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Cleanliness"/>
-                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Maintenance"/>
-                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Communication"/>
-                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Convenience"/>
-                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Accuracy"/>
+                <RatingsBar ratingAvg={van.vanAvgMaintenance} name="Maintenance"/>
+                <RatingsBar ratingAvg={van.vanAvgCommunication} name="Communication"/>
+                <RatingsBar ratingAvg={van.vanAvgConvenience} name="Convenience"/>
+                <RatingsBar ratingAvg={van.vanAvgAccuracy} name="Accuracy"/>
               </div>
               <div>
                 <h4 style={{ color: "#808080" }}>REVIEWS</h4>
@@ -460,4 +453,3 @@ export const VanDetail = () => {
     </div>
   );
 };
-//

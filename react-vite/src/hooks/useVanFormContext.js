@@ -1,4 +1,4 @@
 import { useContext } from "react";
-import { FormContext } from "../context/FormContext";
+import { VanFormContext } from "../context/VanFormContext";
 
-export const useVanFormContext = () => useContext(FormContext);
+export const useVanFormContext = () => useContext(VanFormContext);

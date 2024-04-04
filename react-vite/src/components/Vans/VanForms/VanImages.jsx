@@ -6,7 +6,7 @@ import "./VanImages.css";
 
 const imageTypes = ["image/jpg", "image/png", "image/jpeg"]
 
-export const VanImages = ({ type }) => {
+export const VanImages = () => {
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState("")
   const { data, setData, validationErrors } = useVanFormContext()
@@ -47,7 +47,6 @@ export const VanImages = ({ type }) => {
     };
   }, [data.images]);
 
-  console.log(data.images)
 
   return (
     <div className="van-images">

@@ -1,7 +1,6 @@
 import { useVanFormContext } from "../../../hooks/useVanFormContext";
 
 export const VanLocation = () => {
-
   const { data, validationErrors, handleChange } = useVanFormContext();
 
   return (

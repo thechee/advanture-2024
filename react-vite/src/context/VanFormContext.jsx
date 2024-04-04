@@ -51,8 +51,6 @@ export const VanFormProvider = ({ children }) => {
     const { type, name } = e.target;
     const value = type === "checkbox" ? e.target.checked : e.target.value;
 
-    console.log("inside handleChange", type, name, value)
-
     setData({ ...data, [name]: value });
   }
 

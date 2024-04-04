@@ -1,3 +1,32 @@
 .van-form {
   margin: 3rem;
 }
+
+.van-form-btns-div button {
+  width: fit-content;
+  padding: .5rem 1rem .5rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.van-form-btns-div button>svg {
+  padding-left: .5rem;
+}
+
+.van-form-btns-div button>svg>path {
+  fill: white !important;
+}
+
+.van-form-info-div {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 21rem;
+  margin-bottom: 1rem;
+}
+
+.van-form-info-div select,
+.van-form-info-div input {
+  width: 10rem;
+}

@@ -290,8 +290,6 @@ export const VanForm = ({ type }) => {
     }
   }
 
-  console.log(data.images)
-
   return (
     <form
       className="van-form"

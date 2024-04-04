@@ -5,10 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { LeftArrow } from "../../Icons/LeftArrow";
 import { RightArrow } from "../../Icons/RightArrow";
-import { thunkAddVan, thunkAddVanImages, thunkGetOneVan } from "../../../redux/van";
+import { thunkAddVan, thunkAddVanImages, thunkUpdateVan, thunkUpdateVanImages, thunkGetOneVan } from "../../../redux/van";
 import "./VanForm.css";
 import { useEffect } from "react";
-import { set } from "react-ga";
 
 export const VanForm = ({ type }) => {
   const dispatch = useDispatch();
@@ -202,6 +201,7 @@ export const VanForm = ({ type }) => {
         }
       );
 
+      type !== "update" ? 
       await dispatch(
         thunkAddVan({
           year: data.year,
@@ -222,7 +222,29 @@ export const VanForm = ({ type }) => {
           lat,
           lng,
         })
-      ).then(async (resData) => {
+      ) :
+      await dispatch(
+        thunkUpdateVan({
+          year: data.year,
+          make: data.make,
+          model: data.model,
+          miles: data.miles,
+          address: data.address,
+          city: data.city,
+          state: data.state,
+          zip_code: data.zipCode,
+          rental_rate: data.rentalRate,
+          description: data.description,
+          distance_allowed: data.distanceIncluded,
+          mpg: data.mpg,
+          doors: data.doors,
+          seats: data.seats,
+          fuel_type_id: data.fuelTypeId,
+          lat,
+          lng,
+        }, vanId)
+      )
+      .then(async (resData) => {
         if (!resData.id) {
           if (resData.fuel_type_id) resData.fuelTypeId = resData.fuel_type_id;
           if (resData.rental_rate) resData.rentalRate = resData.rental_rate;
@@ -235,22 +257,40 @@ export const VanForm = ({ type }) => {
 
           formData.append("van_id", resData.id);
 
-          data.images.forEach((image, index) => {
-            formData.append("image", image.src.file);
-            formData.append("preview", index === 0);
-          });
+          if (type === "update") {
+            data.images.forEach((image, index) => {
+              if (image.src && image.src.file instanceof File) {
+                formData.append("image", image.src.file);
+              } else {
+                formData.append("imageId", image.id);
+              }
+              formData.append("preview", index === 0);
+            });
 
-          await dispatch(thunkAddVanImages(formData, resData.id)).then(() => {
-            setLoading(false);
-            setData({});
-            setPage(0);
-            navigate(`/vans/${resData.id}`);
-          });
+            await dispatch(thunkUpdateVanImages(formData, resData.id)).then(() => {
+              setLoading(false);
+              setData({});
+              setPage(0);
+              navigate(`/vans/${resData.id}`);
+            })
+          } else {
+            data.images.forEach((image, index) => {
+              formData.append("image", image.src.file);
+              formData.append("preview", index === 0);
+            });
+            await dispatch(thunkAddVanImages(formData, resData.id)).then(() => {
+              setLoading(false);
+              setData({});
+              setPage(0);
+              navigate(`/vans/${resData.id}`);
+            })
+          }
         }
-      });
+      })
     }
-  };
+  }
 
+  console.log(data.images)
 
   return (
     <form

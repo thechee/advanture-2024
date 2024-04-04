@@ -75,7 +75,7 @@ export const VanImages = ({ type }) => {
                   className="image-preview"
                   onClick={browseFiles}
                 >
-                  {type === "update" ? <img src={image.imageUrl} /> : <img src={image.preview} />}
+                  {image.imageUrl ? <img src={image.imageUrl} /> : <img src={image.preview} />}
                   <div 
                     className="remove-image"
                     onClick={(e) => handleRemove(e, image)}

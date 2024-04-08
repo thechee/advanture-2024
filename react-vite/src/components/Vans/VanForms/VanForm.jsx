@@ -8,6 +8,7 @@ import { RightArrow } from "../../Icons/RightArrow";
 import { thunkAddVan, thunkAddVanImages, thunkUpdateVan, thunkUpdateVanImages, thunkGetOneVan } from "../../../redux/van";
 import "./VanForm.css";
 import { useEffect } from "react";
+import { FormBar } from "./FormBar";
 
 export const VanForm = ({ type }) => {
   const dispatch = useDispatch();
@@ -95,73 +96,73 @@ export const VanForm = ({ type }) => {
     setValidationErrors({});
 
     const errors = {};
-    if (page === 0) {
-      if (!data.year || data.year == "placeholder")
-        errors.year = "Van year is required";
-      if (data.year > automotiveYear)
-        errors.year = "Year can not be after the current automotive year";
-      if (data.year && data.year < 1950)
-        errors.year = "We do not accept vans this old on Advanture";
-      if (data.make == "placeholder") errors.make = "Van make is required";
-      if (!makesOptions.includes(data.make) && data.make !== "placeholder")
-        errors.make = "YOU ARE UP TO NO GOOD!";
-      if (!data.model) errors.model = "Van model is required";
-      if (data.model.length > 30)
-        errors.model = "Van model must be shorter than 30 characters";
-      if (!data.miles) errors.miles = "Milage is required";
-      if (data.miles < 1) errors.miles = "Milage must be a positive number";
-      if (data.miles > 500000) errors.miles = "YOU ARE LYING";
-      if (!data.doors || data.doors == "placeholder")
-        errors.doors = "Door selection required";
-      if (data.doors < 1) errors.doors = "Van must have at least 1 door";
-      if (data.doors > 9) errors.doors = "Your van has too many doors";
-      if (!data.seats || data.seats == "placeholder")
-        errors.seats = "Seat selection required";
-      if (data.seats < 1) errors.seats = "Van must have at least 1 seat";
-      if (data.seats > 12)
-        errors.seats = "This is a website for vans, not buses";
-      if (data.fuelTypeId == "placeholder")
-        errors.fuelTypeId = "Fuel type is required";
-      if (data.fuelTypeId > 5 || data.fuelTypeId < 1)
-        errors.fuelTypeId = "YOU ARE UP TO NO GOOD!";
-      if (!data.mpg && data.fuelTypeId != 4)
-        errors.mpg = "MPG is required for non-electric vehicles";
-      if (data.mpg < 1 && data.fuelTypeId != 4)
-        errors.mpg = "MPG is must be a positive number";
-      if (data.mpg > 150 && data.fuelTypeId != 4)
-        errors.mpg = "MPG can not be over 150";
-      if (!data.rentalRate) errors.rentalRate = "Daily rental rate is required";
-      if (data.rentalRate < 1)
-        errors.rentalRate = "Rental rate must be a positive number";
-      if (data.rentalRate > 500)
-        errors.rentalRate =
-          "Rental rates must be less than $500/day";
-      if (!Number.isInteger(parseInt(data.rentalRate)))
-        errors.rentalRate = "Must be a whole dollar amount";
-      if (!data.distanceIncluded && data.unlimited == false)
-        errors.distanceIncluded = "Distance included is required";
-      if (data.distanceIncluded <= 0 && data.unlimited == false)
-        errors.distanceIncluded = "Must be a positive number";
-    }
-    if (page === 1) {
-      if (!data.address) errors.address = "Address is required";
-      if (!data.city) errors.city = "City is required";
-      if (data.city.length < 3)
-        errors.city = "City name must be at least 3 characters";
-      if (data.city.length > 30)
-        errors.city = "City name must less than 30 characters";
-      if (data.state == "placeholder") errors.state = "State is required";
-      if (!data.zipCode) errors.zipCode = "Zip code is required";
-      if (!zipCodeRegex.test(data.zipCode))
-        errors.zipCode = "Must be a valid zip code";
-    }
-    if (page === 2) {
-      if (!data.description) errors.description = "Description is required";
-      if (data.description.length < 50)
-        errors.description = "Description must be at least 50 characters";
-      if (data.description.length > 9999)
-        errors.description = "Description must not be a book";
-    }
+    // if (page === 0) {
+    //   if (!data.year || data.year == "placeholder")
+    //     errors.year = "Van year is required";
+    //   if (data.year > automotiveYear)
+    //     errors.year = "Year can not be after the current automotive year";
+    //   if (data.year && data.year < 1950)
+    //     errors.year = "We do not accept vans this old on Advanture";
+    //   if (data.make == "placeholder") errors.make = "Van make is required";
+    //   if (!makesOptions.includes(data.make) && data.make !== "placeholder")
+    //     errors.make = "YOU ARE UP TO NO GOOD!";
+    //   if (!data.model) errors.model = "Van model is required";
+    //   if (data.model.length > 30)
+    //     errors.model = "Van model must be shorter than 30 characters";
+    //   if (!data.miles) errors.miles = "Milage is required";
+    //   if (data.miles < 1) errors.miles = "Milage must be a positive number";
+    //   if (data.miles > 500000) errors.miles = "YOU ARE LYING";
+    //   if (!data.doors || data.doors == "placeholder")
+    //     errors.doors = "Door selection required";
+    //   if (data.doors < 1) errors.doors = "Van must have at least 1 door";
+    //   if (data.doors > 9) errors.doors = "Your van has too many doors";
+    //   if (!data.seats || data.seats == "placeholder")
+    //     errors.seats = "Seat selection required";
+    //   if (data.seats < 1) errors.seats = "Van must have at least 1 seat";
+    //   if (data.seats > 12)
+    //     errors.seats = "This is a website for vans, not buses";
+    //   if (data.fuelTypeId == "placeholder")
+    //     errors.fuelTypeId = "Fuel type is required";
+    //   if (data.fuelTypeId > 5 || data.fuelTypeId < 1)
+    //     errors.fuelTypeId = "YOU ARE UP TO NO GOOD!";
+    //   if (!data.mpg && data.fuelTypeId != 4)
+    //     errors.mpg = "MPG is required for non-electric vehicles";
+    //   if (data.mpg < 1 && data.fuelTypeId != 4)
+    //     errors.mpg = "MPG is must be a positive number";
+    //   if (data.mpg > 150 && data.fuelTypeId != 4)
+    //     errors.mpg = "MPG can not be over 150";
+    //   if (!data.rentalRate) errors.rentalRate = "Daily rental rate is required";
+    //   if (data.rentalRate < 1)
+    //     errors.rentalRate = "Rental rate must be a positive number";
+    //   if (data.rentalRate > 500)
+    //     errors.rentalRate =
+    //       "Rental rates must be less than $500/day";
+    //   if (!Number.isInteger(parseInt(data.rentalRate)))
+    //     errors.rentalRate = "Must be a whole dollar amount";
+    //   if (!data.distanceIncluded && data.unlimited == false)
+    //     errors.distanceIncluded = "Distance included is required";
+    //   if (data.distanceIncluded <= 0 && data.unlimited == false)
+    //     errors.distanceIncluded = "Must be a positive number";
+    // }
+    // if (page === 1) {
+    //   if (!data.address) errors.address = "Address is required";
+    //   if (!data.city) errors.city = "City is required";
+    //   if (data.city.length < 3)
+    //     errors.city = "City must be at least 3 characters";
+    //   if (data.city.length > 30)
+    //     errors.city = "City must less than 30 characters";
+    //   if (data.state == "placeholder") errors.state = "State is required";
+    //   if (!data.zipCode) errors.zipCode = "Zip code is required";
+    //   if (!zipCodeRegex.test(data.zipCode))
+    //     errors.zipCode = "Must be a valid zip code";
+    // }
+    // if (page === 2) {
+    //   if (!data.description) errors.description = "Description is required";
+    //   if (data.description.length < 50)
+    //     errors.description = "Description must be at least 50 characters";
+    //   if (data.description.length > 9999)
+    //     errors.description = "Description must not be a book";
+    // }
 
     if (Object.values(errors).length) {
       setValidationErrors(errors);
@@ -297,11 +298,14 @@ export const VanForm = ({ type }) => {
       onSubmit={handleSubmit}
       encType="multipart/form-data"
     >
-      <header>
+      <header className="form-header">
         {type === "update" ? <h1>Update {van.year} {van.make} {van.model}</h1> : <h1>Add a van</h1>}
-        <h3>{title[page]}</h3>
+        <p id="form-steps">{page + 1} of {Object.keys(title).length} steps {page + 1 !== Object.keys(title).length && <span style={{color: "grey"}}> | Next: {title[page+1]}</span>}</p>
+        <FormBar page={page}/>
       </header>
-
+      <div>
+        <h3>{title[page]}</h3>
+      </div>
       <FormInputs type={type}/>
 
       <div className="van-form-btns-div">
@@ -318,7 +322,7 @@ export const VanForm = ({ type }) => {
           </button>
         )}
         {page == Object.keys(title).length - 1 && (
-          <button className="submit-btn" type="submit" disabled={loading}>
+          <button id="add-van" className="submit-btn" type="submit" disabled={loading}>
             {loading ? "Loading..." : type === "update" ? "Update van" : "Add van"}
           </button>
         )}

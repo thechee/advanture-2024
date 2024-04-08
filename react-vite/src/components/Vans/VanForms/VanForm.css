@@ -3,6 +3,16 @@
   width: 750px;
 }
 
+.form-header {
+  border-bottom: 1px solid var(--light-border);
+  margin-bottom: 2rem;
+}
+
+#form-steps {
+  font-size: 12px;
+  margin-top: 0;
+}
+
 .van-form input,
 .van-form select,
 #rental-rate-div {
@@ -15,7 +25,8 @@
 }
 
 .van-form input:focus,
-.van-form select:focus {
+.van-form select:focus,
+.van-form textarea:focus {
   outline: 1px solid var(--purple);
   outline-offset: -1px;
   border: 1px solid var(--purple);
@@ -66,6 +77,11 @@
 #prev svg {
   padding-right: .5rem;
 }
+
+#add-van {
+  padding: .5rem 1.5rem;
+}
+
 .van-form-btns-div button>svg>path {
   fill: white !important;
 }
@@ -91,9 +107,10 @@ input::-webkit-inner-spin-button {
   width: fit-content;
   width: 225px;
 }
-.van-form-info-divs label {
+.van-form label {
   align-self: flex-start;
   margin-top: .5rem;
+  margin-bottom: .25rem;
 }
 
 #rental-rate-div {
@@ -137,5 +154,15 @@ input::-webkit-inner-spin-button {
 .van-form-location-div {
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  /* margin: 0 auto; */
+  width: fit-content;
+}
+
+.van-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100px;
+  padding: .5rem;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }

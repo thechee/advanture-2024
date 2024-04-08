@@ -15,8 +15,8 @@ export const FormInputs = ({ type }) => {
   }
   
   return (  
-    <div>
+    <>
       {display[page]}
-    </div>
+    </>
   )
 }

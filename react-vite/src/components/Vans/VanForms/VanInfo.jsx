@@ -1,3 +1,4 @@
+import { FaDollarSign } from 'react-icons/fa';
 import { useVanFormContext } from '../../../hooks/useVanFormContext';
 import { useEffect } from 'react';
 
@@ -26,8 +27,8 @@ export const VanInfo = () => {
 
   return (
     <div className="van-form-info-div">
+          <div className='van-form-info-divs'>
           <label>Year</label>
-          <div>
             <select value={data.year} name='year' onChange={handleChange}>
               <option disabled value={"placeholder"}>
                 Select year
@@ -38,7 +39,6 @@ export const VanInfo = () => {
                 </option>
               ))}
             </select>
-          </div>
           <div className="errors">
             {validationErrors.year && <p>{validationErrors.year}</p>}
           </div>
@@ -46,7 +46,7 @@ export const VanInfo = () => {
           <label>Make</label>
           <select value={data.make} name='make' onChange={handleChange}>
             <option disabled value={"placeholder"}>
-              Select your van&apos;s make
+              Select make
             </option>
             {makesOptions.map((make) => (
               <option key={make} value={make}>
@@ -63,12 +63,14 @@ export const VanInfo = () => {
             value={data.model}
             name='model'
             onChange={handleChange}
-          />
+            />
           <div className="errors">
             {validationErrors.model && <p>{validationErrors.model}</p>}
           </div>
+          </div>
 
-          <label>Miles</label>
+          <div className='van-form-info-divs'>
+          <label>Odometer</label>
           <input
             type="number"
             value={data.miles}
@@ -108,7 +110,9 @@ export const VanInfo = () => {
           <div className="errors">
             {validationErrors.seats && <p>{validationErrors.seats}</p>}
           </div>
+          </div>
 
+          <div className='van-form-info-divs'>
           <label>Fuel type</label>
           <select
             value={data.fuelTypeId}
@@ -116,7 +120,7 @@ export const VanInfo = () => {
             name="fuelTypeId"
           >
             <option disabled value={"placeholder"}>
-              Select a fuel type
+              Select fuel type
             </option>
             <option value="1">Gasoline</option>
             <option value="2">Diesel</option>
@@ -129,7 +133,7 @@ export const VanInfo = () => {
           </div>
 
           <label>
-            MPG <span>(leave blank for electric vehicles)</span>
+            MPG <span style={{color: "grey", fontSize: "11px"}}>leave blank for electric vans</span>
           </label>
           <input
             type="number"
@@ -142,13 +146,18 @@ export const VanInfo = () => {
             {validationErrors.mpg && <p>{validationErrors.mpg}</p>}
           </div>
 
-          <label>Daily rental rate</label>
+          <label>Rental rate</label>
+          <div id='rental-rate-div'>
+              <FaDollarSign />
           <input
+            id='rental-rate-input'
             type="number"
             value={data.rentalRate}
             name='rentalRate'
             onChange={handleChange}
           />
+          <span style={{color: "grey", fontSize: "11px"}}>/ day</span>
+          </div>
           <div className="errors">
             {validationErrors.rentalRate ||
               (validationErrors.rental_rate && (
@@ -164,6 +173,12 @@ export const VanInfo = () => {
             name='distanceIncluded'
             onChange={handleChange}
           />
+          <div className="errors">
+            {validationErrors.distanceIncluded ||
+              (validationErrors.distance_allowed && (
+                <p>{validationErrors.distanceIncluded}</p>
+              ))}
+          </div>
           <label id="unlimited-label">
             Unlimited
             <input
@@ -174,11 +189,6 @@ export const VanInfo = () => {
               onChange={handleChange}
             ></input>
           </label>
-          <div className="errors">
-            {validationErrors.distanceIncluded ||
-              (validationErrors.distance_allowed && (
-                <p>{validationErrors.distanceIncluded}</p>
-              ))}
           </div>
         </div>
   )

@@ -28,6 +28,7 @@ export const VanForm = ({ type }) => {
     loading,
     setLoading,
     setValidationErrors,
+    validationErrors,
   } = useVanFormContext();
 
   useEffect(() => {
@@ -111,11 +112,11 @@ export const VanForm = ({ type }) => {
       if (data.miles < 1) errors.miles = "Milage must be a positive number";
       if (data.miles > 500000) errors.miles = "YOU ARE LYING";
       if (!data.doors || data.doors == "placeholder")
-        errors.doors = "Doors is required";
+        errors.doors = "Door selection required";
       if (data.doors < 1) errors.doors = "Van must have at least 1 door";
       if (data.doors > 9) errors.doors = "Your van has too many doors";
       if (!data.seats || data.seats == "placeholder")
-        errors.seats = "Seats is required";
+        errors.seats = "Seat selection required";
       if (data.seats < 1) errors.seats = "Van must have at least 1 seat";
       if (data.seats > 12)
         errors.seats = "This is a website for vans, not buses";
@@ -131,10 +132,10 @@ export const VanForm = ({ type }) => {
         errors.mpg = "MPG can not be over 150";
       if (!data.rentalRate) errors.rentalRate = "Daily rental rate is required";
       if (data.rentalRate < 1)
-        errors.rentalRate = "Daily rental rate must be a positive number";
+        errors.rentalRate = "Rental rate must be a positive number";
       if (data.rentalRate > 500)
         errors.rentalRate =
-          "We do not accept rental rates greater than $500/day";
+          "Rental rates must be less than $500/day";
       if (!Number.isInteger(parseInt(data.rentalRate)))
         errors.rentalRate = "Must be a whole dollar amount";
       if (!data.distanceIncluded && data.unlimited == false)
@@ -297,20 +298,21 @@ export const VanForm = ({ type }) => {
       encType="multipart/form-data"
     >
       <header>
-        <h2>{title[page]}</h2>
+        {type === "update" ? <h1>Update {van.year} {van.make} {van.model}</h1> : <h1>Add a van</h1>}
+        <h3>{title[page]}</h3>
       </header>
 
       <FormInputs type={type}/>
 
       <div className="van-form-btns-div">
         {page !== 0 && (
-          <button type="button" className="submit-btn" onClick={handlePrev}>
+          <button id="prev" type="button" className="submit-btn" onClick={handlePrev}>
             <LeftArrow />
             Prev
           </button>
         )}
         {Object.keys(title).length - 1 !== page && (
-          <button type="button" className="submit-btn" onClick={handleNext}>
+          <button id="next" type="button" className="submit-btn" onClick={handleNext}>
             Next
             <RightArrow />
           </button>

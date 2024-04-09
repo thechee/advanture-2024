@@ -437,7 +437,7 @@ export const VanDetail = () => {
         {van && (
           <Map
             center={{lat: van.lat, lng: van.lng }}
-            zoom={15}
+            zoom={14}
             gestureHandling={"greedy"}
             controlled={true}
             disableDefaultUI={true}

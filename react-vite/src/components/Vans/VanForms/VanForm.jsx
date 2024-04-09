@@ -8,7 +8,7 @@ import { RightArrow } from "../../Icons/RightArrow";
 import { thunkAddVan, thunkAddVanImages, thunkUpdateVan, thunkUpdateVanImages, thunkGetOneVan } from "../../../redux/van";
 import "./VanForm.css";
 import { useEffect } from "react";
-import { FormBar } from "./FormBar";
+import { FormBar } from "./FormBar/FormBar";
 
 export const VanForm = ({ type }) => {
   const dispatch = useDispatch();
@@ -29,7 +29,6 @@ export const VanForm = ({ type }) => {
     loading,
     setLoading,
     setValidationErrors,
-    validationErrors,
   } = useVanFormContext();
 
   useEffect(() => {

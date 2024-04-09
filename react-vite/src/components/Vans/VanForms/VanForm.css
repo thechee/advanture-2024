@@ -154,8 +154,8 @@ input::-webkit-inner-spin-button {
 .van-form-location-div {
   display: flex;
   flex-direction: column;
-  /* margin: 0 auto; */
-  width: fit-content;
+  margin: 0 auto;
+  /* width: 600px; */
 }
 
 .van-form textarea {
@@ -165,4 +165,34 @@ input::-webkit-inner-spin-button {
   padding: .5rem;
   border: 1px solid #ccc;
   font-size: 14px;
+}
+
+.autocomplete-container {
+  width: 100%;
+}
+
+#van-form-autocomplete {
+  width: 100%;
+}
+
+.pac-container {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  margin-top: 10px;
+  overflow: hidden;
+  padding: 5px;
+  width: 300px;
+}
+
+.pac-item {
+  cursor: pointer;
+  padding: 0.5em 1em;
+  border: none;
+}
+
+.pac-item:hover,
+.pac-item span:hover {
+  color: var(--purple);
 }

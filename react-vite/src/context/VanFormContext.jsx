@@ -8,7 +8,7 @@ export const VanFormProvider = ({ children }) => {
     0: "Van Information",
     1: "Location",
     2: "Description",
-    3: "Images",
+    3: "Photos",
   }
 
   const [page, setPage] = useState(0);
@@ -52,6 +52,7 @@ export const VanFormProvider = ({ children }) => {
     const value = type === "checkbox" ? e.target.checked : e.target.value;
 
     setData({ ...data, [name]: value });
+    setValidationErrors(prevErrors => ({ ...prevErrors, [name]: '' }));
   }
 
 

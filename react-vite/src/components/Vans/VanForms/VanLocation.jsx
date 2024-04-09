@@ -1,10 +1,13 @@
 import { useVanFormContext } from "../../../hooks/useVanFormContext";
+import { PlaceAutocompleteClassic } from "./AddressAutocomplete";
 
 export const VanLocation = () => {
   const { data, validationErrors, handleChange } = useVanFormContext();
 
   return (
     <div className="van-form-location-div">
+    <PlaceAutocompleteClassic />
+
     <label>Address</label>
     <input
       type="text"

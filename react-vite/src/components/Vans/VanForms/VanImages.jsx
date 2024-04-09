@@ -51,7 +51,7 @@ export const VanImages = () => {
 
   return (
     <div className="van-images">
-      <p>First image will be the preview image</p>
+      <p>The first photo will be the preview image</p>
       <Files
         multiple
         accept={imageTypes}

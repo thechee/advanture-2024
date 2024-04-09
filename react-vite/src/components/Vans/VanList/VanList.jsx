@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { thunkGetVans } from "../../../redux/van";
 import { VanListItem } from "../VanListItem/VanListItem";
 import { FaMapMarkerAlt, FaChevronDown, FaChevronUp, FaSlidersH, FaCheck } from "react-icons/fa";
-import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
 import { Sort } from "../../Filters/Sort";
 import { Price } from "../../Filters/Price";
 import { FiltersModal } from "../../Filters/FiltersModal";
 import OpenModalButton from "../../OpenModalButton";
-import { useVanListContext } from "../../../context/VanListContext";
+import { useVanListContext } from "../../../hooks/useVanListContext";
 import "./VanList.css";
 
 export const VanList = () => {
@@ -22,9 +22,11 @@ export const VanList = () => {
   const [showPrice, setShowPrice] = useState(false)
   const [tempSort, setTempSort] = useState("")
   const [center, setCenter] = useState(null)
+  const [userPanned, setUserPanned] = useState(false)
   const sortRef = useRef()
   const priceRef = useRef()
   const { sort, setSort, price, setPrice, allPrices, make, years, seats, fuelTypes, mileage, handleReset, count } = useVanListContext()
+  const apiIsLoaded = useApiIsLoaded();
 
   useEffect(() => {
     // if (sort) {
@@ -178,10 +180,13 @@ export const VanList = () => {
 
 
           <div className="van-list-map-div">
-            {Object.values(latLng).length > 0 && (
+            {Object.values(latLng).length > 0 && 
+              apiIsLoaded ?
+            (
               <Map
                 key={mapId}
-                defaultCenter={center || latLng}
+                onDrag={() => {setUserPanned(true)}}
+                center={!userPanned ? center || latLng : undefined}
                 defaultZoom={12}
                 gestureHandling={"greedy"}
                 disableDefaultUI={true}
@@ -195,7 +200,15 @@ export const VanList = () => {
                   </AdvancedMarker>
                 {vans.map(van => (
                   <div key={van.id}>
-                    <AdvancedMarker position={{lat: van.lat, lng: van.lng}} className="price-marker" onClick={() => {setCenter({lat: van.lat, lng: van.lng})}}>
+                    <AdvancedMarker
+                      position={{lat: van.lat, lng: van.lng}} 
+                      className="price-marker" 
+                      onClick={() => {
+                        setCenter({lat: van.lat, lng: van.lng})
+                        setUserPanned(false)
+                      }}
+                      
+                      >
                       <div>
                         <span>${van.rentalRate}</span>
                       </div>
@@ -204,6 +217,10 @@ export const VanList = () => {
                 ))}
                 
                 </Map>
+            ) : (
+              <div className="map-loading">
+                
+              </div>
             )}
           </div>
         </div>

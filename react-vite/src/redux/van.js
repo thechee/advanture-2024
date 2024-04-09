@@ -5,8 +5,8 @@ const GET_ONE_VAN = 'van/GET_ONE_VAN';
 const ADD_VAN = 'van/ADD_VAN';
 const UPDATE_VAN = 'van/UPDATE_VAN';
 const DELETE_VAN = 'van/DELETE_VAN';
-const ADD_VAN_IMAGE = 'van/ADD_VAN_IMAGE';
-const UPDATE_VAN_IMAGE = 'van/UPDATE_VAN_IMAGE';
+const ADD_VAN_IMAGES = 'van/ADD_VAN_IMAGES';
+const UPDATE_VAN_IMAGES = 'van/UPDATE_VAN_IMAGES';
 const GET_VAN_RATINGS = 'van/GET_VAN_RATINGS';
 const CREATE_VAN_RATING = 'van/CREATE_VAN_RATING';
 const UPDATE_VAN_RATING = 'van/UPDATE_VAN_RATING';
@@ -39,16 +39,16 @@ const deleteVan = (vanId) => ({
   vanId
 })
 
-const addVanImage = (vanId, image) => ({
-  type: ADD_VAN_IMAGE,
+const addVanImages = (vanId, images) => ({
+  type: ADD_VAN_IMAGES,
   vanId,
-  image
+  images
 })
 
-const updateVanImage = (vanId, image) => ({
-  type: UPDATE_VAN_IMAGE,
+const updateVanImages = (vanId, images) => ({
+  type: UPDATE_VAN_IMAGES,
   vanId,
-  image
+  images
 })
 
 const getVanRatings = (vanId, ratings) => ({
@@ -160,32 +160,32 @@ export const thunkDeleteVan = (vanId) => async dispatch => {
   }
 }
 
-export const thunkAddVanImage = (formData, vanId) => async dispatch => {
+export const thunkAddVanImages = (formData, vanId) => async dispatch => {
   const response = await fetch(`/api/vans/${vanId}/images`, {
     method: "POST",
     body: formData,
   })
 
   if (response.ok) {
-    const image = await response.json()
-    dispatch(addVanImage(vanId, image))
-    return image
+    const images = await response.json()
+    dispatch(addVanImages(vanId, images))
+    return images
   } else {
     const errors = await response.json()
     return errors
   }
 }
 
-export const thunkUpdateVanImage = (formData, vanId) => async dispatch => {
+export const thunkUpdateVanImages = (formData, vanId) => async dispatch => {
   const response = await fetch(`/api/vans/${vanId}/images`, {
     method: "PUT",
     body: formData,
   })
 
   if (response.ok) {
-    const image = await response.json()
-    dispatch(updateVanImage(vanId, image))
-    return image
+    const images = await response.json()
+    dispatch(updateVanImages(vanId, images))
+    return images
   } else {
     const errors = await response.json()
     return errors
@@ -279,15 +279,15 @@ export const vanReducer = (state = initialState, action) => {
       newState[action.van.id] = action.van
       return newState;
     }
-    case ADD_VAN_IMAGE: {
+    case ADD_VAN_IMAGES: {
       const newState = { ...state }
-      newState[action.vanId].images = { [action.image.id]: action.image }
+      action.images.forEach(image => newState[action.vanId].images = {...newState[action.vanId].images, [image.id]: image})
       return newState;
     }
-    case UPDATE_VAN_IMAGE: {
+    case UPDATE_VAN_IMAGES: {
       const newState = { ...state }
-      
-      newState[action.vanId].images = { [action.image.id]: action.image }
+      newState[action.vanId].images = {}
+      action.images.forEach(image => newState[action.vanId].images = { ...newState[action.vanId].images, [image.id]: image })
       return newState;
     }
     case UPDATE_VAN: {

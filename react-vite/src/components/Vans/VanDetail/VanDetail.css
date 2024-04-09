@@ -289,10 +289,11 @@ h4 {
   margin-bottom: 3rem;
 }
 
-.custom {
+.custom-marker {
   background-color: rgba(89, 60, 251, .5);
   height: 100px;
   width: 100px;
+  transform: translate(0, 50%);
   border-radius: 50%;
 }
 

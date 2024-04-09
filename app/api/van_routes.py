@@ -180,62 +180,74 @@ def delete_van(vanId):
 #! VAN IMAGES
 @login_required
 @van_routes.route('/<int:vanId>/images', methods=["POST"])
-def new_van_image(vanId):
-  form = VanImageForm()
+def new_van_images(vanId):
 
-  form['csrf_token'].data = request.cookies['csrf_token']
+  images = request.files.getlist("image")
+  if not images:
+    return {"errors": {"image": "image required"}}, 400
 
-  if form.validate_on_submit():
-    image = form.data["image"]
+  previews = request.form.getlist("preview")
+
+  for i, image in enumerate(images):
     image.filename = get_unique_filename(image.filename)
     upload = upload_file_to_s3(image)
     print(upload)
 
     if "url" not in upload:
       return upload
-    
+  
     new_van_image = VanImage(
-      van_id = form.data["van_id"],
+      van_id = vanId,
       image_url = upload["url"],
-      preview = form.data["preview"]
+      preview = previews[i] == "true"
     )
-
     db.session.add(new_van_image)
-    db.session.commit()
-    return new_van_image.to_dict()
-  return form.errors, 401
+
+  db.session.commit()
+
+  van_images = VanImage.query.filter(VanImage.van_id == vanId).all()
+  return [image.to_dict() for image in van_images]
 
 @login_required
 @van_routes.route('/<int:vanId>/images', methods=["PUT"])
-def update_van_image(vanId):
-  preview_image = VanImage.query.filter(VanImage.van_id == vanId, VanImage.preview == True).one()
+def update_van_images(vanId):
+  images = request.files.getlist("image")
+  image_ids_to_keep = [int(id) for id in request.form.getlist("imageId")]
+  print("image_ids_to_keep", image_ids_to_keep)
+  if not images and not image_ids_to_keep:
+    return {"errors": {"image": "image required"}}, 400
+  
+  old_images = VanImage.query.filter(VanImage.van_id == int(vanId)).all()
+  print("old_images", old_images)
+  for image in old_images:
+    print("image.id", image.id)
+    print("image.id in image_ids_to_keep", image.id in image_ids_to_keep)
+    if image.id not in image_ids_to_keep:
+      remove_file_from_s3(image.image_url)
+      db.session.delete(image)
+  
+  previews = request.form.getlist("preview")
 
-  form = VanImageForm()
+  for i, image in enumerate(images):
+      image.filename = get_unique_filename(image.filename)
+      upload = upload_file_to_s3(image)
+      print(upload)
 
-  form['csrf_token'].data = request.cookies['csrf_token']
+      if "url" not in upload:
+        return upload
+    
+      new_van_image = VanImage(
+        van_id = vanId,
+        image_url = upload["url"],
+        preview = previews[i] == "true"
+      )
+      db.session.add(new_van_image)
 
-  if form.validate_on_submit():
-    image = form.data["image"]
-    image.filename = get_unique_filename(image.filename)
-    upload = upload_file_to_s3(image)
-    print(upload)
+  db.session.commit()
 
-    if "url" not in upload:
-      return upload
-
-    remove_file_from_s3(preview_image.image_url)
-
-    updated_van_image = VanImage(
-      van_id = vanId,
-      image_url = upload["url"],
-      preview = True
-    )
-
-    db.session.delete(preview_image)
-    db.session.add(updated_van_image)
-    db.session.commit()
-    return updated_van_image.to_dict()
-  return form.errors, 401
+  van_images = VanImage.query.filter(VanImage.van_id == vanId).all()
+  return [image.to_dict() for image in van_images]
+  
 
 #! VAN RATINGS
 @login_required

@@ -12,7 +12,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }) => {
     if (!places || !inputRef.current) return;
 
     const options = {
-      fields: ['geometry', 'name', 'formatted_address']
+      fields: ['geometry', 'formatted_address']
     };
 
     setPlaceAutocomplete(new places.Autocomplete(inputRef.current, options));

@@ -193,6 +193,7 @@ input::-webkit-inner-spin-button {
 }
 
 .pac-item:hover,
-.pac-item span:hover {
-  color: var(--purple);
+.pac-item:hover span,
+.pac-item:hover .pac-icon-marker {
+  color: var(--purple) !important;
 }

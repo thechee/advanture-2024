@@ -2,11 +2,32 @@ import { useVanFormContext } from "../../../hooks/useVanFormContext";
 import { PlaceAutocompleteClassic } from "./AddressAutocomplete";
 
 export const VanLocation = () => {
-  const { data, validationErrors, handleChange } = useVanFormContext();
+  const { data, validationErrors, handleChange, setData } = useVanFormContext();
+
+  const handlePlaceSelect = (place) => {
+    const splitAddress = place.formatted_address.split(", ");
+    const address = splitAddress[0];
+    const city = splitAddress[1];
+    const state = splitAddress[2].split(" ")[0];
+    const zipCode = splitAddress[2].split(" ")[1];
+
+
+    setData((prevData) => {
+      return {
+        ...prevData,
+        address,
+        city,
+        state,
+        zipCode,
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      }
+    })
+  }
 
   return (
     <div className="van-form-location-div">
-    <PlaceAutocompleteClassic />
+    <PlaceAutocompleteClassic onPlaceSelect={handlePlaceSelect}/>
 
     <label>Address</label>
     <input

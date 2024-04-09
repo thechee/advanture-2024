@@ -170,6 +170,36 @@ export const VanForm = ({ type }) => {
     }
   };
 
+  const handleImageUpload = (type, data, vanId) => {
+    const formData = new FormData();
+
+    formData.append("van_id", vanId);
+
+    data.images.forEach((image, index) => {
+      if (type === "update") {
+        if (image.src && image.src.file instanceof File) {
+          formData.append("image", image.src.file);
+        } else {
+          formData.append("imageId", image.id);
+        }
+      } else {
+        formData.append("image", image.src.file);
+      }
+      formData.append("preview", index === 0);
+    })
+
+    if (type === "update") {
+      dispatch(thunkUpdateVanImages(formData, vanId));
+    } else {
+      dispatch(thunkAddVanImages(formData, vanId));
+    }
+
+    setLoading(false);
+    setData({});
+    setPage(0);
+    navigate(`/vans/${vanId}`);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -183,24 +213,24 @@ export const VanForm = ({ type }) => {
     } else {
       setLoading(true);
 
-      let lat;
-      let lng;
+      // let lat;
+      // let lng;
 
-      const { Geocoder } = await google.maps.importLibrary("geocoding");
+      // const { Geocoder } = await google.maps.importLibrary("geocoding");
 
-      const geocoder = new Geocoder();
+      // const geocoder = new Geocoder();
 
-      await geocoder.geocode(
-        {
-          address: `${data.address}, ${data.city}, ${data.state}`,
-        },
-        (results, status) => {
-          if (status == "OK") {
-            lat = results[0].geometry.location.lat();
-            lng = results[0].geometry.location.lng();
-          }
-        }
-      );
+      // await geocoder.geocode(
+      //   {
+      //     address: `${data.address}, ${data.city}, ${data.state}`,
+      //   },
+      //   (results, status) => {
+      //     if (status == "OK") {
+      //       lat = results[0].geometry.location.lat();
+      //       lng = results[0].geometry.location.lng();
+      //     }
+      //   }
+      // );
 
       type !== "update" ? 
       await dispatch(
@@ -220,8 +250,8 @@ export const VanForm = ({ type }) => {
           doors: data.doors,
           seats: data.seats,
           fuel_type_id: data.fuelTypeId,
-          lat,
-          lng,
+          lat: data.lat,
+          lng: data.lng,
         })
       ) :
       await dispatch(
@@ -241,8 +271,8 @@ export const VanForm = ({ type }) => {
           doors: data.doors,
           seats: data.seats,
           fuel_type_id: data.fuelTypeId,
-          lat,
-          lng,
+          lat: data.lat,
+          lng: data.lng,
         }, vanId)
       )
       .then(async (resData) => {
@@ -254,42 +284,12 @@ export const VanForm = ({ type }) => {
           setValidationErrors(resData);
           setLoading(false);
         } else {
-          const formData = new FormData();
-
-          formData.append("van_id", resData.id);
-
-          if (type === "update") {
-            data.images.forEach((image, index) => {
-              if (image.src && image.src.file instanceof File) {
-                formData.append("image", image.src.file);
-              } else {
-                formData.append("imageId", image.id);
-              }
-              formData.append("preview", index === 0);
-            });
-
-            await dispatch(thunkUpdateVanImages(formData, resData.id)).then(() => {
-              setLoading(false);
-              setData({});
-              setPage(0);
-              navigate(`/vans/${resData.id}`);
-            })
-          } else {
-            data.images.forEach((image, index) => {
-              formData.append("image", image.src.file);
-              formData.append("preview", index === 0);
-            });
-            await dispatch(thunkAddVanImages(formData, resData.id)).then(() => {
-              setLoading(false);
-              setData({});
-              setPage(0);
-              navigate(`/vans/${resData.id}`);
-            })
-          }
+          handleImageUpload(type, data, resData.id);
         }
       })
     }
   }
+
 
   return (
     <form

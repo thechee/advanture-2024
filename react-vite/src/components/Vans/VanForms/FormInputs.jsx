@@ -9,7 +9,7 @@ export const FormInputs = ({ type }) => {
 
   const display = {
     0: <VanInfo />,
-    1: <VanLocation />,
+    1: <VanLocation type={type}/>,
     2: <VanDescription />,
     3: <VanImages type={type}/>
   }

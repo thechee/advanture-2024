@@ -437,14 +437,14 @@ export const VanDetail = () => {
         {van && (
           <Map
             center={{lat: van.lat, lng: van.lng }}
-            zoom={14}
+            zoom={13}
             gestureHandling={"greedy"}
             controlled={true}
             disableDefaultUI={true}
             style={{ height: "700px" }}
             mapId={mapId}
           >
-            <AdvancedMarker position={{lat: van.lat, lng: van.lng }} className={"custom"}>
+            <AdvancedMarker position={{lat: van.lat, lng: van.lng }} className={"custom-marker"}>
               <div></div>
             </AdvancedMarker>
           </Map>

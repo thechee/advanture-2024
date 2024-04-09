@@ -1,11 +1,16 @@
-/* global google */
 import { FormInputs } from "./FormInputs";
 import { useVanFormContext } from "../../../hooks/useVanFormContext";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { LeftArrow } from "../../Icons/LeftArrow";
 import { RightArrow } from "../../Icons/RightArrow";
-import { thunkAddVan, thunkAddVanImages, thunkUpdateVan, thunkUpdateVanImages, thunkGetOneVan } from "../../../redux/van";
+import {
+  thunkAddVan,
+  thunkAddVanImages,
+  thunkUpdateVan,
+  thunkUpdateVanImages,
+  thunkGetOneVan,
+} from "../../../redux/van";
 import "./VanForm.css";
 import { useEffect } from "react";
 import { FormBar } from "./FormBar/FormBar";
@@ -29,6 +34,7 @@ export const VanForm = ({ type }) => {
     loading,
     setLoading,
     setValidationErrors,
+    validAddressSelected,
   } = useVanFormContext();
 
   useEffect(() => {
@@ -53,12 +59,14 @@ export const VanForm = ({ type }) => {
           zipCode: van.zipCode,
           description: van.description,
           images: Object.values(van.images),
+          lat: van.lat,
+          lng: van.lng,
         });
         setPage(0);
         setValidationErrors({});
       }
     } else {
-        setData({
+      setData({
         year: "placeholder",
         make: "placeholder",
         model: "",
@@ -76,15 +84,18 @@ export const VanForm = ({ type }) => {
         seats: "placeholder",
         fuelTypeId: "placeholder",
         images: [],
-      })
+      });
       setPage(0);
       setValidationErrors({});
     }
   }, [type, van, vanId]);
 
-
   if (!user) {
     return <h1>You must be logged in to add/update a van</h1>;
+  }
+
+  if (type === "update" && !van) {
+    return <h1>Loading...</h1>;
   }
 
   const handlePrev = () => {
@@ -107,7 +118,7 @@ export const VanForm = ({ type }) => {
     //     errors.make = "YOU ARE UP TO NO GOOD!";
     //   if (!data.model) errors.model = "Van model is required";
     //   if (data.model.length > 30)
-    //     errors.model = "Van model must be shorter than 30 characters";
+    //     errors.model = "Model must be less than 30 characters";
     //   if (!data.miles) errors.miles = "Milage is required";
     //   if (data.miles < 1) errors.miles = "Milage must be a positive number";
     //   if (data.miles > 500000) errors.miles = "YOU ARE LYING";
@@ -130,12 +141,11 @@ export const VanForm = ({ type }) => {
     //     errors.mpg = "MPG is must be a positive number";
     //   if (data.mpg > 150 && data.fuelTypeId != 4)
     //     errors.mpg = "MPG can not be over 150";
-    //   if (!data.rentalRate) errors.rentalRate = "Daily rental rate is required";
+    //   if (!data.rentalRate) errors.rentalRate = "Rental rate is required";
     //   if (data.rentalRate < 1)
     //     errors.rentalRate = "Rental rate must be a positive number";
     //   if (data.rentalRate > 500)
-    //     errors.rentalRate =
-    //       "Rental rates must be less than $500/day";
+    //     errors.rentalRate = "Rental rate must be less than $500/day";
     //   if (!Number.isInteger(parseInt(data.rentalRate)))
     //     errors.rentalRate = "Must be a whole dollar amount";
     //   if (!data.distanceIncluded && data.unlimited == false)
@@ -143,25 +153,26 @@ export const VanForm = ({ type }) => {
     //   if (data.distanceIncluded <= 0 && data.unlimited == false)
     //     errors.distanceIncluded = "Must be a positive number";
     // }
-    // if (page === 1) {
-    //   if (!data.address) errors.address = "Address is required";
-    //   if (!data.city) errors.city = "City is required";
-    //   if (data.city.length < 3)
-    //     errors.city = "City must be at least 3 characters";
-    //   if (data.city.length > 30)
-    //     errors.city = "City must less than 30 characters";
-    //   if (data.state == "placeholder") errors.state = "State is required";
-    //   if (!data.zipCode) errors.zipCode = "Zip code is required";
-    //   if (!zipCodeRegex.test(data.zipCode))
-    //     errors.zipCode = "Must be a valid zip code";
-    // }
-    // if (page === 2) {
-    //   if (!data.description) errors.description = "Description is required";
-    //   if (data.description.length < 50)
-    //     errors.description = "Description must be at least 50 characters";
-    //   if (data.description.length > 9999)
-    //     errors.description = "Description must not be a book";
-    // }
+    if (page === 1) {
+      if (!validAddressSelected) errors.address = "Please select a valid address from the dropdown";
+      if (!data.address) errors.address = "Address is required";
+      if (!data.city) errors.city = "City is required";
+      if (data.city.length < 3)
+        errors.city = "City must be at least 3 characters";
+      if (data.city.length > 30)
+        errors.city = "City must less than 30 characters";
+      if (data.state == "placeholder") errors.state = "State is required";
+      if (!data.zipCode) errors.zipCode = "Zip code is required";
+      if (!zipCodeRegex.test(data.zipCode))
+        errors.zipCode = "Must be a valid zip code";
+    }
+    if (page === 2) {
+      if (!data.description) errors.description = "Description is required";
+      if (data.description.length < 50)
+        errors.description = "Description must be at least 50 characters";
+      if (data.description.length > 9999)
+        errors.description = "Description must not be a book";
+    }
 
     if (Object.values(errors).length) {
       setValidationErrors(errors);
@@ -170,7 +181,7 @@ export const VanForm = ({ type }) => {
     }
   };
 
-  const handleImageUpload = (type, data, vanId) => {
+  const handleImageUpload = async (type, data, vanId) => {
     const formData = new FormData();
 
     formData.append("van_id", vanId);
@@ -186,19 +197,19 @@ export const VanForm = ({ type }) => {
         formData.append("image", image.src.file);
       }
       formData.append("preview", index === 0);
-    })
+    });
 
     if (type === "update") {
-      dispatch(thunkUpdateVanImages(formData, vanId));
+      await dispatch(thunkUpdateVanImages(formData, vanId));
     } else {
-      dispatch(thunkAddVanImages(formData, vanId));
+      await dispatch(thunkAddVanImages(formData, vanId));
     }
 
     setLoading(false);
     setData({});
     setPage(0);
     navigate(`/vans/${vanId}`);
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -213,69 +224,30 @@ export const VanForm = ({ type }) => {
     } else {
       setLoading(true);
 
-      // let lat;
-      // let lng;
+      const vanData = {
+        year: data.year,
+        make: data.make,
+        model: data.model,
+        miles: data.miles,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        zip_code: data.zipCode,
+        rental_rate: data.rentalRate,
+        description: data.description,
+        distance_allowed: data.distanceIncluded,
+        mpg: data.mpg,
+        doors: data.doors,
+        seats: data.seats,
+        fuel_type_id: data.fuelTypeId,
+        lat: data.lat,
+        lng: data.lng,
+      };
 
-      // const { Geocoder } = await google.maps.importLibrary("geocoding");
-
-      // const geocoder = new Geocoder();
-
-      // await geocoder.geocode(
-      //   {
-      //     address: `${data.address}, ${data.city}, ${data.state}`,
-      //   },
-      //   (results, status) => {
-      //     if (status == "OK") {
-      //       lat = results[0].geometry.location.lat();
-      //       lng = results[0].geometry.location.lng();
-      //     }
-      //   }
-      // );
-
-      type !== "update" ? 
-      await dispatch(
-        thunkAddVan({
-          year: data.year,
-          make: data.make,
-          model: data.model,
-          miles: data.miles,
-          address: data.address,
-          city: data.city,
-          state: data.state,
-          zip_code: data.zipCode,
-          rental_rate: data.rentalRate,
-          description: data.description,
-          distance_allowed: data.distanceIncluded,
-          mpg: data.mpg,
-          doors: data.doors,
-          seats: data.seats,
-          fuel_type_id: data.fuelTypeId,
-          lat: data.lat,
-          lng: data.lng,
-        })
-      ) :
-      await dispatch(
-        thunkUpdateVan({
-          year: data.year,
-          make: data.make,
-          model: data.model,
-          miles: data.miles,
-          address: data.address,
-          city: data.city,
-          state: data.state,
-          zip_code: data.zipCode,
-          rental_rate: data.rentalRate,
-          description: data.description,
-          distance_allowed: data.distanceIncluded,
-          mpg: data.mpg,
-          doors: data.doors,
-          seats: data.seats,
-          fuel_type_id: data.fuelTypeId,
-          lat: data.lat,
-          lng: data.lng,
-        }, vanId)
-      )
-      .then(async (resData) => {
+      await (type !== "update" ? 
+          dispatch(thunkAddVan(vanData)) :
+          dispatch(thunkUpdateVan(vanData, vanId))
+      ).then(async (resData) => {
         if (!resData.id) {
           if (resData.fuel_type_id) resData.fuelTypeId = resData.fuel_type_id;
           if (resData.rental_rate) resData.rentalRate = resData.rental_rate;
@@ -286,10 +258,9 @@ export const VanForm = ({ type }) => {
         } else {
           handleImageUpload(type, data, resData.id);
         }
-      })
+      });
     }
-  }
-
+  };
 
   return (
     <form
@@ -298,31 +269,61 @@ export const VanForm = ({ type }) => {
       encType="multipart/form-data"
     >
       <header className="form-header">
-        {type === "update" ? <h1>Update {van.year} {van.make} {van.model}</h1> : <h1>Add a van</h1>}
-        <p id="form-steps">{page + 1} of {Object.keys(title).length} steps {page + 1 !== Object.keys(title).length && <span style={{color: "grey"}}> | Next: {title[page+1]}</span>}</p>
-        <FormBar page={page}/>
+        {type === "update" ? (
+          <h1>
+            Update {van.year} {van.make} {van.model}
+          </h1>
+        ) : (
+          <h1>Add a van</h1>
+        )}
+        <p id="form-steps">
+          {page + 1} of {Object.keys(title).length} steps{" "}
+          {page + 1 !== Object.keys(title).length && (
+            <span style={{ color: "grey" }}> | Next: {title[page + 1]}</span>
+          )}
+        </p>
+        <FormBar page={page} />
       </header>
       <div>
         <h3>{title[page]}</h3>
       </div>
-      <FormInputs type={type}/>
+      <FormInputs type={type} />
 
       <div className="van-form-btns-div">
         {page !== 0 && (
-          <button id="prev" type="button" className="submit-btn" onClick={handlePrev}>
+          <button
+            id="prev"
+            type="button"
+            className="submit-btn"
+            onClick={handlePrev}
+          >
             <LeftArrow />
             Prev
           </button>
         )}
         {Object.keys(title).length - 1 !== page && (
-          <button id="next" type="button" className="submit-btn" onClick={handleNext}>
+          <button
+            id="next"
+            type="button"
+            className="submit-btn"
+            onClick={handleNext}
+          >
             Next
             <RightArrow />
           </button>
         )}
         {page == Object.keys(title).length - 1 && (
-          <button id="add-van" className="submit-btn" type="submit" disabled={loading}>
-            {loading ? "Loading..." : type === "update" ? "Update van" : "Add van"}
+          <button
+            id="add-van"
+            className="submit-btn"
+            type="submit"
+            disabled={loading}
+          >
+            {loading
+              ? "Loading..."
+              : type === "update"
+              ? "Update van"
+              : "Add van"}
           </button>
         )}
       </div>

@@ -36,6 +36,7 @@ export const VanFormProvider = ({ children }) => {
 
   const [validationErrors, setValidationErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [validAddressSelected, setValidAddressSelected] = useState(false);
 
   const automotiveYear = new Date().getFullYear() + 1;
   const yearsOptions = [];
@@ -74,6 +75,8 @@ export const VanFormProvider = ({ children }) => {
         makesOptions,
         zipCodeRegex,
         handleChange,
+        validAddressSelected,
+        setValidAddressSelected,
       }}
     >
       {children}

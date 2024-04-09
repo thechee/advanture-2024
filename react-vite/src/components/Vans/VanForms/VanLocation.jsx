@@ -1,10 +1,15 @@
+import { Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useVanFormContext } from "../../../hooks/useVanFormContext";
 import { PlaceAutocompleteClassic } from "./AddressAutocomplete";
+import { useSelector } from "react-redux";
 
-export const VanLocation = () => {
-  const { data, validationErrors, handleChange, setData } = useVanFormContext();
+export const VanLocation = ({ type }) => {
+  const { data, validationErrors, setData, setValidAddressSelected } = useVanFormContext();
+  const mapId = useSelector((state) => state.maps.mapId);
 
   const handlePlaceSelect = (place) => {
+    setValidAddressSelected(true);
+
     const splitAddress = place.formatted_address.split(", ");
     const address = splitAddress[0];
     const city = splitAddress[1];
@@ -27,18 +32,36 @@ export const VanLocation = () => {
 
   return (
     <div className="van-form-location-div">
-    <PlaceAutocompleteClassic onPlaceSelect={handlePlaceSelect}/>
+      <PlaceAutocompleteClassic 
+        onPlaceSelect={handlePlaceSelect} 
+        address={type == "update" ? 
+        `${data.address}, ${data.city}, ${data.state} ${data.zipCode}` : 
+        ""}
+      />
+      <div className="errors">
+        {validationErrors.address && <p>{validationErrors.address}</p>}
+      </div>
 
-    <label>Address</label>
+      <Map
+        center={data.lat && data.lng ? {lat: data.lat, lng: data.lng} :  {lat: 39.50, lng: -98.35}}
+        zoom={data.lat && data.lng ? 13 : 4}
+        gestureHandling={"greedy"}
+        controlled={true}
+        disableDefaultUI={true}
+        style={{ height: "500px", marginTop: "1rem", marginBottom: "3rem" }}
+        mapId={mapId}
+      >
+        {data.lat && data.lng && <AdvancedMarker position={{lat: data.lat, lng: data.lng }} className={"custom-marker"}>
+          <div></div>
+        </AdvancedMarker>}
+      </Map>
+    {/* <label>Address</label>
     <input
       type="text"
       value={data.address}
       name="address"
       onChange={handleChange}
     />
-    <div className="errors">
-      {validationErrors.address && <p>{validationErrors.address}</p>}
-    </div>
 
     <label>City</label>
     <input
@@ -129,7 +152,7 @@ export const VanLocation = () => {
     <div className="errors">
       {validationErrors.zipCode ||
         (validationErrors.zip_code && <p>{validationErrors.zipCode}</p>)}
-    </div>
+    </div> */}
     </div>
   )
 }

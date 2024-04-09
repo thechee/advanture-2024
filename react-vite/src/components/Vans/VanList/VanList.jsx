@@ -22,6 +22,7 @@ export const VanList = () => {
   const [showPrice, setShowPrice] = useState(false)
   const [tempSort, setTempSort] = useState("")
   const [center, setCenter] = useState(null)
+  const [userPanned, setUserPanned] = useState(false)
   const sortRef = useRef()
   const priceRef = useRef()
   const { sort, setSort, price, setPrice, allPrices, make, years, seats, fuelTypes, mileage, handleReset, count } = useVanListContext()
@@ -184,7 +185,8 @@ export const VanList = () => {
             (
               <Map
                 key={mapId}
-                defaultCenter={center || latLng}
+                onDrag={() => {setUserPanned(true)}}
+                center={!userPanned ? center || latLng : undefined}
                 defaultZoom={12}
                 gestureHandling={"greedy"}
                 disableDefaultUI={true}
@@ -198,10 +200,15 @@ export const VanList = () => {
                   </AdvancedMarker>
                 {vans.map(van => (
                   <div key={van.id}>
-                    <AdvancedMarker 
+                    <AdvancedMarker
                       position={{lat: van.lat, lng: van.lng}} 
                       className="price-marker" 
-                      onClick={() => {setCenter({lat: van.lat, lng: van.lng})}}>
+                      onClick={() => {
+                        setCenter({lat: van.lat, lng: van.lng})
+                        setUserPanned(false)
+                      }}
+                      
+                      >
                       <div>
                         <span>${van.rentalRate}</span>
                       </div>

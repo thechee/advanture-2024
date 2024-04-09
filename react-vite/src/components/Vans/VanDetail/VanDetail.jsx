@@ -12,7 +12,7 @@ import OpenModalButton from "../../OpenModalButton";
 import LoginFormModal from "../../LoginFormModal";
 import StarRatings from "react-star-ratings";
 import moment from "moment";
-import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
 import "./VanDetail.css";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv.jsx";
 import { CarDoor } from '../../Icons/CarDoor.jsx'
@@ -38,6 +38,7 @@ export const VanDetail = () => {
   const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showDescription, setShowDescription] = useState(false);
+  const apiIsLoaded = useApiIsLoaded();
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
@@ -435,6 +436,9 @@ export const VanDetail = () => {
       </div>
       <div className="van-detail-map-div">
         {van && (
+          !apiIsLoaded ? (
+            <div>Loading...</div>
+          ) : (
           <Map
             center={{lat: van.lat, lng: van.lng }}
             zoom={13}
@@ -448,6 +452,7 @@ export const VanDetail = () => {
               <div></div>
             </AdvancedMarker>
           </Map>
+        )
         )}
       </div>
     </div>

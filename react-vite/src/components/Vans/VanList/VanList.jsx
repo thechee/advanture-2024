@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { thunkGetVans } from "../../../redux/van";
 import { VanListItem } from "../VanListItem/VanListItem";
 import { FaMapMarkerAlt, FaChevronDown, FaChevronUp, FaSlidersH, FaCheck } from "react-icons/fa";
-import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
 import { Sort } from "../../Filters/Sort";
 import { Price } from "../../Filters/Price";
 import { FiltersModal } from "../../Filters/FiltersModal";
@@ -25,6 +25,7 @@ export const VanList = () => {
   const sortRef = useRef()
   const priceRef = useRef()
   const { sort, setSort, price, setPrice, allPrices, make, years, seats, fuelTypes, mileage, handleReset, count } = useVanListContext()
+  const apiIsLoaded = useApiIsLoaded();
 
   useEffect(() => {
     // if (sort) {
@@ -178,7 +179,9 @@ export const VanList = () => {
 
 
           <div className="van-list-map-div">
-            {Object.values(latLng).length > 0 && (
+            {Object.values(latLng).length > 0 && 
+              apiIsLoaded ?
+            (
               <Map
                 key={mapId}
                 defaultCenter={center || latLng}
@@ -195,7 +198,10 @@ export const VanList = () => {
                   </AdvancedMarker>
                 {vans.map(van => (
                   <div key={van.id}>
-                    <AdvancedMarker position={{lat: van.lat, lng: van.lng}} className="price-marker" onClick={() => {setCenter({lat: van.lat, lng: van.lng})}}>
+                    <AdvancedMarker 
+                      position={{lat: van.lat, lng: van.lng}} 
+                      className="price-marker" 
+                      onClick={() => {setCenter({lat: van.lat, lng: van.lng})}}>
                       <div>
                         <span>${van.rentalRate}</span>
                       </div>
@@ -204,6 +210,10 @@ export const VanList = () => {
                 ))}
                 
                 </Map>
+            ) : (
+              <div className="map-loading">
+                
+              </div>
             )}
           </div>
         </div>

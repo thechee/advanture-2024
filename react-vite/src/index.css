@@ -305,7 +305,7 @@ button {
     height: 300px;
   }
 
-  .white-square-btn {
+  .nav-btn {
     display: none;
   }
 
@@ -335,6 +335,15 @@ button {
     width: 100%;
     margin: 0 auto;
   }
+
+  .van-form {
+    width: 500px;
+    margin: 0 auto;
+  }
+
+  /* .van-form-info-div {
+    flex-direction: column;
+  } */
 }
 
 @media screen and (max-width: 640px) {
@@ -352,5 +361,11 @@ button {
 
   .van-detail-left-div {
     width: 100%;
+  }
+}
+
+@media screen and (max-width: 525px) {
+  .van-form {
+    width: 350px;
   }
 }

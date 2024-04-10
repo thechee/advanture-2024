@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { thunkGetOneVan } from "../../../redux/van";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
@@ -38,11 +38,20 @@ export const VanDetail = () => {
   const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showDescription, setShowDescription] = useState(false);
+  const [showDescriptionButton, setShowDescriptionButton] = useState(true);
+  const descriptionRef = useRef(null);
   const apiIsLoaded = useApiIsLoaded();
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
   }, [dispatch, vanId]);
+
+  useEffect(() => {
+    if (van && descriptionRef.current.offsetHeight < 96) {
+      setShowDescription(true);
+      setShowDescriptionButton(false)
+    }
+  }, [van]);
 
   if (!van) return null;
   if (!ratingsObj) return null;
@@ -261,19 +270,31 @@ export const VanDetail = () => {
           </div>
 
           <h4>DESCRIPTION</h4>
-          <p className={showDescription ? "van-description show" : "van-description hide"} >
+          <div style={{position: "relative"}}>
           {!showDescription && <div className="gradient-overlay"></div>}
+          <p 
+            className={`van-description ${showDescription ? "show" : "hide"}`}
+            ref={descriptionRef}
+          >
             {van.description}</p>
-          <button className="collapse-btn white-square-btn" onClick={() => setShowDescription(!showDescription)}>{showDescription ? "Less" : "More"}</button>
+          </div>
+          {showDescriptionButton && <button 
+            className="collapse-btn white-square-btn" 
+            onClick={() => setShowDescription(!showDescription)}
+          >
+            {showDescription ? "Less" : "More"}
+          </button>}
 
-          <h4>FEATURES</h4>
+          {!!Object.values(van.features).length && (
           <div className="van-details-features">
+          <h4>FEATURES</h4>
             <ul className="feature-ul">
               {van.features.map((feature) => 
                 <VanFeature key={feature} feature={feature} />
               )}
             </ul>
-          </div>
+          </div>)}
+
           <h4>RATINGS AND REVIEWS</h4>
 
           {van.vanAvgRating ? (

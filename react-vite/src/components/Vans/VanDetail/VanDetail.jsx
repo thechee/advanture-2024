@@ -8,22 +8,17 @@ import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.j
 import { Rating } from "../../Ratings/Rating/Rating.jsx";
 import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session.js";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import OpenModalButton from "../../OpenModalButton";
 import LoginFormModal from "../../LoginFormModal";
 import StarRatings from "react-star-ratings";
 import moment from "moment";
 import { AdvancedMarker, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
-import "./VanDetail.css";
+import OpenModalButton from "../../OpenModalButton";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv.jsx";
-import { CarDoor } from '../../Icons/CarDoor.jsx'
-import { GasStation } from "../../Icons/GasStation.jsx";
-import { CarSeat } from "../../Icons/CarSeat.jsx";
-import { Gasoline } from "../../Icons/Gasoline.jsx";
-import { Hybrid } from "../../Icons/Hybrid.jsx";
-import { Electric } from "../../Icons/Electric.jsx";
+import { CarDoor, GasStation, CarSeat, Gasoline, Hybrid, Electric } from '../../Icons'
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { VanFeature } from "../VanFeature/VanFeature.jsx";
+import "./VanDetail.css";
 
 export const VanDetail = () => {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import ReactSlider from 'react-slider';
 import { useModal } from '../../context/Modal';
 import './FiltersModal.css';
 import { useSelector } from 'react-redux';
-import { useVanListContext } from '../../context/VanListContext';
+import { useVanListContext } from '../../hooks/useVanListContext';
 import { FaTimes } from "react-icons/fa";
 import { Gasoline } from '../Icons/Gasoline';
 import { Electric } from '../Icons/Electric';
@@ -12,7 +12,7 @@ import { Hybrid } from '../Icons/Hybrid';
 export const FiltersModal = () => {
   const { closeModal } = useModal();
   const vans = useSelector(state => state.vans)
-  const { make, setMake, years, setYears, seats, setSeats, fuelTypes, setFuelTypes, mileage, setMilage, handleReset, count, allYears } = useVanListContext()
+  const { make, setMake, years, setYears, seats, setSeats, fuelTypes, setFuelTypes, mileage, setMileage, handleReset, count, allYears } = useVanListContext()
 
 
   const handleFuelTypes = (fuelType) => {
@@ -95,7 +95,7 @@ export const FiltersModal = () => {
           <label htmlFor="">{mileage}mi/day +</label>
           <ReactSlider
             value={mileage}
-            onChange={(value) => setMilage(value)}
+            onChange={(value) => setMileage(value)}
             className="slider"
             thumbClassName="filters-thumb"
             trackClassName="mileage-track"

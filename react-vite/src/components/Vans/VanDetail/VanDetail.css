@@ -58,15 +58,18 @@
   position: relative;
   letter-spacing: .25px;
   white-space: pre-line;
+  max-height: 6rem;
 }
 
 .van-description.hide {
-  height: 6rem;
+  /* height: 6rem; */
   overflow: hidden;
 }
 
 .van-description.show {
-  height: fit-content;
+  /* height: fit-content; */
+  max-height: none;
+  margin-bottom: 1rem;
 }
 
 .gradient-overlay {
@@ -74,6 +77,7 @@
   bottom: 0;
   height: 5rem;
   width: 100%;
+  z-index: 1;
   background: linear-gradient(to bottom, transparent 5%, white 100%);
 }
 
@@ -289,10 +293,11 @@ h4 {
   margin-bottom: 3rem;
 }
 
-.custom {
+.custom-marker {
   background-color: rgba(89, 60, 251, .5);
   height: 100px;
   width: 100px;
+  transform: translate(0, 50%);
   border-radius: 50%;
 }
 
@@ -302,7 +307,6 @@ h4 {
   padding: .25rem .75rem;
   margin-right: auto;
   margin-left: 0;
-  margin-top: 1rem;
 }
 
 .van-detail-inner-right-div-repeat {

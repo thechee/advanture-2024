@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router";
-// import { FaAngleLeft, FaAngleRight, FaSearch } from "react-icons/fa";
+// import { FaSearch } from "react-icons/fa";
 import { useRef, useState } from "react";
 // import moment from 'moment';
-import { useVanListContext } from "../../context/VanListContext";
+import { useVanListContext } from "../../hooks/useVanListContext";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "./HomePage.css";
-import { RightArrow } from "../Icons/RIghtArrow";
+import { RightArrow } from "../Icons/RightArrow";
 import { LeftArrow } from "../Icons/LeftArrow";
 
 export const HomePage = () => {

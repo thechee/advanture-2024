@@ -16,12 +16,12 @@ function Navigation() {
       <div id="empty-header">
       </div>
       {!location.pathname.endsWith("/vans") && <Link to={"/vans"}>
-      <div className="white-square-btn">
+      <div className="nav-btn white-square-btn">
         <span>View all vans</span>
       </div>
       </Link>}
       {user && <Link to='/vans/new'>
-      <div className="white-square-btn">
+      <div className="nav-btn white-square-btn">
         <span>Add a van</span>
       </div>
       </Link>}

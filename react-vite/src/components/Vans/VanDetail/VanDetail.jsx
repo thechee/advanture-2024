@@ -1,21 +1,18 @@
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { thunkGetOneVan } from "../../../redux/van";
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
 import { Rating } from "../../Ratings/Rating/Rating.jsx";
-import {
-  thunkAddFavorite,
-  thunkDeleteFavorite,
-} from "../../../redux/session.js";
+import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session.js";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
 import LoginFormModal from "../../LoginFormModal";
 import StarRatings from "react-star-ratings";
 import moment from "moment";
-import { AdvancedMarker, Map } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
 import "./VanDetail.css";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv.jsx";
 import { CarDoor } from '../../Icons/CarDoor.jsx'
@@ -41,10 +38,20 @@ export const VanDetail = () => {
   const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showDescription, setShowDescription] = useState(false);
+  const [showDescriptionButton, setShowDescriptionButton] = useState(true);
+  const descriptionRef = useRef(null);
+  const apiIsLoaded = useApiIsLoaded();
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
   }, [dispatch, vanId]);
+
+  useEffect(() => {
+    if (van && descriptionRef.current.offsetHeight < 96) {
+      setShowDescription(true);
+      setShowDescriptionButton(false)
+    }
+  }, [van]);
 
   if (!van) return null;
   if (!ratingsObj) return null;
@@ -216,9 +223,7 @@ export const VanDetail = () => {
                       className="add-to-favorites"
                       onClick={handleFavorite}
                     >
-                      <span>
-                        <FaRegHeart />
-                      </span>
+                      <span><FaRegHeart /></span>
                       Add to Favorites
                     </button>
                   )}
@@ -227,9 +232,7 @@ export const VanDetail = () => {
                       modalComponent={<LoginFormModal />}
                       buttonText={
                         <>
-                          <span>
-                            <FaRegHeart />
-                          </span>
+                          <span><FaRegHeart /></span>
                           Add to Favorites
                         </>
                       }
@@ -267,19 +270,31 @@ export const VanDetail = () => {
           </div>
 
           <h4>DESCRIPTION</h4>
-          <p className={showDescription ? "van-description show" : "van-description hide"} >
-            {!showDescription && <div className="gradient-overlay"></div>}
+          <div style={{position: "relative"}}>
+          {!showDescription && <div className="gradient-overlay"></div>}
+          <p 
+            className={`van-description ${showDescription ? "show" : "hide"}`}
+            ref={descriptionRef}
+          >
             {van.description}</p>
-          <button className="collapse-btn white-square-btn" onClick={() => setShowDescription(!showDescription)}>{showDescription ? "Less" : "More"}</button>
+          </div>
+          {showDescriptionButton && <button 
+            className="collapse-btn white-square-btn" 
+            onClick={() => setShowDescription(!showDescription)}
+          >
+            {showDescription ? "Less" : "More"}
+          </button>}
 
-          <h4>FEATURES</h4>
+          {!!Object.values(van.features).length && (
           <div className="van-details-features">
+          <h4>FEATURES</h4>
             <ul className="feature-ul">
               {van.features.map((feature) => 
                 <VanFeature key={feature} feature={feature} />
               )}
             </ul>
-          </div>
+          </div>)}
+
           <h4>RATINGS AND REVIEWS</h4>
 
           {van.vanAvgRating ? (
@@ -301,10 +316,10 @@ export const VanDetail = () => {
               </div>
               <div>
                 <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Cleanliness"/>
-                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Maintenance"/>
-                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Communication"/>
-                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Convenience"/>
-                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Accuracy"/>
+                <RatingsBar ratingAvg={van.vanAvgMaintenance} name="Maintenance"/>
+                <RatingsBar ratingAvg={van.vanAvgCommunication} name="Communication"/>
+                <RatingsBar ratingAvg={van.vanAvgConvenience} name="Convenience"/>
+                <RatingsBar ratingAvg={van.vanAvgAccuracy} name="Accuracy"/>
               </div>
               <div>
                 <h4 style={{ color: "#808080" }}>REVIEWS</h4>
@@ -442,22 +457,25 @@ export const VanDetail = () => {
       </div>
       <div className="van-detail-map-div">
         {van && (
+          !apiIsLoaded ? (
+            <div>Loading...</div>
+          ) : (
           <Map
             center={{lat: van.lat, lng: van.lng }}
-            zoom={15}
+            zoom={13}
             gestureHandling={"greedy"}
             controlled={true}
             disableDefaultUI={true}
             style={{ height: "700px" }}
             mapId={mapId}
           >
-            <AdvancedMarker position={{lat: van.lat, lng: van.lng }} className={"custom"}>
+            <AdvancedMarker position={{lat: van.lat, lng: van.lng }} className={"custom-marker"}>
               <div></div>
             </AdvancedMarker>
           </Map>
+        )
         )}
       </div>
     </div>
   );
 };
-//

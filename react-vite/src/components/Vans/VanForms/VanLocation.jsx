@@ -14,7 +14,7 @@ export const VanLocation = ({ type }) => {
     const address = splitAddress[0];
     const city = splitAddress[1];
     const state = splitAddress[2].split(" ")[0];
-    const zipCode = splitAddress[2].split(" ")[1];
+    const zipCode = splitAddress[2].split(" ")[1].slice(0,5);
 
 
     setData((prevData) => {

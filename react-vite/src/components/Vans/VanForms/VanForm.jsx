@@ -53,6 +53,7 @@ export const VanForm = ({ type }) => {
           mpg: van.mpg,
           rentalRate: van.rentalRate,
           distanceIncluded: van.distanceAllowed,
+          unlimited: van.distanceIncluded == null,
           address: van.address,
           city: van.city,
           state: van.state,
@@ -261,6 +262,8 @@ export const VanForm = ({ type }) => {
       });
     }
   };
+
+  console.log(data.zipCode)
 
   return (
     <form

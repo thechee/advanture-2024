@@ -264,8 +264,7 @@ export const VanForm = ({ type }) => {
     }
   };
 
-  console.log(data.zipCode)
-
+  
   return (
     <form
       className="van-form"

@@ -53,6 +53,7 @@ export const VanForm = ({ type }) => {
           mpg: van.mpg,
           rentalRate: van.rentalRate,
           distanceIncluded: van.distanceAllowed,
+          unlimited: van.distanceIncluded == null,
           address: van.address,
           city: van.city,
           state: van.state,
@@ -235,8 +236,6 @@ export const VanForm = ({ type }) => {
         zip_code: data.zipCode,
         rental_rate: data.rentalRate,
         description: data.description,
-        // distance_allowed: data.distanceIncluded,
-        // mpg: data.mpg,
         doors: data.doors,
         seats: data.seats,
         fuel_type_id: data.fuelTypeId,
@@ -265,11 +264,6 @@ export const VanForm = ({ type }) => {
     }
   };
 
-<<<<<<< Updated upstream
-=======
-  console.log(data)
-
->>>>>>> Stashed changes
   return (
     <form
       className="van-form"

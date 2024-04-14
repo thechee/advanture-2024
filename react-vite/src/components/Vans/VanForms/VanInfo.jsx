@@ -29,7 +29,7 @@ export const VanInfo = () => {
     <div className="van-form-info-div">
           <div className='van-form-info-divs'>
           <label>Year</label>
-            <select value={data.year} name='year' onChange={handleChange}>
+            <select value={data.year || ""} name='year' onChange={handleChange}>
               <option disabled value={"placeholder"}>
                 Select year
               </option>
@@ -44,7 +44,7 @@ export const VanInfo = () => {
           </div>
 
           <label>Make</label>
-          <select value={data.make} name='make' onChange={handleChange}>
+          <select value={data.make || ""} name='make' onChange={handleChange}>
             <option disabled value={"placeholder"}>
               Select make
             </option>
@@ -60,7 +60,7 @@ export const VanInfo = () => {
           <label>Model</label>
           <input
             type="text"
-            value={data.model}
+            value={data.model || ""}
             name='model'
             onChange={handleChange}
             />
@@ -73,7 +73,7 @@ export const VanInfo = () => {
           <label>Odometer</label>
           <input
             type="number"
-            value={data.miles}
+            value={data.miles || ""}
             name='miles'
             onChange={handleChange}
           />
@@ -82,7 +82,7 @@ export const VanInfo = () => {
           </div>
 
           <label>Doors</label>
-          <select value={data.doors} name='doors' onChange={handleChange}>
+          <select value={data.doors || ""} name='doors' onChange={handleChange}>
             <option disabled value={"placeholder"}>
               Select doors
             </option>
@@ -97,7 +97,7 @@ export const VanInfo = () => {
           </div>
 
           <label>Seats</label>
-          <select value={data.seats} name='seats' onChange={handleChange}>
+          <select value={data.seats || ""} name='seats' onChange={handleChange}>
             <option disabled value={"placeholder"}>
               Select seats
             </option>
@@ -115,7 +115,7 @@ export const VanInfo = () => {
           <div className='van-form-info-divs'>
           <label>Fuel type</label>
           <select
-            value={data.fuelTypeId}
+            value={data.fuelTypeId || ""}
             onChange={handleChange}
             name="fuelTypeId"
           >
@@ -138,7 +138,7 @@ export const VanInfo = () => {
           <input
             type="number"
             id="MPG-input"
-            value={data.mpg}
+            value={data.mpg || ""}
             name='mpg'
             onChange={handleChange}
           />
@@ -152,7 +152,7 @@ export const VanInfo = () => {
           <input
             id='rental-rate-input'
             type="number"
-            value={data.rentalRate}
+            value={data.rentalRate || ""}
             name='rentalRate'
             onChange={handleChange}
           />
@@ -169,7 +169,7 @@ export const VanInfo = () => {
           <input
             type="number"
             id="distance-input"
-            value={data.distanceIncluded}
+            value={data.distanceIncluded || ""}
             name='distanceIncluded'
             onChange={handleChange}
           />

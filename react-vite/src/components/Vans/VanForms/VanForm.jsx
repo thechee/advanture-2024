@@ -235,14 +235,17 @@ export const VanForm = ({ type }) => {
         zip_code: data.zipCode,
         rental_rate: data.rentalRate,
         description: data.description,
-        distance_allowed: data.distanceIncluded,
-        mpg: data.mpg,
+        // distance_allowed: data.distanceIncluded,
+        // mpg: data.mpg,
         doors: data.doors,
         seats: data.seats,
         fuel_type_id: data.fuelTypeId,
         lat: data.lat,
         lng: data.lng,
       };
+
+      if (data.mpg) vanData.mpg = data.mpg
+      if (data.distanceIncluded) vanData.distance_allowed = data.distanceIncluded
 
       await (type !== "update" ? 
           dispatch(thunkAddVan(vanData)) :
@@ -262,6 +265,11 @@ export const VanForm = ({ type }) => {
     }
   };
 
+<<<<<<< Updated upstream
+=======
+  console.log(data)
+
+>>>>>>> Stashed changes
   return (
     <form
       className="van-form"

@@ -2,10 +2,17 @@ import { Map, AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useVanFormContext } from "../../../hooks/useVanFormContext";
 import { PlaceAutocompleteClassic } from "./AddressAutocomplete";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export const VanLocation = ({ type }) => {
   const { data, validationErrors, setData, setValidAddressSelected } = useVanFormContext();
   const mapId = useSelector((state) => state.maps.mapId);
+
+  useEffect(() => {
+    if (type == "update") {
+      setValidAddressSelected(true)
+    }
+  }, [])
 
   const handlePlaceSelect = (place) => {
     setValidAddressSelected(true);

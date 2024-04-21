@@ -41,8 +41,10 @@ export default function Layout() {
     <VanListProvider>
       <ModalProvider>
         <APIProvider apiKey={key}>
+          <div className="content">
           <Navigation />
-          {isLoaded && <Outlet />}
+            {isLoaded && <Outlet />}
+          </div>
           <Footer />
         </APIProvider>
         <Modal />

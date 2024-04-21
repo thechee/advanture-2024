@@ -1,6 +1,19 @@
 /* TODO: Add sitewide styles */
 #root {
   padding-top: 4.5rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100vh;
+}
+
+.content {
+  flex: 1 0 auto;
+  /* height: 100%; */
 }
 
 ul {

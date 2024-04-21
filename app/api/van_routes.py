@@ -12,6 +12,8 @@ van_routes = Blueprint('vans', __name__)
 def vans():
   """
   Query for all vans and returns them in a list of van dicts
+  Applies filters to the query if they exist
+  Sorts the query if there is a sort specified
   """
   sort = request.args.get("sort")
   make = request.args.get("make")
@@ -207,17 +209,16 @@ def new_van_images(vanId):
 @login_required
 @van_routes.route('/<int:vanId>/images', methods=["PUT"])
 def update_van_images(vanId):
+
   images = request.files.getlist("image")
   image_ids_to_keep = [int(id) for id in request.form.getlist("imageId")]
-  print("image_ids_to_keep", image_ids_to_keep)
+
   if not images and not image_ids_to_keep:
     return {"errors": {"image": "image required"}}, 400
   
   old_images = VanImage.query.filter(VanImage.van_id == int(vanId)).all()
-  print("old_images", old_images)
+
   for image in old_images:
-    print("image.id", image.id)
-    print("image.id in image_ids_to_keep", image.id in image_ids_to_keep)
     if image.id not in image_ids_to_keep:
       remove_file_from_s3(image.image_url)
       db.session.delete(image)

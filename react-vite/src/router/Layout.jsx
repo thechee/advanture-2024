@@ -8,6 +8,7 @@ import { APIProvider } from "@vis.gl/react-google-maps";
 import { getKey } from "../redux/maps";
 import { VanListProvider } from "../context/VanListContext";
 import ReactGA from 'react-ga';
+import { Footer } from "../components/Footer/Footer";
 
 const TRACKING_ID = "G-PLRG23QSQK";
 ReactGA.initialize(TRACKING_ID, {
@@ -40,8 +41,9 @@ export default function Layout() {
     <VanListProvider>
       <ModalProvider>
         <APIProvider apiKey={key}>
-        <Navigation />
-        {isLoaded && <Outlet />}
+          <Navigation />
+          {isLoaded && <Outlet />}
+          <Footer />
         </APIProvider>
         <Modal />
       </ModalProvider>

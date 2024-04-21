@@ -1,0 +1,34 @@
+.footer {
+    display: flex;
+    padding: 1rem 3rem;
+}
+
+.footer h2,
+.footer h3,
+.footer p {
+    margin: 0;
+}
+
+.footer-links {
+    display: flex;
+    margin-left: auto;
+    align-items: center;
+}
+
+.footer-links svg {
+    transform: scale(1.5);
+    padding: 1rem;
+}
+
+
+#folder:hover {
+    color: #f1D592
+}
+
+#github:hover {
+    color: #2b3137
+}
+
+#linkedin:hover {
+    color: #0E76A8
+}

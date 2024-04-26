@@ -34,6 +34,7 @@ export const VanDetail = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showDescription, setShowDescription] = useState(false);
   const [showDescriptionButton, setShowDescriptionButton] = useState(true);
+  
   const descriptionRef = useRef(null);
   const apiIsLoaded = useApiIsLoaded();
 

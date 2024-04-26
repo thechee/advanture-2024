@@ -1,4 +1,4 @@
-from flask import Blueprint, request, abort, redirect
+from flask import Blueprint, request, abort, redirect, session
 from app.models import User, db
 from app.forms import LoginForm
 from app.forms import SignUpForm
@@ -11,6 +11,7 @@ from google.oauth2 import id_token
 from google_auth_oauthlib.flow import Flow
 from pip._vendor import cachecontrol
 import google.auth.transport.requests
+from tempfile import NamedTemporaryFile
 import json
 
 
@@ -85,6 +86,59 @@ def oauth_login():
     session["state"] = state
     return redirect(authorization_url) # This line technically will enact the SECOND and THIRD lines of our flow chart.
 
+@auth_routes.route("/callback")
+def callback():
+    flow.fetch_token(authorization_response=request.url)
+    """
+      This method is sending the request depicted on line 6 of our flow chart! 
+      The response is depicted on line 7 of our flow chart.
+      I find it odd that the author of this code is verifying the 'state' AFTER requesting a token, but to each their own!!
+    """
+
+    # This is our CSRF protection for the Oauth Flow!
+    if not session["state"] == request.args["state"]:
+        abort(500)  # State does not match!
+
+    credentials = flow.credentials
+    request_session = requests.session()
+    cached_session = cachecontrol.CacheControl(request_session)
+    token_request = google.auth.transport.requests.Request(session=cached_session)
+
+    # The method call below will go through the tedious work of verifying the JWT signature sent back with the object from OpenID Connect
+    # Although I cannot verify, hopefully it is also testing the values for "sub", "aud", "iat", and "exp" sent back in the CLAIMS section of the JWT
+    # Additionally note, that the oauth initializing URL generated in the previous endpoint DID NOT send a random nonce value. (As depicted in our flow chart)
+    # If it had, the server would return the nonce in the JWT claims to be used for further verification tests!
+    id_info = id_token.verify_oauth2_token(
+        id_token=credentials._id_token,
+        request=token_request,
+        audience=CLIENT_ID
+    )
+
+    # Now we generate a new session for the newly authenticated user!!
+    # Note that depending on the way your app behaves, you may be creating a new user at this point...
+    temp_email = id_info.get('email')
+
+    user_exists = User.query.filter(User.email == temp_email).first()
+
+    if not user_exists:
+        full_name = id_info.get("name")
+        first_name, last_name = full_name.split(' ', 1) if ' ' in full_name else (full_name, "")
+
+        user_exists = User(
+            first_name=first_name,
+            last_name=last_name,
+            email=temp_email,
+            password='OAUTH',
+            profile_image_url=id_info.get("picture")
+        )
+
+        db.session.add(user_exists)
+        db.session.commit()
+
+    login_user(user_exists)
+
+    # Note that adding this BASE_URL variable to our .env file, makes the transition to production MUCH simpler, as we can just store this variable on Render and change it to our deployed URL.
+    return redirect(session['referrer']) # This will send the final redirect to our user's browser. As depicted in Line 8 of the flow chart!
 
 @auth_routes.route('/login', methods=['POST'])
 def login():

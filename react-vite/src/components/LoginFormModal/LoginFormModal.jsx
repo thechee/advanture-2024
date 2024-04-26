@@ -76,6 +76,7 @@ function LoginFormModal() {
         <button id='login-btn' className='submit-btn' type="submit">Log In</button>
         <button className="btn" onClick={handleDemoSubmit} >Demo User</button>
       </form>
+        <a href={`${window.origin}/api/auth/oauth_login`}><button><img alt="Google Logo" src="https://goodeggs-assets1.imgix.net/img/jujube/icons/sso-google.52837b7b5ddc7c1643ff.svg?auto=format" />Continue with Google</button></a>
     </div>
   );
 }

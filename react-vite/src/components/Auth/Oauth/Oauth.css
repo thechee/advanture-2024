@@ -1,0 +1,11 @@
+.oauth-div {
+  display: flex;
+  margin: 1rem;
+  text-align: center;
+}
+
+.line {
+  border-top: 1px solid var(--light-border);
+  text-align: center;
+  flex: 1
+}

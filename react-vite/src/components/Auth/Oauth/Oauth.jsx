@@ -1,7 +1,9 @@
+import './Oauth.css';
+
 export const Oauth = () => {
   return (
     <>
-      <div>
+      <div className='oauth-div'>
         <span className="line"></span>
         <span>or</span>
         <span className="line"></span>

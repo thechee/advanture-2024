@@ -11,8 +11,8 @@ function Navigation() {
     <header className="nav-bar">
       <Link id='logo' to="/">
           <span>ADVANTURE</span>
-
       </Link>
+      <div id="logo-angle"></div>
       <div id="empty-header">
       </div>
       {!location.pathname.endsWith("/vans") && <Link to={"/vans"}>

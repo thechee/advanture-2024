@@ -37,6 +37,7 @@ class Van(db.Model):
   images = db.relationship("VanImage", back_populates="van", cascade='all, delete-orphan')
   ratings = db.relationship("Rating", back_populates="van", cascade='all, delete-orphan')
   favorites = db.relationship("Favorite", back_populates="van", cascade='all, delete-orphan')
+  booking = db.relationship("Booking", back_populates="van", cascade='all, delete-orphan')
 
   def to_dict(self):
     owner = self.owner.to_dict()

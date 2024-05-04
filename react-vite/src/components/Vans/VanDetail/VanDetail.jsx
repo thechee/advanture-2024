@@ -147,15 +147,15 @@ export const VanDetail = () => {
           <h1>
             {van.make} {van.model} {van.year}
           </h1>
-          {van.vanAvgRating && (
+          {van.avgRating && (
             <div className="van-overall-ratings-div">
               <span id="van-overall-stars">
-                {van.vanAvgRating.toString().length <= 3
-                  ? van.vanAvgRating.toFixed(1)
-                  : van.vanAvgRating.toFixed(2)}{" "}
+                {van.avgRating.toString().length <= 3
+                  ? van.avgRating.toFixed(1)
+                  : van.avgRating.toFixed(2)}{" "}
               </span>
               <StarRatings
-                rating={van.vanAvgRating}
+                rating={van.avgRating}
                 starRatedColor="rgb(89, 60, 251)"
                 starEmptyColor="white"
                 starDimension="25px"
@@ -296,15 +296,15 @@ export const VanDetail = () => {
 
           <h4>RATINGS AND REVIEWS</h4>
 
-          {van.vanAvgRating ? (
+          {van.avgRating ? (
             <div>
               <div className="overall-ratings-stars-div">
                 <span>
-                  {van.vanAvgRating.toString().length == 1
-                    ? van.vanAvgRating.toFixed(1)
-                    : van.vanAvgRating.toFixed(2)}
+                  {van.avgRating.toString().length == 1
+                    ? van.avgRating.toFixed(1)
+                    : van.avgRating.toFixed(2)}
                   <StarRatings
-                    rating={van.vanAvgRating}
+                    rating={van.avgRating}
                     starRatedColor="rgb(89, 60, 251)"
                     starEmptyColor="white"
                     starDimension="25px"
@@ -314,11 +314,11 @@ export const VanDetail = () => {
                 <span>({ratings.length} ratings)</span>
               </div>
               <div>
-                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Cleanliness"/>
-                <RatingsBar ratingAvg={van.vanAvgMaintenance} name="Maintenance"/>
-                <RatingsBar ratingAvg={van.vanAvgCommunication} name="Communication"/>
-                <RatingsBar ratingAvg={van.vanAvgConvenience} name="Convenience"/>
-                <RatingsBar ratingAvg={van.vanAvgAccuracy} name="Accuracy"/>
+                <RatingsBar ratingAvg={van.avgCleanliness} name="Cleanliness"/>
+                <RatingsBar ratingAvg={van.avgMaintenance} name="Maintenance"/>
+                <RatingsBar ratingAvg={van.avgCommunication} name="Communication"/>
+                <RatingsBar ratingAvg={van.avgConvenience} name="Convenience"/>
+                <RatingsBar ratingAvg={van.avgAccuracy} name="Accuracy"/>
               </div>
               <div>
                 <h4 style={{ color: "#808080" }}>REVIEWS</h4>

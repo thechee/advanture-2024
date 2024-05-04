@@ -38,10 +38,10 @@ export const SmallVanCard = ({van}) => {
         <h3>{vanString}</h3>
         </div>
         <div className="small-van-card-ratings-div">
-        {van.vanAvgRating ? <>
-        <span>{van.vanAvgRating.toString().length == 1 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating}</span>
+        {van.avgRating ? <>
+        <span>{van.avgRating.toString().length == 1 ? van.avgRating.toFixed(1) : van.avgRating}</span>
         <StarRatings
-                rating={van.vanAvgRating}
+                rating={van.avgRating}
                 starRatedColor="rgb(89, 60, 251)"
                 starEmptyColor="white"
                 starDimension="25px"

@@ -6,3 +6,4 @@ from .van_image import VanImage
 from .van import Van
 from .ratings import Rating
 from .favorite import Favorite
+from .bookings import Booking

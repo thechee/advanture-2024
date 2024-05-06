@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useModal } from "../../context/Modal";
-import { thunkSignup } from "../../redux/session";
+import { useModal } from "../../../context/Modal";
+import { thunkSignup } from "../../../redux/session";
 import "../LoginFormModal/LoginForm.css";
+import { Oauth } from "../Oauth/Oauth";
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -174,6 +175,7 @@ function SignupFormModal() {
           Sign Up
         </button>
       </form>
+      <Oauth />
     </div>
   );
 }

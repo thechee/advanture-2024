@@ -1,23 +1,26 @@
 import { useNavigate, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
+
 import { thunkGetOneVan } from "../../../redux/van";
+import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session.js";
+
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
 import { RatingsListItem } from "../../Ratings/RatingsListItem/RatingsListItem.jsx";
 import { Rating } from "../../Ratings/Rating/Rating.jsx";
-import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session.js";
-import { FaRegHeart, FaHeart } from "react-icons/fa";
-import LoginFormModal from "../../LoginFormModal";
-import StarRatings from "react-star-ratings";
-import moment from "moment";
-import { AdvancedMarker, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
+import LoginFormModal from "../../Auth/LoginFormModal";
 import OpenModalButton from "../../OpenModalButton";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv.jsx";
-import { CarDoor, GasStation, CarSeat, Gasoline, Hybrid, Electric } from '../../Icons'
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import { VanFeature } from "../VanFeature/VanFeature.jsx";
+import { CarDoor, GasStation, CarSeat, Gasoline, Hybrid, Electric } from '../../Icons'
+
+import { AdvancedMarker, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
+import moment from "moment";
+import Carousel from "react-multi-carousel";
+import StarRatings from "react-star-ratings";
+import "react-multi-carousel/lib/styles.css";
 import "./VanDetail.css";
 
 export const VanDetail = () => {
@@ -34,6 +37,7 @@ export const VanDetail = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showDescription, setShowDescription] = useState(false);
   const [showDescriptionButton, setShowDescriptionButton] = useState(true);
+  
   const descriptionRef = useRef(null);
   const apiIsLoaded = useApiIsLoaded();
 

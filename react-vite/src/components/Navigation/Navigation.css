@@ -17,10 +17,19 @@
   font-size: larger;
   font-weight: 500;
   letter-spacing: 1px;
-  padding: .5rem .75rem;
+  padding: .5rem .25rem .5rem .75rem;
   height: 100%;
   display: flex;
   align-items: center;
+}
+
+#logo-angle {
+  content: '';
+  width: 0;
+  height: 0;
+  border-top: 19.7px solid transparent;
+  border-bottom: 19.7px solid transparent;
+  border-left: 1.5rem solid black;
 }
 
 #empty-header {

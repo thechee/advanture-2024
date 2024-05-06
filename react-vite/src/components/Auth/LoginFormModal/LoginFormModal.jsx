@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { thunkLogin } from "../../redux/session";
+import { thunkLogin } from "../../../redux/session";
 import { useDispatch } from "react-redux";
-import { useModal } from "../../context/Modal";
+import { useModal } from "../../../context/Modal";
 import "./LoginForm.css";
+import { Oauth } from "../Oauth/Oauth";
 
 function LoginFormModal() {
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ function LoginFormModal() {
         <button id='login-btn' className='submit-btn' type="submit">Log In</button>
         <button className="btn" onClick={handleDemoSubmit} >Demo User</button>
       </form>
+      <Oauth />
     </div>
   );
 }

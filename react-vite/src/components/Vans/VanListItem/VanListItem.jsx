@@ -5,7 +5,7 @@ import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import OpenModalButton from "../../OpenModalButton";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv"
-import LoginFormModal from "../../LoginFormModal"
+import LoginFormModal from "../../Auth/LoginFormModal"
 import StarRatings from "react-star-ratings";
 import "./VanListItem.css";
 

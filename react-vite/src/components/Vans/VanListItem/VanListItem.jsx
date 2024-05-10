@@ -9,7 +9,7 @@ import LoginFormModal from "../../Auth/LoginFormModal"
 import StarRatings from "react-star-ratings";
 import "./VanListItem.css";
 
-export const VanListItem = ({ van }) => {
+export const VanListItem = ({ van, hovered, setHoveredVan }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
@@ -46,7 +46,11 @@ export const VanListItem = ({ van }) => {
 
   return (
     <Link to={`/vans/${van.id}`}>
-      <li className="van-list-item-li">
+      <li 
+        className={`van-list-item-li ${hovered}`}
+        onMouseEnter={() => setHoveredVan(van.id)}
+        onMouseLeave={() => setHoveredVan(null)}
+      >
         <div className="van-list-item-image-div">
           <img src={previewImage} alt="" />
         </div>

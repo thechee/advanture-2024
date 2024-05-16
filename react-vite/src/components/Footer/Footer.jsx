@@ -28,7 +28,7 @@ export const Footer = () => {
                     data-tooltip-content="GitHub" 
                     data-tooltip-place="top"
                     >
-                    <FaGithub id="github-tt"/>
+                    <FaGithub id="github"/>
                 </Link>
                 <Tooltip id="linkedin-tt" />
                 <Link 

@@ -334,3 +334,26 @@ def create_booking(vanId):
 
     return new_booking.to_dict()
   return form.errors, 401
+
+@login_required
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>', methods=["DELETE"])
+def delete_booking(vanId, bookingId):
+  """
+  Query for the booking and delete it from the database
+
+  Returns 401 Unauthorized if the current user's id does not match the booking's user id
+
+  Returns 404 Not Found if the booking is not in the database
+  """
+  booking = Booking.query.get(bookingId)
+
+  if current_user.id is not booking.user_id:
+    return {'errors': {'message': "Unauthorized"}}, 401
+  
+  if not booking:
+    return {"errors": {"message": "Booking not found"}}, 404
+
+  db.session.delete(booking)
+  db.session.commit()
+
+  return {"message": "Booking successfully deleted"}

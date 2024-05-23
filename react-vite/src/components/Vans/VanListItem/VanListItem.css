@@ -8,7 +8,8 @@
   position: relative;
 }
 
-.van-list-item-li:hover {
+.van-list-item-li:hover,
+.van-list-item-li.hovered {
   background-color: var(--hover);
 }
 

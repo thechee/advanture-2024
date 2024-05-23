@@ -71,6 +71,7 @@ class Van(db.Model):
         "features": [feature.name for feature in self.features],
         "fuelType": self.fuel_type.fuel_type,
         "images": {image.id: image.to_dict() for image in self.images},
+        "bookings": {booking.id: booking.to_dict() for booking in self.bookings},
         "ratings": ratings,
         "numRatings": num_ratings,
         "avgRating": van_avg_rating,

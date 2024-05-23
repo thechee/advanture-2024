@@ -23,6 +23,7 @@ export const VanList = () => {
   const [tempSort, setTempSort] = useState("")
   const [center, setCenter] = useState(null)
   const [userPanned, setUserPanned] = useState(false)
+  const [hoveredVan, setHoveredVan] = useState(null)
   const sortRef = useRef()
   const priceRef = useRef()
   const { sort, setSort, price, setPrice, allPrices, make, years, seats, fuelTypes, mileage, handleReset, count } = useVanListContext()
@@ -43,14 +44,18 @@ export const VanList = () => {
   useEffect(() => {}, [userFavorites]);
 
   useEffect(() => {
-    if (navigator.geolocation) {
+    if (navigator.geolocation && !sessionStorage.getItem("pos")) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const pos = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
         setLatLng(pos);
+        sessionStorage.setItem("pos", JSON.stringify(pos));
       });
+    }
+    if (sessionStorage.getItem("pos")) {
+      setLatLng(JSON.parse(sessionStorage.getItem("pos")));
     }
     setIsLoaded(true);
   }, []);
@@ -168,7 +173,12 @@ export const VanList = () => {
           <ul className="van-list-ul">
             <h3>{vans.length} vans available</h3>
             {vans.map((van) => (
-              <VanListItem key={van.id} van={van} />
+              <VanListItem 
+                key={van.id} 
+                van={van}
+                setHoveredVan={setHoveredVan}
+                hovered={hoveredVan === van.id ? "hovered" : ""}
+              />
             ))}
           </ul> :
           <div className="no-vans-found">
@@ -202,14 +212,16 @@ export const VanList = () => {
                   <div key={van.id}>
                     <AdvancedMarker
                       position={{lat: van.lat, lng: van.lng}} 
-                      className="price-marker" 
+                      className={`price-marker ${hoveredVan === van.id ? "hovered" : ""}`} 
                       onClick={() => {
                         setCenter({lat: van.lat, lng: van.lng})
                         setUserPanned(false)
                       }}
-                      
                       >
-                      <div>
+                      <div
+                        onMouseEnter={() => setHoveredVan(van.id)}
+                        onMouseLeave={() => setHoveredVan(null)}
+                      >
                         <span>${van.rentalRate}</span>
                       </div>
                     </AdvancedMarker>

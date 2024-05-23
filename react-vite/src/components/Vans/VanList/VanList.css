@@ -80,7 +80,8 @@
   font-size: 14px;
 }
 
-.price-marker:hover {
+.price-marker:hover,
+.price-marker.hovered {
   background-color: black;
   color: white;
 }

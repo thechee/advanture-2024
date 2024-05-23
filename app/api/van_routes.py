@@ -336,8 +336,59 @@ def create_booking(vanId):
   return form.errors, 401
 
 @login_required
-@van_routes.route('/<int:vanId>/bookings/<int:bookingId>', methods=["DELETE"])
-def delete_booking(vanId, bookingId):
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>', methods=["PUT"])
+def update_booking_dates(vanId, bookingId):
+  """
+  Update the booking with the given id
+  """
+  booking = Booking.query.get(bookingId)
+
+  if not booking:
+    return {"errors": {"message": "Booking not found"}}, 404
+  
+  if current_user.id is not booking.user_id:
+    return {"errors": {"message": "Unauthorized"}}, 401
+
+  form = BookingForm()
+  form['csrf_token'].data = request.cookies['csrf_token']
+
+  if form.validate_on_submit():
+    booking.start_date = form.data["start_date"] or booking.start_date
+    booking.end_date = form.data["end_date"] or booking.end_date
+    
+    db.session.commit()
+    return booking.to_dict()
+  return form.errors, 400
+
+@login_required
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>/approve', methods=["PUT"])
+def approve_booking(vanId, bookingId):
+    """
+    Query for the booking and update its status to 'approved'
+
+    Returns 401 Unauthorized if the current user's id does not match the van's owner id
+
+    Returns 404 Not Found if the booking is not in the database
+    """
+    booking = Booking.query.get(bookingId)
+    van = Van.query.get(vanId)
+
+    if not booking:
+        return {"errors": {"message": "Booking not found"}}, 404
+
+    if current_user.id is not van.user_id:
+        return {'errors': {'message': "Unauthorized"}}, 401
+
+    booking.status = 'approved'
+
+    db.session.commit()
+
+    return {"message": "Booking successfully approved"}
+
+
+@login_required
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>', methods=["PUT"])
+def update_booking_status(vanId, bookingId):
   """
   Query for the booking and delete it from the database
 
@@ -346,14 +397,20 @@ def delete_booking(vanId, bookingId):
   Returns 404 Not Found if the booking is not in the database
   """
   booking = Booking.query.get(bookingId)
+  van = Van.query.get(vanId)
 
-  if current_user.id is not booking.user_id:
-    return {'errors': {'message': "Unauthorized"}}, 401
-  
   if not booking:
     return {"errors": {"message": "Booking not found"}}, 404
 
-  db.session.delete(booking)
+  if current_user.id is not booking.user_id and current_user.id is not van.user_id:
+    return {'errors': {'message': "Unauthorized"}}, 401
+  
+  if current_user.id is booking.user_id:
+    booking.status = "cancelled"
+  elif current_user.id is van.user_id:
+    booking.status = "denied"
+    
   db.session.commit()
 
-  return {"message": "Booking successfully deleted"}
+  return {"message": "Booking status successfully updated"}
+

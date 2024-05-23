@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
-from app.models import Van, VanImage, Rating, db
+from app.models import Van, VanImage, Rating, Booking, db
 from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_from_s3
 from app.forms import VanForm, VanImageForm, RatingForm
 from sqlalchemy import or_
@@ -298,3 +298,39 @@ def user_vans():
   else:
     return []
   
+#! VAN BOOKINGS
+@van_routes.route('/<int:vanId>/bookings')
+def get_van_bookings(vanId):
+  """
+  Query for all of the bookings of the van from the URL params
+  """
+
+  bookings = Booking.query.filter(Booking.van_id == vanId).all()
+
+  if bookings:
+    return [booking.to_dict() for booking in bookings]
+  else:
+    return []
+
+@login_required  
+@van_routes.route('/<int:vanId>/bookings', methods=["POST"])
+def create_booking(vanId):
+  """
+  Create a new booking linked to a van and the current user and submit to the database
+  """
+  # form = BookingForm()
+  # form['csrf_token'].data = request.cookies['csrf_token']
+
+  # if form.validate_on_submit():
+  #   new_booking = Booking(
+  #     user_id = current_user.id,
+  #     van_id = vanId,
+  #     start_date = form.data["start_date"],
+  #     end_date = form.data["end_date"]
+  #   )
+
+  #   db.session.add(new_booking)
+  #   db.session.commit()
+
+  #   return new_booking.to_dict()
+  # return form.errors, 401

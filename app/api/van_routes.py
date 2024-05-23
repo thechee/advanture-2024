@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask_login import current_user, login_required
 from app.models import Van, VanImage, Rating, Booking, db
 from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_from_s3
-from app.forms import VanForm, VanImageForm, RatingForm
+from app.forms import VanForm, VanImageForm, RatingForm, BookingForm
 from sqlalchemy import or_
 
 van_routes = Blueprint('vans', __name__)
@@ -318,19 +318,19 @@ def create_booking(vanId):
   """
   Create a new booking linked to a van and the current user and submit to the database
   """
-  # form = BookingForm()
-  # form['csrf_token'].data = request.cookies['csrf_token']
+  form = BookingForm()
+  form['csrf_token'].data = request.cookies['csrf_token']
 
-  # if form.validate_on_submit():
-  #   new_booking = Booking(
-  #     user_id = current_user.id,
-  #     van_id = vanId,
-  #     start_date = form.data["start_date"],
-  #     end_date = form.data["end_date"]
-  #   )
+  if form.validate_on_submit():
+    new_booking = Booking(
+      user_id = current_user.id,
+      van_id = vanId,
+      start_date = form.data["start_date"],
+      end_date = form.data["end_date"]
+    )
 
-  #   db.session.add(new_booking)
-  #   db.session.commit()
+    db.session.add(new_booking)
+    db.session.commit()
 
-  #   return new_booking.to_dict()
-  # return form.errors, 401
+    return new_booking.to_dict()
+  return form.errors, 401

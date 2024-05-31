@@ -355,6 +355,7 @@ def update_booking_dates(vanId, bookingId):
   if form.validate_on_submit():
     booking.start_date = form.data["start_date"] or booking.start_date
     booking.end_date = form.data["end_date"] or booking.end_date
+    booking.status = "pending"
     
     db.session.commit()
     return booking.to_dict()
@@ -385,12 +386,36 @@ def approve_booking(vanId, bookingId):
 
     return {"message": "Booking successfully approved"}
 
+@login_required
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>/deny', methods=["PUT"])
+def deny_booking(vanId, bookingId):
+    """
+    Query for the booking and update its status to 'denied'
+
+    Returns 401 Unauthorized if the current user's id does not match the van's owner id
+
+    Returns 404 Not Found if the booking is not in the database
+    """
+    booking = Booking.query.get(bookingId)
+    van = Van.query.get(vanId)
+
+    if not booking:
+        return {"errors": {"message": "Booking not found"}}, 404
+
+    if current_user.id is not van.user_id:
+        return {'errors': {'message': "Unauthorized"}}, 401
+
+    booking.status = 'denied'
+
+    db.session.commit()
+
+    return {"message": "Booking successfully denied"}
 
 @login_required
-@van_routes.route('/<int:vanId>/bookings/<int:bookingId>', methods=["PUT"])
-def update_booking_status(vanId, bookingId):
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>/cancel', methods=["PUT"])
+def cancel_booking(vanId, bookingId):
   """
-  Query for the booking and delete it from the database
+  Query for the booking and update the status to cancelled
 
   Returns 401 Unauthorized if the current user's id does not match the booking's user id
 
@@ -405,12 +430,34 @@ def update_booking_status(vanId, bookingId):
   if current_user.id is not booking.user_id and current_user.id is not van.user_id:
     return {'errors': {'message': "Unauthorized"}}, 401
   
-  if current_user.id is booking.user_id:
+  if current_user.id is booking.user_id or current_user.id is van.user_id:
     booking.status = "cancelled"
-  elif current_user.id is van.user_id:
-    booking.status = "denied"
     
   db.session.commit()
 
-  return {"message": "Booking status successfully updated"}
+  return {"message": "Booking successfully cancelled"}
 
+@login_required
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>/complete', methods=["PUT"])
+def complete_booking(vanId, bookingId):
+  """
+  Query for the booking and update the status to completed
+
+  Returns 401 Unauthorized if the current user's id does not match the booking's user id
+
+  Returns 404 Not Found if the booking is not in the database
+  """
+  booking = Booking.query.get(bookingId)
+
+  if not booking:
+    return {"errors": {"message": "Booking not found"}}, 404
+
+  if current_user.id is not booking.user_id and current_user.id is not van.user_id:
+    return {'errors': {'message': "Unauthorized"}}, 401
+  
+  if current_user.id is booking.user_id or current_user.id is van.user_id:
+    booking.status = "completed"
+    
+  db.session.commit()
+
+  return {"message": "Booking successfully completed"}

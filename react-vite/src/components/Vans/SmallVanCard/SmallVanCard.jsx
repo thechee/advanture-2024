@@ -19,9 +19,6 @@ export const SmallVanCard = ({van}) => {
   }
 
   const vanString = `${van.make} ${van.model} ${van.year}`
-  // .length > 25 ? 
-  // `${van.make} ${van.model} ${van.year}`.slice(0, 25) + "..." :
-  // `${van.make} ${van.model} ${van.year}`
 
   return (
     <li className="small-van-card" onClick={() => navigate(`/vans/${van.id}`)}>

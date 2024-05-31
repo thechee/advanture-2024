@@ -17,11 +17,12 @@ import { CarDoor, GasStation, CarSeat, Gasoline, Hybrid, Electric } from '../../
 
 import { AdvancedMarker, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import moment from "moment";
+
 import Carousel from "react-multi-carousel";
 import StarRatings from "react-star-ratings";
 import "react-multi-carousel/lib/styles.css";
 import "./VanDetail.css";
+import { DateInput } from "./DateInput.jsx";
 
 export const VanDetail = () => {
   const navigate = useNavigate();
@@ -32,8 +33,6 @@ export const VanDetail = () => {
   const ratingsObj = useSelector((state) => state.vans[vanId]?.ratings);
   const mapId = useSelector((state) => state.maps.mapId);
   const [viewNewReview, setViewNewReview] = useState(false);
-  const [from, setFrom] = useState(moment().format("YYYY-MM-DD"));
-  const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showDescription, setShowDescription] = useState(false);
   const [showDescriptionButton, setShowDescriptionButton] = useState(true);
@@ -76,6 +75,10 @@ export const VanDetail = () => {
     await dispatch(thunkDeleteFavorite(van.id));
   };
 
+  const handleBeforeChange = (currentSlide) => {
+    setCurrentSlide(currentSlide);
+  };
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -99,11 +102,6 @@ export const VanDetail = () => {
 
   let favorited;
   if (user) favorited = van.id in user.favorites;
-
-  const handleBeforeChange = (currentSlide) => {
-    setCurrentSlide(currentSlide);
-  };
-
 
   return (
     <div>
@@ -165,28 +163,7 @@ export const VanDetail = () => {
           )}
 
         <div className="van-detail-inner-right-div-repeat">
-          {/* {!owner && (
-            <div className="van-detail-trip-div">
-              <label>Trip Start</label>
-              <input
-                type="date"
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-              />
-              <label>Trip End</label>
-              <input
-                type="date"
-                value={until}
-                onChange={(e) => setUntil(e.target.value)}
-              />
-              <button
-                onClick={() => alert("Feature coming soon!")}
-                className="submit-btn"
-              >
-                Continue
-              </button>
-            </div>
-          )} */}
+          {!owner && <DateInput van={van}/>}
           <div className="van-detail-distance-right-div">
             <span>Distance included</span>
             <span>
@@ -300,9 +277,11 @@ export const VanDetail = () => {
             <div>
               <div className="overall-ratings-stars-div">
                 <span>
-                  {van.avgRating.toString().length == 1
+                  {van.avgRating
+                  .toString().length == 1
                     ? van.avgRating.toFixed(1)
-                    : van.avgRating.toFixed(2)}
+                    : van.avgRating
+                    }
                   <StarRatings
                     rating={van.avgRating}
                     starRatedColor="rgb(89, 60, 251)"
@@ -370,28 +349,7 @@ export const VanDetail = () => {
           </div>
 
           <div className="van-detail-inner-right-div">
-          {/* {!owner && (
-            <div className="van-detail-trip-div">
-              <label>Trip Start</label>
-              <input
-                type="date"
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-              />
-              <label>Trip End</label>
-              <input
-                type="date"
-                value={until}
-                onChange={(e) => setUntil(e.target.value)}
-              />
-              <button
-                onClick={() => alert("Feature coming soon!")}
-                className="submit-btn"
-              >
-                Continue
-              </button>
-            </div>
-          )} */}
+          {!owner && <DateInput van={van}/>}
           <div className="van-detail-distance-right-div">
             <span>Distance included</span>
             <span>

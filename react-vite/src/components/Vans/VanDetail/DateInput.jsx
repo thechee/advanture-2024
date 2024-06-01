@@ -36,6 +36,7 @@ export const DateInput = ({van}) => {
       <button
         onClick={handleSubmit}
         className="submit-btn"
+        id="van-booking-submit"
       >
         Continue
       </button>

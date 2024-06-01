@@ -17,11 +17,12 @@ import { CarDoor, GasStation, CarSeat, Gasoline, Hybrid, Electric } from '../../
 
 import { AdvancedMarker, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import moment from "moment";
+
 import Carousel from "react-multi-carousel";
 import StarRatings from "react-star-ratings";
 import "react-multi-carousel/lib/styles.css";
 import "./VanDetail.css";
+import { DateInput } from "./DateInput.jsx";
 
 export const VanDetail = () => {
   const navigate = useNavigate();
@@ -32,8 +33,6 @@ export const VanDetail = () => {
   const ratingsObj = useSelector((state) => state.vans[vanId]?.ratings);
   const mapId = useSelector((state) => state.maps.mapId);
   const [viewNewReview, setViewNewReview] = useState(false);
-  const [from, setFrom] = useState(moment().format("YYYY-MM-DD"));
-  const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showDescription, setShowDescription] = useState(false);
   const [showDescriptionButton, setShowDescriptionButton] = useState(true);
@@ -76,6 +75,10 @@ export const VanDetail = () => {
     await dispatch(thunkDeleteFavorite(van.id));
   };
 
+  const handleBeforeChange = (currentSlide) => {
+    setCurrentSlide(currentSlide);
+  };
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -99,11 +102,6 @@ export const VanDetail = () => {
 
   let favorited;
   if (user) favorited = van.id in user.favorites;
-
-  const handleBeforeChange = (currentSlide) => {
-    setCurrentSlide(currentSlide);
-  };
-
 
   return (
     <div>
@@ -147,15 +145,15 @@ export const VanDetail = () => {
           <h1>
             {van.make} {van.model} {van.year}
           </h1>
-          {van.vanAvgRating && (
+          {van.avgRating && (
             <div className="van-overall-ratings-div">
               <span id="van-overall-stars">
-                {van.vanAvgRating.toString().length <= 3
-                  ? van.vanAvgRating.toFixed(1)
-                  : van.vanAvgRating.toFixed(2)}{" "}
+                {van.avgRating.toString().length <= 3
+                  ? van.avgRating.toFixed(1)
+                  : van.avgRating.toFixed(2)}{" "}
               </span>
               <StarRatings
-                rating={van.vanAvgRating}
+                rating={van.avgRating}
                 starRatedColor="rgb(89, 60, 251)"
                 starEmptyColor="white"
                 starDimension="25px"
@@ -165,28 +163,7 @@ export const VanDetail = () => {
           )}
 
         <div className="van-detail-inner-right-div-repeat">
-          {/* {!owner && (
-            <div className="van-detail-trip-div">
-              <label>Trip Start</label>
-              <input
-                type="date"
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-              />
-              <label>Trip End</label>
-              <input
-                type="date"
-                value={until}
-                onChange={(e) => setUntil(e.target.value)}
-              />
-              <button
-                onClick={() => alert("Feature coming soon!")}
-                className="submit-btn"
-              >
-                Continue
-              </button>
-            </div>
-          )} */}
+          {!owner && <DateInput van={van}/>}
           <div className="van-detail-distance-right-div">
             <span>Distance included</span>
             <span>
@@ -296,15 +273,17 @@ export const VanDetail = () => {
 
           <h4>RATINGS AND REVIEWS</h4>
 
-          {van.vanAvgRating ? (
+          {van.avgRating ? (
             <div>
               <div className="overall-ratings-stars-div">
                 <span>
-                  {van.vanAvgRating.toString().length == 1
-                    ? van.vanAvgRating.toFixed(1)
-                    : van.vanAvgRating.toFixed(2)}
+                  {van.avgRating
+                  .toString().length == 1
+                    ? van.avgRating.toFixed(1)
+                    : van.avgRating
+                    }
                   <StarRatings
-                    rating={van.vanAvgRating}
+                    rating={van.avgRating}
                     starRatedColor="rgb(89, 60, 251)"
                     starEmptyColor="white"
                     starDimension="25px"
@@ -314,11 +293,11 @@ export const VanDetail = () => {
                 <span>({ratings.length} ratings)</span>
               </div>
               <div>
-                <RatingsBar ratingAvg={van.vanAvgCleanliness} name="Cleanliness"/>
-                <RatingsBar ratingAvg={van.vanAvgMaintenance} name="Maintenance"/>
-                <RatingsBar ratingAvg={van.vanAvgCommunication} name="Communication"/>
-                <RatingsBar ratingAvg={van.vanAvgConvenience} name="Convenience"/>
-                <RatingsBar ratingAvg={van.vanAvgAccuracy} name="Accuracy"/>
+                <RatingsBar ratingAvg={van.avgCleanliness} name="Cleanliness"/>
+                <RatingsBar ratingAvg={van.avgMaintenance} name="Maintenance"/>
+                <RatingsBar ratingAvg={van.avgCommunication} name="Communication"/>
+                <RatingsBar ratingAvg={van.avgConvenience} name="Convenience"/>
+                <RatingsBar ratingAvg={van.avgAccuracy} name="Accuracy"/>
               </div>
               <div>
                 <h4 style={{ color: "#808080" }}>REVIEWS</h4>
@@ -365,38 +344,23 @@ export const VanDetail = () => {
             <div className="van-detail-price-gradient"></div>
             <div className="van-detail-price-inner-div">
               <span className="van-detail-price">${van.rentalRate}</span> / day
+              <button
+                className="submit-btn"
+                id="van-booking-submit-price-div"
+              >
+                Continue
+              </button>
             </div>
             <div className="van-detail-price-bottom-blocker"></div>
           </div>
 
           <div className="van-detail-inner-right-div">
-          {/* {!owner && (
-            <div className="van-detail-trip-div">
-              <label>Trip Start</label>
-              <input
-                type="date"
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-              />
-              <label>Trip End</label>
-              <input
-                type="date"
-                value={until}
-                onChange={(e) => setUntil(e.target.value)}
-              />
-              <button
-                onClick={() => alert("Feature coming soon!")}
-                className="submit-btn"
-              >
-                Continue
-              </button>
-            </div>
-          )} */}
+          {!owner && <DateInput van={van}/>}
           <div className="van-detail-distance-right-div">
             <span>Distance included</span>
             <span>
               {van.distanceAllowed
-                ? van.distanceAllowed + " miles"
+                ? van.distanceAllowed + " mi"
                 : "Unlimited"}
             </span>
           </div>

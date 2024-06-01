@@ -9,7 +9,7 @@ import LoginFormModal from "../../Auth/LoginFormModal"
 import StarRatings from "react-star-ratings";
 import "./VanListItem.css";
 
-export const VanListItem = ({ van }) => {
+export const VanListItem = ({ van, hovered, setHoveredVan }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
@@ -46,7 +46,11 @@ export const VanListItem = ({ van }) => {
 
   return (
     <Link to={`/vans/${van.id}`}>
-      <li className="van-list-item-li">
+      <li 
+        className={`van-list-item-li ${hovered}`}
+        onMouseEnter={() => setHoveredVan(van.id)}
+        onMouseLeave={() => setHoveredVan(null)}
+      >
         <div className="van-list-item-image-div">
           <img src={previewImage} alt="" />
         </div>
@@ -58,9 +62,9 @@ export const VanListItem = ({ van }) => {
             {van.numRatings ? (
               <>
                 <span id="van-list-item-overall-stars">
-                  {van.vanAvgRating.toString().length <= 3
-                    ? van.vanAvgRating.toFixed(1)
-                    : van.vanAvgRating.toFixed(2)}{" "}
+                  {van.avgRating.toString().length <= 3
+                    ? van.avgRating.toFixed(1)
+                    : van.avgRating.toFixed(2)}{" "}
                 </span>
                 <StarRatings
                   rating={1}

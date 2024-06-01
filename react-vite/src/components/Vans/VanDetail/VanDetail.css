@@ -329,3 +329,7 @@ h4 {
   max-width: 62px;
   text-align: right;
 }
+
+#van-booking-submit-price-div {
+  display: none;
+}

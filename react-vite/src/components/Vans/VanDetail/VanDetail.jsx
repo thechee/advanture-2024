@@ -344,6 +344,12 @@ export const VanDetail = () => {
             <div className="van-detail-price-gradient"></div>
             <div className="van-detail-price-inner-div">
               <span className="van-detail-price">${van.rentalRate}</span> / day
+              <button
+                className="submit-btn"
+                id="van-booking-submit-price-div"
+              >
+                Continue
+              </button>
             </div>
             <div className="van-detail-price-bottom-blocker"></div>
           </div>

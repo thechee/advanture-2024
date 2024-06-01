@@ -230,6 +230,20 @@ button {
     align-items: center;
   }
 
+  #van-booking-submit {
+    display: none;
+  }
+
+  #van-booking-submit-price-div {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+  }
+
+  .van-detail-trip-form {
+    padding-bottom: 0;
+  }
+
   .van-detail-price-gradient {
     background-image: linear-gradient(to top, #FFFFFF, rgb(255 255 255 / 0%));
     pointer-events: none;

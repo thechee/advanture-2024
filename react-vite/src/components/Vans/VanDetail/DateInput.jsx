@@ -3,7 +3,7 @@ import moment from "moment";
 import { thunkCreateVanBooking } from "../../../redux/van";
 import { useDispatch } from "react-redux";
 
-export const DateInput = ({van}) => {
+export const DateInput = ({van, formRef}) => {
   const dispatch = useDispatch();
   const [start, setStart] = useState(moment().format("YYYY-MM-DD"));
   const [end, setEnd] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
@@ -20,7 +20,7 @@ export const DateInput = ({van}) => {
   }
 
   return (
-    <form className="van-detail-trip-form">
+    <form className="van-detail-trip-form" ref={formRef} onSubmit={handleSubmit}>
       <label>Trip Start</label>
       <input
         type="date"

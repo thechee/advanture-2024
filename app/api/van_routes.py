@@ -1,8 +1,8 @@
 from flask import Blueprint, request
 from flask_login import current_user, login_required
-from app.models import Van, VanImage, Rating, db
+from app.models import Van, VanImage, Rating, Booking, db
 from .aws_helpers import upload_file_to_s3, get_unique_filename, remove_file_from_s3
-from app.forms import VanForm, VanImageForm, RatingForm
+from app.forms import VanForm, VanImageForm, RatingForm, BookingForm
 from sqlalchemy import or_
 
 van_routes = Blueprint('vans', __name__)
@@ -298,3 +298,166 @@ def user_vans():
   else:
     return []
   
+#! VAN BOOKINGS
+@van_routes.route('/<int:vanId>/bookings')
+def get_van_bookings(vanId):
+  """
+  Query for all of the bookings of the van from the URL params
+  """
+
+  bookings = Booking.query.filter(Booking.van_id == vanId).all()
+
+  if bookings:
+    return [booking.to_dict() for booking in bookings]
+  else:
+    return []
+
+@login_required  
+@van_routes.route('/<int:vanId>/bookings', methods=["POST"])
+def create_booking(vanId):
+  """
+  Create a new booking linked to a van and the current user and submit to the database
+  """
+  form = BookingForm()
+  form['csrf_token'].data = request.cookies['csrf_token']
+
+  if form.validate_on_submit():
+    new_booking = Booking(
+      user_id = current_user.id,
+      van_id = vanId,
+      start_date = form.data["start_date"],
+      end_date = form.data["end_date"]
+    )
+
+    db.session.add(new_booking)
+    db.session.commit()
+
+    return new_booking.to_dict()
+  return form.errors, 401
+
+@login_required
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>', methods=["PUT"])
+def update_booking_dates(vanId, bookingId):
+  """
+  Update the booking with the given id
+  """
+  booking = Booking.query.get(bookingId)
+
+  if not booking:
+    return {"errors": {"message": "Booking not found"}}, 404
+  
+  if current_user.id is not booking.user_id:
+    return {"errors": {"message": "Unauthorized"}}, 401
+
+  form = BookingForm()
+  form['csrf_token'].data = request.cookies['csrf_token']
+
+  if form.validate_on_submit():
+    booking.start_date = form.data["start_date"] or booking.start_date
+    booking.end_date = form.data["end_date"] or booking.end_date
+    booking.status = "pending"
+    
+    db.session.commit()
+    return booking.to_dict()
+  return form.errors, 400
+
+@login_required
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>/approve', methods=["PUT"])
+def approve_booking(vanId, bookingId):
+    """
+    Query for the booking and update its status to 'approved'
+
+    Returns 401 Unauthorized if the current user's id does not match the van's owner id
+
+    Returns 404 Not Found if the booking is not in the database
+    """
+    booking = Booking.query.get(bookingId)
+    van = Van.query.get(vanId)
+
+    if not booking:
+        return {"errors": {"message": "Booking not found"}}, 404
+
+    if current_user.id is not van.user_id:
+        return {'errors': {'message': "Unauthorized"}}, 401
+
+    booking.status = 'approved'
+
+    db.session.commit()
+
+    return {"message": "Booking successfully approved"}
+
+@login_required
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>/deny', methods=["PUT"])
+def deny_booking(vanId, bookingId):
+    """
+    Query for the booking and update its status to 'denied'
+
+    Returns 401 Unauthorized if the current user's id does not match the van's owner id
+
+    Returns 404 Not Found if the booking is not in the database
+    """
+    booking = Booking.query.get(bookingId)
+    van = Van.query.get(vanId)
+
+    if not booking:
+        return {"errors": {"message": "Booking not found"}}, 404
+
+    if current_user.id is not van.user_id:
+        return {'errors': {'message': "Unauthorized"}}, 401
+
+    booking.status = 'denied'
+
+    db.session.commit()
+
+    return {"message": "Booking successfully denied"}
+
+@login_required
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>/cancel', methods=["PUT"])
+def cancel_booking(vanId, bookingId):
+  """
+  Query for the booking and update the status to cancelled
+
+  Returns 401 Unauthorized if the current user's id does not match the booking's user id
+
+  Returns 404 Not Found if the booking is not in the database
+  """
+  booking = Booking.query.get(bookingId)
+  van = Van.query.get(vanId)
+
+  if not booking:
+    return {"errors": {"message": "Booking not found"}}, 404
+
+  if current_user.id is not booking.user_id and current_user.id is not van.user_id:
+    return {'errors': {'message': "Unauthorized"}}, 401
+  
+  if current_user.id is booking.user_id or current_user.id is van.user_id:
+    booking.status = "cancelled"
+    
+  db.session.commit()
+
+  return {"message": "Booking successfully cancelled"}
+
+@login_required
+@van_routes.route('/<int:vanId>/bookings/<int:bookingId>/complete', methods=["PUT"])
+def complete_booking(vanId, bookingId):
+  """
+  Query for the booking and update the status to completed
+
+  Returns 401 Unauthorized if the current user's id does not match the booking's user id
+
+  Returns 404 Not Found if the booking is not in the database
+  """
+  booking = Booking.query.get(bookingId)
+
+  if not booking:
+    return {"errors": {"message": "Booking not found"}}, 404
+
+  if current_user.id is not booking.user_id and current_user.id is not van.user_id:
+    return {'errors': {'message': "Unauthorized"}}, 401
+  
+  if current_user.id is booking.user_id or current_user.id is van.user_id:
+    booking.status = "completed"
+    
+  db.session.commit()
+
+  return {"message": "Booking successfully completed"}

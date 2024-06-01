@@ -19,9 +19,6 @@ export const SmallVanCard = ({van}) => {
   }
 
   const vanString = `${van.make} ${van.model} ${van.year}`
-  // .length > 25 ? 
-  // `${van.make} ${van.model} ${van.year}`.slice(0, 25) + "..." :
-  // `${van.make} ${van.model} ${van.year}`
 
   return (
     <li className="small-van-card" onClick={() => navigate(`/vans/${van.id}`)}>
@@ -38,10 +35,10 @@ export const SmallVanCard = ({van}) => {
         <h3>{vanString}</h3>
         </div>
         <div className="small-van-card-ratings-div">
-        {van.vanAvgRating ? <>
-        <span>{van.vanAvgRating.toString().length == 1 ? van.vanAvgRating.toFixed(1) : van.vanAvgRating}</span>
+        {van.avgRating ? <>
+        <span>{van.avgRating.toString().length == 1 ? van.avgRating.toFixed(1) : van.avgRating}</span>
         <StarRatings
-                rating={van.vanAvgRating}
+                rating={van.avgRating}
                 starRatedColor="rgb(89, 60, 251)"
                 starEmptyColor="white"
                 starDimension="25px"

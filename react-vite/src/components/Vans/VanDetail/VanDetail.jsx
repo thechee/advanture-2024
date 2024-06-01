@@ -354,7 +354,7 @@ export const VanDetail = () => {
             <span>Distance included</span>
             <span>
               {van.distanceAllowed
-                ? van.distanceAllowed + " miles"
+                ? van.distanceAllowed + " mi"
                 : "Unlimited"}
             </span>
           </div>

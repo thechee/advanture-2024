@@ -104,9 +104,17 @@
   margin-top: 0;
 }
 
+.van-detail-price-div {
+  margin-bottom: 1.25rem;
+}
+
 .van-detail-price {
   font-weight: 700;
   font-size: large;
+}
+
+.van-detail-price-inner-div {
+  font-size: 14px;
 }
 
 .feature-ul,
@@ -191,9 +199,16 @@ h4 {
   margin-bottom: .5rem;
 }
 
-.van-detail-trip-div {
+.van-detail-trip-form {
+  border-top: 1px solid lightgray;
   border-bottom: 1px solid lightgray;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+.van-detail-trip-form label {
+  padding-bottom: .25rem;
+  font-size: 14px;
 }
 
 .van-detail-distance-right-div {
@@ -202,6 +217,7 @@ h4 {
   margin-top: 1.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid lightgray;
+  font-size: 14px;
 }
 
 .owner-div {

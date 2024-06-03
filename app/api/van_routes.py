@@ -322,6 +322,16 @@ def create_booking(vanId):
   form['csrf_token'].data = request.cookies['csrf_token']
 
   if form.validate_on_submit():
+    # check for overlapping bookings
+    overlapping_bookings = Booking.query.filter(
+      Booking.van_id == vanId,
+      Booking.start_date <= form.data["end_date"],
+      Booking.end_date >= form.data["start_date"]
+    ).first()
+    
+    if overlapping_bookings:
+      return {"errors": {"message": "Booking conflicts with existing booking"}}, 400
+
     new_booking = Booking(
       user_id = current_user.id,
       van_id = vanId,

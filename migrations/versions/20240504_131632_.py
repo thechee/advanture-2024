@@ -27,6 +27,7 @@ def upgrade():
     sa.Column('van_id', sa.Integer(), nullable=False),
     sa.Column('start_date', sa.Date(), nullable=False),
     sa.Column('end_date', sa.Date(), nullable=False),
+    sa.Column('status', sa.Enum('pending', 'approved', 'completed', 'denied', 'cancelled', name='booking_status'), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=True),
     sa.Column('updated_at', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),

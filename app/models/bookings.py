@@ -13,7 +13,7 @@ class Booking(db.Model):
   van_id = db.Column(db.Integer, ForeignKey(add_prefix_for_prod("vans.id")), nullable=False)
   start_date = db.Column(db.Date, nullable=False)
   end_date = db.Column(db.Date, nullable=False)
-  status = db.Column(db.Enum("pending", "approved", "completed", "denied", "cancelled"), default="pending", nullable=False)
+  status = db.Column(db.Enum("pending", "approved", "completed", "denied", "cancelled", name="booking_status"), default="pending", nullable=False)
   created_at = db.Column(db.DateTime, default=datetime.now)
   updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 

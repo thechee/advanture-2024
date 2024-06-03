@@ -14,7 +14,8 @@ app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
 # Setup login manager
 login = LoginManager(app)
-login.login_view = 'auth.unauthorized'
+login.init_app(app)
+login.login_view = 'auth.login'
 
 
 @login.user_loader

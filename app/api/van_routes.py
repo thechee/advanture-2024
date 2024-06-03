@@ -312,8 +312,8 @@ def get_van_bookings(vanId):
   else:
     return []
 
-@login_required  
 @van_routes.route('/<int:vanId>/bookings', methods=["POST"])
+@login_required
 def create_booking(vanId):
   """
   Create a new booking linked to a van and the current user and submit to the database

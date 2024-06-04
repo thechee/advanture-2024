@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import moment from "moment";
+import { format, add } from "date-fns";
 import { thunkCreateVanBooking } from "../../../redux/van";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,8 +8,8 @@ export const DateInput = ({van, formRef}) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const [start, setStart] = useState(moment().format("YYYY-MM-DD"));
-  const [end, setEnd] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
+  const [start, setStart] = useState(format(new Date(), "yyyy-MM-dd"));
+  const [end, setEnd] = useState(format(add(new Date(), { days: 3 }), "yyyy-MM-dd"));
 
   useEffect(() => {
     if (start > end) {
@@ -25,6 +25,8 @@ export const DateInput = ({van, formRef}) => {
       navigate("/login", { state: { from: location } });
     }
   }
+
+  console.log("start:", start, "end:", end)
 
   return (
     <form className="van-detail-trip-form" ref={formRef} onSubmit={handleSubmit}>

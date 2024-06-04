@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router";
 // import { FaSearch } from "react-icons/fa";
+// import { format, add } from "date-fns";
 import { useRef, useState } from "react";
-// import moment from 'moment';
 import { useVanListContext } from "../../hooks/useVanListContext";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -12,8 +12,8 @@ import { LeftArrow } from "../Icons/LeftArrow";
 export const HomePage = () => {
   const navigate = useNavigate();
   // const [where, setWhere] = useState("")
-  // const [from, setFrom] = useState(moment().format("YYYY-MM-DD"))
-  // const [until, setUntil] = useState(moment().add(3, "d").format("YYYY-MM-DD"))
+  // const [start, setStart] = useState(format(new Date(), "yyyy-MM-dd"));
+  // const [end, setEnd] = useState(format(add(new Date(), { days: 3 }), "yyyy-MM-dd"));
   const {setMake} = useVanListContext()
   const carouselRef = useRef();
 

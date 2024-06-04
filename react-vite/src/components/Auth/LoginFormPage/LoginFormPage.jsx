@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { thunkLogin } from "../../../redux/session";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Oauth } from "../Oauth/Oauth";
 import "./LoginForm.css";
 
@@ -14,57 +14,51 @@ export function LoginFormPage() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-
-  if (sessionUser) return <Navigate to="/" replace={true} />;
-
+  
+  useEffect(() => {
+    if (sessionUser) {
+      navigate(location.state?.from || "/", { replace: true })
+    }
+  }, [sessionUser, navigate, location]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+    
     const serverResponse = await dispatch(
       thunkLogin({
         email,
         password,
       })
     );
-
+    
     
     if (serverResponse) {
-      setIsLoading(false);
       setErrors(serverResponse);
-    } else {
-      setIsLoading(false);
-      navigate(location.state?.from || "/");
     }
   };
-
+  
   const handleDemoSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
+    
     const serverResponse = await dispatch(
       thunkLogin({
         email: "demo@aa.io",
         password: "password"
       })
     );
-
-
+  
+    
     if (serverResponse) {
-      setIsLoading(false);
       setErrors(serverResponse);
-    } else {
-      setIsLoading(false);
-      navigate(location.state?.from || "/");
     }
   };
-
+  
   if (isLoading) {
     return <div>Loading...</div>; // Replace this with your actual loading component
   }
-
-  console.log(location.state.from)
-
+  
   return (
     <div id="login-div">
       <h1>Log In</h1>

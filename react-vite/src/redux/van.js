@@ -272,6 +272,8 @@ export const thunkCreateVanBooking = (bookingData, vanId) => async dispatch => {
     const newBooking = await response.json()
     dispatch(createVanBooking(newBooking))
     return newBooking
+  } else if (response.status === 401) {
+    window.location.href = '/login'
   } else {
     const errors = await response.json()
     return errors

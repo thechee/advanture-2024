@@ -11,6 +11,11 @@
   border-color: var(--purple);
 }
 
+.react-datepicker {
+  padding: 5px 10px;
+  border-color: var(--light-border);
+}
+
 .react-datepicker-popper[data-placement^="bottom"] {  
   margin-top: 0;
 }
@@ -35,9 +40,23 @@
   text-transform: uppercase;
 }
 
+.react-datepicker__day {
+  font-weight: 500;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.react-datepicker__day--disabled {
+  text-decoration: line-through;
+  font-weight: 400;
+}
+
 .react-datepicker__day--in-range {
   color: var(--purple);
   border: 2px solid var(--purple);
   background-color: white;
 }
 
+.react-datepicker__day--outside-month {
+  visibility: hidden;
+}

@@ -46,7 +46,7 @@ export const DateInput = ({van, formRef}) => {
       /> */}
       <DatePicker 
         selected={start}
-        selectsStart
+        // selectsStart
         onChange={date => setStart(new Date(date))}
         dateFormat="MM/dd/yyyy"
         excludeDateIntervals={blockedDates}
@@ -61,7 +61,7 @@ export const DateInput = ({van, formRef}) => {
       /> */}
       <DatePicker 
         selected={end}
-        selectsEnd
+        // selectsEnd
         onChange={date => setEnd(new Date(date))}
         dateFormat="MM/dd/yyyy"
         excludeDateIntervals={blockedDates}

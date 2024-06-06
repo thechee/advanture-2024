@@ -52,6 +52,7 @@ export const DateInput = ({van, formRef}) => {
         excludeDateIntervals={blockedDates}
         startDate={start}
         endDate={end}
+        minDate={new Date()}
       />
       <label>Trip End</label>
       {/* <input
@@ -67,6 +68,7 @@ export const DateInput = ({van, formRef}) => {
         excludeDateIntervals={blockedDates}
         startDate={start}
         endDate={end}
+        minDate={new Date()}
       />
       <button
         onClick={handleSubmit}

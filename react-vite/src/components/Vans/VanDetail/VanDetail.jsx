@@ -37,7 +37,8 @@ export const VanDetail = () => {
   const [showDescription, setShowDescription] = useState(false);
   const [showDescriptionButton, setShowDescriptionButton] = useState(true);
   
-  const descriptionRef = useRef(null);
+  const descriptionRef = useRef();
+  const formRef = useRef();
   const apiIsLoaded = useApiIsLoaded();
 
   useEffect(() => {
@@ -78,6 +79,10 @@ export const VanDetail = () => {
   const handleBeforeChange = (currentSlide) => {
     setCurrentSlide(currentSlide);
   };
+
+  const handleBookingSubmit = (e) => {
+    formRef.current.handleSubmit(e);
+  }
 
   const responsive = {
     desktop: {
@@ -163,7 +168,7 @@ export const VanDetail = () => {
           )}
 
         <div className="van-detail-inner-right-div-repeat">
-          {!owner && <DateInput van={van}/>}
+          {!owner && <DateInput van={van} ref={formRef}/>}
           <div className="van-detail-distance-right-div">
             <span>Distance included</span>
             <span>
@@ -347,6 +352,7 @@ export const VanDetail = () => {
               <button
                 className="submit-btn"
                 id="van-booking-submit-price-div"
+                onClick={handleBookingSubmit}
               >
                 Continue
               </button>
@@ -355,7 +361,7 @@ export const VanDetail = () => {
           </div>
 
           <div className="van-detail-inner-right-div">
-          {!owner && <DateInput van={van}/>}
+          {!owner && <DateInput van={van} ref={formRef}/>}
           <div className="van-detail-distance-right-div">
             <span>Distance included</span>
             <span>

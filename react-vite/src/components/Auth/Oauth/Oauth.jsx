@@ -10,7 +10,7 @@ export const Oauth = () => {
       </div>
       <div className="oauth-btns">
         <a href={`${window.origin}/api/auth/oauth_login`}>
-          <button className="oauth-btn btn">
+          <button className="btn" id='oauth-btn'>
             <div>
             <img
               alt="Google Logo"

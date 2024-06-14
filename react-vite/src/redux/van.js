@@ -274,7 +274,7 @@ export const thunkCreateVanBooking = (bookingData, vanId) => async dispatch => {
     return newBooking
   } else {
     const errors = await response.json()
-    return errors
+    return { status: response.status, data: errors }
   }
 }
 

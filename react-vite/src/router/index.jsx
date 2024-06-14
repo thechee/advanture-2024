@@ -1,10 +1,9 @@
 import { Outlet, createBrowserRouter } from 'react-router-dom';
 import Layout from './Layout';
 import { HomePage } from '../components/HomePage/HomePage';
+import { LoginFormPage } from '../components/Auth/LoginFormPage/LoginFormPage';
 import { VanList } from '../components/Vans/VanList/VanList';
 import { VanDetail } from '../components/Vans/VanDetail/VanDetail';
-// import { CreateVan } from '../components/Vans/CreateVan/CreateVan';
-// import { UpdateVan } from '../components/Vans/UpdateVan/UpdateVan';
 import { Favorites } from '../components/Users/Favorites/Favorites';
 import { Errors } from '../components/Errors/Errors';
 import { Profile } from '../components/Users/Profile/Profile';
@@ -24,6 +23,10 @@ export const router = createBrowserRouter([
       {
         path: "account",
         element: <h1>Feature coming soon!</h1>
+      },
+      {
+        path: "login",
+        element: <LoginFormPage />
       },
       {
         path: "notifications",

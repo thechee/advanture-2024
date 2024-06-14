@@ -22,6 +22,7 @@ class User(db.Model, UserMixin):
     vans = db.relationship("Van", back_populates="owner", cascade="all, delete-orphan")
     owned_ratings = db.relationship("Rating", back_populates="rater")
     favorites = db.relationship("Favorite", back_populates="user")
+    bookings = db.relationship("Booking", back_populates="user", cascade="all, delete-orphan")
 
     @property
     def password(self):

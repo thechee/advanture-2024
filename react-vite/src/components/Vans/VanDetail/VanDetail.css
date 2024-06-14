@@ -87,21 +87,14 @@
   flex-direction: column;
 }
 
-.van-detail-right-div label {
-  color: var(--purple);
-  font-size: 14px;
-}
-
-.van-detail-right-div input {
-  width: 100%;
-  padding: .5rem;
-  font-size: 15px;
-  box-sizing: border-box;
-  margin-bottom: 1rem;
-}
-
 .van-detail-right-div p {
   margin-top: 0;
+}
+
+.van-detail-price-div {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid lightgray;
+  font-size: 14px;
 }
 
 .van-detail-price {
@@ -191,9 +184,26 @@ h4 {
   margin-bottom: .5rem;
 }
 
-.van-detail-trip-div {
+.van-detail-trip-form {
   border-bottom: 1px solid lightgray;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  padding-top: 1.25rem;
+}
+
+.van-detail-trip-form label {
+  padding-bottom: .25rem;
+  font-size: 14px;
+  color: var(--purple);
+  font-size: 14px;
+}
+
+.van-detail-trip-form input {
+  width: 100%;
+  padding: .3rem .5rem;
+  font-size: 15px;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+  border: 1px solid lightgray;
 }
 
 .van-detail-distance-right-div {
@@ -202,6 +212,7 @@ h4 {
   margin-top: 1.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid lightgray;
+  font-size: 14px;
 }
 
 .owner-div {
@@ -317,4 +328,8 @@ h4 {
   flex: 1 0 62px;
   max-width: 62px;
   text-align: right;
+}
+
+#van-booking-submit-price-div {
+  display: none;
 }

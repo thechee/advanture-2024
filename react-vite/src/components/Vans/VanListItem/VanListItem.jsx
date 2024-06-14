@@ -62,9 +62,9 @@ export const VanListItem = ({ van, hovered, setHoveredVan }) => {
             {van.numRatings ? (
               <>
                 <span id="van-list-item-overall-stars">
-                  {van.vanAvgRating.toString().length <= 3
-                    ? van.vanAvgRating.toFixed(1)
-                    : van.vanAvgRating.toFixed(2)}{" "}
+                  {van.avgRating.toString().length <= 3
+                    ? van.avgRating.toFixed(1)
+                    : van.avgRating.toFixed(2)}{" "}
                 </span>
                 <StarRatings
                   rating={1}

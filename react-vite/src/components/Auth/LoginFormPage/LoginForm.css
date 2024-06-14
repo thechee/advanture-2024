@@ -1,0 +1,42 @@
+#login-div {
+  width: 375px;
+  padding: 2rem;
+  margin: 0 auto;
+}
+
+.signup-div {
+  padding: 2rem;
+}
+
+.login-signup-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-signup-form label {
+  font-size: smaller;
+  margin-bottom: .3rem;
+  font-weight: 500;
+  letter-spacing: .5px;
+}
+
+.login-signup-form input {
+  padding: .5rem .5rem;
+  border-radius: 5px;
+  border: 1px solid lightgray;
+}
+
+.login-signup-form button {
+  border: none;
+  padding: .75rem;
+  border-radius: 5px;
+}
+
+#login-btn {
+  color: white;
+  margin-bottom: .5rem;
+}
+
+.login-signup-form button:hover {
+  cursor: pointer;
+}

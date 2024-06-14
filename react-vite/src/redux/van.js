@@ -11,6 +11,7 @@ const GET_VAN_RATINGS = 'van/GET_VAN_RATINGS';
 const CREATE_VAN_RATING = 'van/CREATE_VAN_RATING';
 const UPDATE_VAN_RATING = 'van/UPDATE_VAN_RATING';
 const DELETE_VAN_RATING = 'van/DELETE_VAN_RATING';
+const CREATE_VAN_BOOKING = 'van/CREATE_VAN_BOOKING';
 
 /* ========== Action Creators ========== */
 
@@ -73,6 +74,11 @@ const deleteVanRating = (vanId, ratingId) => ({
   type: DELETE_VAN_RATING,
   vanId,
   ratingId
+})
+
+const createVanBooking = (payload) => ({
+  type: CREATE_VAN_BOOKING,
+  payload
 })
 
 /* ========== Thunks ========== */
@@ -255,6 +261,23 @@ export const thunkDeleteVanRating = (vanId, ratingId) => async dispatch => {
   }
 }
 
+export const thunkCreateVanBooking = (bookingData, vanId) => async dispatch => {
+  const response = await fetch(`/api/vans/${vanId}/bookings`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(bookingData)
+  })
+
+  if (response.ok) {
+    const newBooking = await response.json()
+    dispatch(createVanBooking(newBooking))
+    return newBooking
+  } else {
+    const errors = await response.json()
+    return { status: response.status, data: errors }
+  }
+}
+
 
 /* ========== Reducer ========== */
 
@@ -344,6 +367,19 @@ export const vanReducer = (state = initialState, action) => {
       }
       delete newState[action.vanId].ratings[action.ratingId]
       return newState
+    }
+    case CREATE_VAN_BOOKING: {
+      const newState = { 
+        ...state,
+        [action.payload.vanId]: {
+          ...state[action.payload.vanId],
+          bookings: {
+            ...state[action.payload.vanId].bookings,
+            [action.payload.id]: action.payload
+          }
+        }
+      }
+      return newState;
     }
     default:
       return state;

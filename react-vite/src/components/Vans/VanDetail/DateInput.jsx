@@ -1,17 +1,18 @@
-import { useEffect, useState, forwardRef, useImperativeHandle, useMemo } from "react";
-import { add } from "date-fns";
+import { useEffect, forwardRef, useImperativeHandle, useMemo } from "react";
+
 import { thunkCreateVanBooking } from "../../../redux/van";
 import { useDispatch, useSelector } from "react-redux";
 import OpenModalButton from "../../OpenModalButton";
 import LoginFormModal from "../../Auth/LoginFormModal";
 import DatePicker from "react-datepicker";
 import './DatePickerStyles.css';
+import { useVanListContext } from "../../../hooks/useVanListContext";
+import { add } from "date-fns";
 
 export const DateInput = forwardRef((props, ref) => {
   const dispatch = useDispatch();
+  const { start, setStart, end, setEnd } = useVanListContext();
   const user = useSelector(state => state.session.user);
-  const [start, setStart] = useState(new Date());
-  const [end, setEnd] = useState(add(new Date(), { days: 3 }));
   const { van } = props;
   console.log('render')
 

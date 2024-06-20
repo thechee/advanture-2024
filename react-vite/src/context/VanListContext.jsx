@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { add } from "date-fns";
 
 export const VanListContext = createContext();
 
@@ -10,6 +11,8 @@ export const VanListProvider = (props) => {
   const [mileage, setMileage] = useState(100)
   const [sort, setSort] = useState("")
   const [price, setPrice] = useState([10, 250])
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(add(new Date(), { days: 3 }));
 
   const handleReset = () => {
     setMake("placeholder")
@@ -49,7 +52,11 @@ export const VanListProvider = (props) => {
         setMileage, 
         handleReset, 
         count, 
-        allYears 
+        allYears,
+        start,
+        setStart,
+        end,
+        setEnd
       }} 
     >
       {props.children}

@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "react-tooltip": "^5.26.3",
-    "vite-plugin-svgr": "^4.2.0"
-  }
-}

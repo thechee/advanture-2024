@@ -24,6 +24,10 @@
   border: 1px solid gray;
 }
 
+.input-error {
+  border: 1px solid red !important;
+}
+
 .login-signup-form button {
   border: none;
   padding: .75rem;
@@ -37,4 +41,16 @@
 
 .login-signup-form button:hover {
   cursor: pointer;
+}
+
+.switch-form {
+  margin: 2rem 0 1rem;
+  display: flex;
+}
+
+.modal-link {
+  color: var(--purple);
+  font-weight: 500;
+  font-size: 14px;
+  margin: 0 auto;
 }

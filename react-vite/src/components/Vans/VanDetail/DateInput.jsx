@@ -1,23 +1,21 @@
 import { useEffect, useState, forwardRef, useImperativeHandle, useMemo } from "react";
 import { add } from "date-fns";
 import { thunkCreateVanBooking } from "../../../redux/van";
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import OpenModalButton from "../../OpenModalButton";
+import LoginFormModal from "../../Auth/LoginFormModal";
 import DatePicker from "react-datepicker";
 import './DatePickerStyles.css';
 
 export const DateInput = forwardRef((props, ref) => {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const user = useSelector(state => state.session.user);
   const [start, setStart] = useState(new Date());
   const [end, setEnd] = useState(add(new Date(), { days: 3 }));
   const { van } = props;
   console.log('render')
 
   useEffect(() => {
-    console.log('start end useEffect')
-
     if (start > end) {
       setEnd(add(start, { days: 1 }));
     }
@@ -36,28 +34,23 @@ export const DateInput = forwardRef((props, ref) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await dispatch(thunkCreateVanBooking({ start_date: start.toISOString().split('T')[0], end_date: end.toISOString().split('T')[0] }, van.id))
+    const result = await dispatch(thunkCreateVanBooking({ 
+      start_date: start.toISOString().split('T')[0], 
+      end_date: end.toISOString().split('T')[0] 
+    }, van.id))
 
-    if (result.status === 401) {
-      navigate("/login", { state: { from: location } });
-    }
   }
 
   useImperativeHandle(ref, () => ({
     handleSubmit
   }));
 
+
   return (
     <form className="van-detail-trip-form" ref={ref} onSubmit={handleSubmit}>
       <label>Trip Start</label>
-      {/* <input
-        type="date"
-        value={start}
-        onChange={(e) => setStart(e.target.value)}
-      /> */}
       <DatePicker 
         selected={start}
-        // selectsStart
         onChange={date => setStart(new Date(date))}
         dateFormat="MM/dd/yyyy"
         excludeDateIntervals={blockedDates}
@@ -66,14 +59,8 @@ export const DateInput = forwardRef((props, ref) => {
         minDate={new Date()}
       />
       <label>Trip End</label>
-      {/* <input
-        type="date"
-        value={end}
-        onChange={(e) => setEnd(e.target.value)}
-      /> */}
       <DatePicker 
         selected={end}
-        // selectsEnd
         onChange={date => setEnd(new Date(date))}
         dateFormat="MM/dd/yyyy"
         excludeDateIntervals={blockedDates}
@@ -81,13 +68,21 @@ export const DateInput = forwardRef((props, ref) => {
         endDate={end}
         minDate={new Date()}
       />
-      <button
+      {user ? (<button
         onClick={handleSubmit}
         className="submit-btn"
         id="van-booking-submit"
       >
         Continue
-      </button>
+      </button>)
+      : 
+      (<OpenModalButton
+        modalComponent={<LoginFormModal />}
+        buttonText="Continue"
+        className="submit-btn"
+        id="van-booking-submit"
+      />)
+      }
     </form>
   );
 });

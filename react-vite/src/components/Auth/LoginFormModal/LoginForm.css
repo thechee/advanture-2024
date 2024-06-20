@@ -22,10 +22,32 @@
   padding: .3rem .5rem;
   border-radius: 5px;
   border: 1px solid gray;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .input-error {
   border: 1px solid red !important;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.error-icon,
+.profile-preview {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: red;
+}
+
+.profile-preview {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: contain;
 }
 
 .login-signup-form button {
@@ -46,6 +68,16 @@
 .switch-form {
   margin: 2rem 0 1rem;
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.switch-form button {
+  margin-left: 1rem;
+}
+
+.switch-form span {
+  font-size: 14px;
 }
 
 .modal-link {
@@ -53,4 +85,17 @@
   font-weight: 500;
   font-size: 14px;
   margin: 0 auto;
+}
+
+.signup-names-div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.signup-name {
+  display: flex;
+  flex-direction: column;
+  width: 49%;
 }

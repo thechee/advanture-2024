@@ -4,6 +4,10 @@ import { useModal } from "../../../context/Modal";
 import { thunkSignup } from "../../../redux/session";
 import "../LoginFormModal/LoginForm.css";
 import { Oauth } from "../Oauth/Oauth";
+import OpenModalButton from "../../OpenModalButton";
+import LoginFormModal from "../LoginFormModal";
+import { FaRegCircleXmark } from "react-icons/fa6";
+
 
 function SignupFormModal() {
   const dispatch = useDispatch();
@@ -84,98 +88,110 @@ function SignupFormModal() {
       <h1>Sign Up</h1>
       {errors.server && <p>{errors.server}</p>}
       <form className="login-signup-form" onSubmit={handleSubmit}>
+        <div className="signup-names-div">
+          <div className="signup-name">
+              
+            <label>First Name</label>
+            <div className="input-wrapper">
+              <input
+                className={errors.firstName ? "input-error" : ""}
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                />
+              {errors.firstName && <FaRegCircleXmark className="error-icon" />}
+            </div>
+            <div className="errors">
+              {errors.firstName && <p>{errors.firstName}</p>}
+            </div>
+          </div>
+          <div className="signup-name">
+            <label>Last Name</label>
+            <div className="input-wrapper">
+              <input
+                className={errors.lastName ? "input-error" : ""}
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                />
+                {errors.lastName && <FaRegCircleXmark className="error-icon" />}
+            </div>
+            <div className="errors">
+              {errors.lastName && <p>{errors.lastName}</p>}
+            </div>
+          </div>
+        </div>
         <label>Email</label>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+            <div className="input-wrapper">
+              <input
+                className={errors.email ? "input-error" : ""}
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                />
+              {errors.email && <FaRegCircleXmark className="error-icon" />}
+            </div>
         <div className="errors">{errors.email && <p>{errors.email}</p>}</div>
-        <label>First Name</label>
-        <input
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <div className="errors">
-          {errors.firstName && <p>{errors.firstName}</p>}
-        </div>
-        <label>Last Name</label>
-        <input
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-        <div className="errors">
-          {errors.lastName && <p>{errors.lastName}</p>}
-        </div>
         <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <div className="input-wrapper">
+            <input
+              className={errors.password ? "input-error" : ""}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              />
+            {errors.password && <FaRegCircleXmark className="error-icon" />}
+          </div>
         <div className="errors">
           {errors.password && <p>{errors.password}</p>}
         </div>
         <label>Confirm Password</label>
+            <div className="input-wrapper">
         <input
+          className={errors.confirmPassword ? "input-error" : ""}
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+          />
+        {errors.confirmPassword && <FaRegCircleXmark className="error-icon" />}
+        </div>
         <div className="errors">
           {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
         </div>
-        {/* <label>
-          Profile Image
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setProfileImg(e.target.files[0])}
-          />
-        <div className="errors">
-          {errors.profileImg && <p>{errors.profileImg}</p>}
-        </div> */}
-
-        <label htmlFor="post-image-input" className="file-input-labels">
+        <label>
           Profile Image
         </label>
-
-
-
-        <div className="file-inputs-container">
+        <div className="input-wrapper">
           <input
+            className={errors.profileImg ? "input-error" : ""}
             type="file"
             accept="image/png, image/jpeg, image/jpg"
             id="post-image-input"
             onChange={fileWrap}
           />
-          {/* <div
-            className="file-inputs-filename"
-            style={{ color: fileName === maxFileError ? "red" : "#B7BBBF",
-          fontSize: "12px" }}
-          >
-            {fileName !== maxFileError && fileName}
-          </div> */}
-          {/* <div style={{ position: "absolute", top: "-34px", left: "39px" }}>
-            <img src={imageURL} className="thumbnails"></img>
-          </div> */}
-
+          {imageURL && <img className="profile-preview" src={imageURL}></img>}
+          {fileName === maxFileError || errors.profileImg && <FaRegCircleXmark className="error-icon" />}
         </div>
+
         <div className="errors">
           {!fileName && errors.profileImg && <p>{errors.profileImg}</p>}
           {fileName === maxFileError && <p>{fileName}</p>}
           {fileName !== maxFileError && <p style={{color: "#B7BBBF"}}>{fileName.length < 45 ? fileName : fileName.slice(0, 45) + "..."}</p>}
         </div>
 
-
         <button className="submit-btn" type="submit">
           Sign Up
         </button>
       </form>
       <Oauth />
+      <div className="switch-form">
+        <span>Already have an account?</span>
+        <OpenModalButton 
+          className={"white-square-btn"}
+          modalComponent={<LoginFormModal />}
+          buttonText="Log In"
+        />
+      </div>
     </div>
   );
 }

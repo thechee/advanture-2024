@@ -34,7 +34,7 @@ export const DateInput = forwardRef((props, ref) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await dispatch(thunkCreateVanBooking({ 
+    await dispatch(thunkCreateVanBooking({ 
       start_date: start.toISOString().split('T')[0], 
       end_date: end.toISOString().split('T')[0] 
     }, van.id))

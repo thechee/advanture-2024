@@ -5,7 +5,7 @@ import "./Profile.css";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserRating } from "../../Ratings/ManageRatings/UserRating/UserRating";
-import { formatShortDate } from "../../../utils/formatShortDate";
+import { format } from "date-fns";
 
 export const Profile = () => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ export const Profile = () => {
     dispatch(thunkGetUserVans());
     dispatch(thunkGetUserRatings());
   }, [dispatch]);
+
 
   return (
     <div>
@@ -30,7 +31,7 @@ export const Profile = () => {
             <h1>
               {user.firstName} {user.lastName.slice(0, 1)}.
             </h1>
-            <span>Joined {formatShortDate(user.createdAt)}</span>
+            <span>Joined {format(user.createdAt, 'MMM yyyy')}</span>
           </div>
           <div className="profile-right-div">
             <div className="profile-right-div-info"> 

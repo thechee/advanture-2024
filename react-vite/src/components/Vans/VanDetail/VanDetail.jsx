@@ -23,7 +23,7 @@ import StarRatings from "react-star-ratings";
 import "react-multi-carousel/lib/styles.css";
 import "./VanDetail.css";
 import { DateInput } from "./DateInput.jsx";
-import { formatShortDate } from "../../../utils/formatShortDate";
+import { format } from "date-fns";
 
 export const VanDetail = () => {
   const navigate = useNavigate();
@@ -96,7 +96,7 @@ export const VanDetail = () => {
     }
   };
 
-  const joinedDate = formatShortDate(van.owner.createdAt);
+  const joinedDate = format(van.owner.createdAt, 'MMM yyyy');
   const owner = user?.id == van.owner.id;
 
   let favorited;

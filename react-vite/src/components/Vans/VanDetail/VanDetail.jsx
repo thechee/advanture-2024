@@ -23,6 +23,7 @@ import StarRatings from "react-star-ratings";
 import "react-multi-carousel/lib/styles.css";
 import "./VanDetail.css";
 import { DateInput } from "./DateInput.jsx";
+import { formatShortDate } from "../../../utils/formatShortDate";
 
 export const VanDetail = () => {
   const navigate = useNavigate();
@@ -56,13 +57,6 @@ export const VanDetail = () => {
   if (!ratingsObj) return null;
 
   const ratings = Object.values(ratingsObj);
-
-  function formatShortDate(dateStr) {
-    const date = new Date(dateStr);
-    const month = date.toLocaleString("en-us", { month: "short" });
-    const year = date.getUTCFullYear();
-    return `${month} ${year}`;
-  }
 
   const handleFavorite = async (e) => {
     e.preventDefault();

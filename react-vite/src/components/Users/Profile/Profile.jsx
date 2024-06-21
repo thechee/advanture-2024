@@ -5,6 +5,7 @@ import "./Profile.css";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserRating } from "../../Ratings/ManageRatings/UserRating/UserRating";
+import { formatShortDate } from "../../../utils/formatShortDate";
 
 export const Profile = () => {
   const dispatch = useDispatch();
@@ -16,13 +17,6 @@ export const Profile = () => {
     dispatch(thunkGetUserVans());
     dispatch(thunkGetUserRatings());
   }, [dispatch]);
-
-  function formatShortDate(dateStr) {
-    const date = new Date(dateStr);
-    const month = date.toLocaleString("en-us", { month: "short" });
-    const year = date.getUTCFullYear();
-    return `${month} ${year}`;
-  }
 
   return (
     <div>

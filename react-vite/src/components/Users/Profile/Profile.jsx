@@ -1,11 +1,11 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 import { thunkGetUserRatings, thunkGetUserVans } from "../../../redux/session";
 import { SmallVanCard } from "../../Vans/SmallVanCard/SmallVanCard";
-import "./Profile.css";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { UserRating } from "../../Ratings/ManageRatings/UserRating/UserRating";
-import { format } from "date-fns";
+import "./Profile.css";
 
 export const Profile = () => {
   const dispatch = useDispatch();

@@ -1,27 +1,34 @@
 import { useEffect, forwardRef, useImperativeHandle, useMemo } from "react";
-
-import { thunkCreateVanBooking } from "../../../redux/van";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import { add } from "date-fns";
+import { thunkCreateVanBooking } from "../../../redux/van";
 import OpenModalButton from "../../OpenModalButton";
 import LoginFormModal from "../../Auth/LoginFormModal";
-import DatePicker from "react-datepicker";
-import './DatePickerStyles.css';
 import { useVanListContext } from "../../../hooks/useVanListContext";
-import { add } from "date-fns";
+import './DatePickerStyles.css';
 
 export const DateInput = forwardRef((props, ref) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { start, setStart, end, setEnd } = useVanListContext();
   const user = useSelector(state => state.session.user);
   const { van } = props;
-  console.log('render')
+  // console.log('render')
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (start > end) {
       setEnd(add(start, { days: 1 }));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [start]);
+
+  useEffect(() => {
+    if (end < start) {
+      setStart(add(end, { days: -1 }));
+    }
+  }, [end])
 
   const blockedDates = useMemo(() => { 
     return Object.values(van.bookings).map(booking => {
@@ -40,6 +47,7 @@ export const DateInput = forwardRef((props, ref) => {
       end_date: end.toISOString().split('T')[0] 
     }, van.id))
 
+    navigate(`/trips`)
   }
 
   useImperativeHandle(ref, () => ({

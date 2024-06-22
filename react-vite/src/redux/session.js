@@ -7,6 +7,7 @@ const UPDATE_USER_RATING = 'session/UPDATE_USER_RATING';
 const DELETE_USER_RATING = 'session/DELETE_USER_RATING';
 const ADD_FAVORITE = 'session/ADD_FAVORITE';
 const DELETE_FAVORITE = 'session/DELETE_FAVORITE';
+const GET_USER_BOOKINGS = 'session/GET_USER_BOOKINGS';
 
 const setUser = (user) => ({
   type: SET_USER,
@@ -50,6 +51,11 @@ const addFavorite = (vanId) => ({
 const deleteFavorite = (vanId) => ({
   type: DELETE_FAVORITE,
   vanId
+})
+
+const getUserBookings = (bookings) => ({
+  type: GET_USER_BOOKINGS,
+  bookings
 })
 
 
@@ -191,6 +197,18 @@ export const thunkDeleteFavorite = (vanId) => async dispatch => {
   }
 }
 
+export const thunkGetUserBookings = () => async dispatch => {
+  const response = await fetch(`/api/users/bookings`)
+
+  if (response.ok) {
+    const bookings = await response.json()
+    dispatch(getUserBookings(bookings))
+  } else {
+    const errors = await response.json()
+    return errors
+  }
+}
+
 
 const initialState = { user: null };
 
@@ -280,6 +298,16 @@ function sessionReducer(state = initialState, action) {
         }
        }
       delete newState.user.favorites[action.vanId]
+      return newState
+    }
+    case GET_USER_BOOKINGS: {
+      const newState = {
+        ...state,
+        user: {
+          ...state.user,
+          bookings: action.bookings
+        }
+      }
       return newState
     }
     default:

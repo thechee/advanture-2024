@@ -43,6 +43,14 @@ export const VanDetail = () => {
   const apiIsLoaded = useApiIsLoaded();
 
   useEffect(() => {
+    document.title = `${van?.make} ${van?.model} ${van.year} rental in ${van.city}, ${van.state} by ${van.owner.firstName} ${van.owner.lastName[0]}. | Advanture`;
+
+    return () => {
+      document.title = "Advanture";
+    };
+  }, [van]);
+
+  useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
   }, [dispatch, vanId]);
 

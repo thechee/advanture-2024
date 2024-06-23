@@ -9,9 +9,16 @@ export const Trips = () => {
 
   useEffect(() => {
     dispatch(thunkGetUserBookings())
-  }, [])
+  }, [dispatch])
   
-  console.log("user:", user)
+  useEffect(() => {
+    document.title = 'Trips | Advanture'
+
+    return () => {    
+      document.title = 'Advanture';
+    }
+  }, [])
+
   if (!user) {
     return (
       <h1>Not logged in</h1>

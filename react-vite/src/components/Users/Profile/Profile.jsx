@@ -18,6 +18,14 @@ export const Profile = () => {
     dispatch(thunkGetUserRatings());
   }, [dispatch]);
 
+  useEffect(() => {
+    document.title = `${user.firstName} | Advanture`;
+
+    return () => {    
+      document.title = 'Advanture';
+    }
+  }, [user]);
+
 
   return (
     <div>

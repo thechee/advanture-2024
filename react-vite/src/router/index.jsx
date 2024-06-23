@@ -9,6 +9,7 @@ import { Errors } from '../components/Errors/Errors';
 import { Profile } from '../components/Users/Profile/Profile';
 import { VanForm } from '../components/Vans/VanForms/VanForm';
 import { VanFormProvider } from '../context/VanFormContext';
+import { Trips } from '../components/Users/Trips/Trips';
 
 
 export const router = createBrowserRouter([
@@ -34,14 +35,14 @@ export const router = createBrowserRouter([
       },
       {
         path: "trips",
-        element: <h1>Feature coming soon!</h1>
+        element: <Trips />
       },
       {
         path: "vans",
         element: 
-        <VanFormProvider>
-          <Outlet />
-        </VanFormProvider>,
+          <VanFormProvider>
+            <Outlet />
+          </VanFormProvider>,
         children: [
           {
             index: true,

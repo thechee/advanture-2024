@@ -1,10 +1,8 @@
 
 
 
-.file-inputs-container {
-  position: relative; /* This allows the elements within it to be positioned without taking this element out of the document flow. As it's parent is NOT positioned, it only effects the children. */
-  margin-bottom: 32px;
-}
+
+
 
 #post-image-input {
   visibility: hidden;

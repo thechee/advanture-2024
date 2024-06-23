@@ -6,30 +6,28 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build --watch",
+    "build:ci": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@vis.gl/react-google-maps": "^0.7.1",
+    "date-fns": "^3.6.0",
     "js-cookie": "^3.0.5",
-    "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-butterfiles": "^1.3.3",
+    "react-datepicker": "^6.9.0",
     "react-dom": "^18.2.0",
-    "react-drag-drop-files": "^2.3.10",
     "react-ga": "^3.3.1",
-    "react-geocode": "^1.0.0-alpha.1",
     "react-icons": "^5.0.1",
     "react-multi-carousel": "^2.8.4",
-    "react-ratings-declarative": "^3.4.1",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.15.0",
     "react-slider": "^2.0.6",
     "react-star-ratings": "^2.3.0",
     "react-tooltip": "^5.26.4",
     "redux": "^4.2.1",
-    "redux-thunk": "^2.4.2",
-    "styled-components": "^6.1.8"
+    "redux-thunk": "^2.4.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

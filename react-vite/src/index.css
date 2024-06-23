@@ -59,10 +59,15 @@ button {
   cursor: pointer;
 }
 
+input:focus {
+  outline: 1px solid var(--purple);
+}
+
 #modal-content h1 {
   margin-top: 0;
   margin-bottom: 1rem;
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 24px
 }
 
 .submit-btn {

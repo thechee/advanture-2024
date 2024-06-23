@@ -2,6 +2,8 @@ import { useState } from "react";
 import { thunkLogin } from "../../../redux/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../../context/Modal";
+import OpenModalLink from "../../OpenModalLink";
+import SignupFormModal from "../SignupFormModal/SignupFormModal";
 import "./LoginForm.css";
 import { Oauth } from "../Oauth/Oauth";
 
@@ -57,8 +59,8 @@ function LoginFormModal() {
             type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
             placeholder="Email"
+            className={errors.email ? "input-error" : ""}
           />
         <div className="errors">{errors.email && <p>{errors.email}</p>}</div>
         <label>
@@ -68,8 +70,8 @@ function LoginFormModal() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
             placeholder="Password"
+            className={errors.password ? "input-error" : ""}
           />
         <div className="errors">
           {errors.password && <p>{errors.password}</p>}
@@ -78,6 +80,13 @@ function LoginFormModal() {
         <button className="btn" onClick={handleDemoSubmit} >Demo User</button>
       </form>
       <Oauth />
+      <div className="switch-form">
+        <OpenModalLink 
+          modalComponent={<SignupFormModal />}
+          linkText="Don&apos;t have an account? Sign Up"
+          className="modal-link"
+        />
+      </div>
     </div>
   );
 }

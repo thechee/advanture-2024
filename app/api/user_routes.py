@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_login import login_required, current_user
-from app.models import User, Favorite, Van, db
+from app.models import User, Favorite, Van, Booking, db
 
 user_routes = Blueprint('users', __name__)
 
@@ -67,3 +67,14 @@ def delete_favorite(vanId):
     db.session.commit()
 
     return {"message": "Favorite successfully deleted"}
+
+# !BOOKINGS
+@user_routes.route('/bookings')
+@login_required
+def get_user_bookings():
+    """
+    Return a list of the user's bookings
+    """
+    bookings = Booking.query.filter(Booking.user_id == current_user.id).all()
+
+    return {booking.id: booking.to_dict() for booking in bookings}

@@ -1,52 +1,99 @@
-import { useEffect, useState } from "react";
-import moment from "moment";
+import { useEffect, forwardRef, useImperativeHandle, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import { add } from "date-fns";
 import { thunkCreateVanBooking } from "../../../redux/van";
-import { useDispatch } from "react-redux";
-import { useLocation, useNavigate } from "react-router-dom";
+import OpenModalButton from "../../OpenModalButton";
+import LoginFormModal from "../../Auth/LoginFormModal";
+import { useVanListContext } from "../../../hooks/useVanListContext";
+import './DatePickerStyles.css';
 
-export const DateInput = ({van, formRef}) => {
-  const dispatch = useDispatch();
-  const location = useLocation();
+export const DateInput = forwardRef((props, ref) => {
   const navigate = useNavigate();
-  const [start, setStart] = useState(moment().format("YYYY-MM-DD"));
-  const [end, setEnd] = useState(moment().add(3, "d").format("YYYY-MM-DD"));
+  const dispatch = useDispatch();
+  const { start, setStart, end, setEnd } = useVanListContext();
+  const user = useSelector(state => state.session.user);
+  const { van } = props;
+  // console.log('render')
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (start > end) {
-      setEnd(start);
+      setEnd(add(start, { days: 1 }));
     }
-  }, [start, end]);
+  }, [start]);
+
+  useEffect(() => {
+    if (end < start) {
+      setStart(add(end, { days: -1 }));
+    }
+  }, [end])
+
+  const blockedDates = useMemo(() => { 
+    return Object.values(van.bookings).map(booking => {
+      return {
+        start: new Date(new Date(booking.startDate).setHours(0, 0, 0, 0)),
+        end: new Date(new Date(booking.endDate).setHours(0, 0, 0, 0))
+      }
+    })
+  }, [van.bookings])
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await dispatch(thunkCreateVanBooking({ start_date: start, end_date: end }, van.id))
+    await dispatch(thunkCreateVanBooking({ 
+      start_date: start.toISOString().split('T')[0], 
+      end_date: end.toISOString().split('T')[0] 
+    }, van.id))
 
-    if (result.status === 401) {
-      navigate("/login", { state: { from: location } });
-    }
+    navigate(`/trips`)
   }
 
+  useImperativeHandle(ref, () => ({
+    handleSubmit
+  }));
+
+
   return (
-    <form className="van-detail-trip-form" ref={formRef} onSubmit={handleSubmit}>
+    <form className="van-detail-trip-form" ref={ref} onSubmit={handleSubmit}>
       <label>Trip Start</label>
-      <input
-        type="date"
-        value={start}
-        onChange={(e) => setStart(e.target.value)}
+      <DatePicker 
+        selected={start}
+        onChange={date => setStart(new Date(date))}
+        dateFormat="MM/dd/yyyy"
+        excludeDateIntervals={blockedDates}
+        startDate={start}
+        endDate={end}
+        minDate={new Date()}
       />
       <label>Trip End</label>
-      <input
-        type="date"
-        value={end}
-        onChange={(e) => setEnd(e.target.value)}
+      <DatePicker 
+        selected={end}
+        onChange={date => setEnd(new Date(date))}
+        dateFormat="MM/dd/yyyy"
+        excludeDateIntervals={blockedDates}
+        startDate={start}
+        endDate={end}
+        minDate={new Date()}
       />
-      <button
+      {user ? (<button
         onClick={handleSubmit}
         className="submit-btn"
         id="van-booking-submit"
       >
         Continue
-      </button>
+      </button>)
+      : 
+      (<OpenModalButton
+        modalComponent={<LoginFormModal />}
+        buttonText="Continue"
+        className="submit-btn"
+        id="van-booking-submit"
+      />)
+      }
     </form>
   );
-}
+});
+
+DateInput.displayName = "DateInput";

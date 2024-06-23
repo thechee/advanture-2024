@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { format } from "date-fns";
 import { thunkGetUserRatings, thunkGetUserVans } from "../../../redux/session";
 import { SmallVanCard } from "../../Vans/SmallVanCard/SmallVanCard";
-import "./Profile.css";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { UserRating } from "../../Ratings/ManageRatings/UserRating/UserRating";
+import "./Profile.css";
 
 export const Profile = () => {
   const dispatch = useDispatch();
@@ -17,12 +18,14 @@ export const Profile = () => {
     dispatch(thunkGetUserRatings());
   }, [dispatch]);
 
-  function formatShortDate(dateStr) {
-    const date = new Date(dateStr);
-    const month = date.toLocaleString("en-us", { month: "short" });
-    const year = date.getUTCFullYear();
-    return `${month} ${year}`;
-  }
+  useEffect(() => {
+    document.title = `${user.firstName} | Advanture`;
+
+    return () => {    
+      document.title = 'Advanture';
+    }
+  }, [user]);
+
 
   return (
     <div>
@@ -36,7 +39,7 @@ export const Profile = () => {
             <h1>
               {user.firstName} {user.lastName.slice(0, 1)}.
             </h1>
-            <span>Joined {formatShortDate(user.createdAt)}</span>
+            <span>Joined {format(user.createdAt, 'MMM yyyy')}</span>
           </div>
           <div className="profile-right-div">
             <div className="profile-right-div-info"> 

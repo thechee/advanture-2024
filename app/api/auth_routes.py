@@ -112,8 +112,10 @@ def callback():
         )
 
         db.session.add(user_exists)
-        db.session.commit()
-
+    else:
+        user_exists.profile_image_url = id_info.get("picture")
+        
+    db.session.commit()
     login_user(user_exists)
 
     return redirect(session['referrer'])

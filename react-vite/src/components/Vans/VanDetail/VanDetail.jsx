@@ -23,6 +23,7 @@ import StarRatings from "react-star-ratings";
 import "react-multi-carousel/lib/styles.css";
 import "./VanDetail.css";
 import { DateInput } from "./DateInput.jsx";
+import { format } from "date-fns";
 
 export const VanDetail = () => {
   const navigate = useNavigate();
@@ -37,8 +38,17 @@ export const VanDetail = () => {
   const [showDescription, setShowDescription] = useState(false);
   const [showDescriptionButton, setShowDescriptionButton] = useState(true);
   
-  const descriptionRef = useRef(null);
+  const descriptionRef = useRef();
+  const formRef = useRef();
   const apiIsLoaded = useApiIsLoaded();
+
+  useEffect(() => {
+    document.title = `${van?.make} ${van?.model} ${van.year} rental in ${van.city}, ${van.state} by ${van.owner.firstName} ${van.owner.lastName[0]}. | Advanture`;
+
+    return () => {
+      document.title = "Advanture";
+    };
+  }, [van]);
 
   useEffect(() => {
     dispatch(thunkGetOneVan(vanId));
@@ -56,13 +66,6 @@ export const VanDetail = () => {
 
   const ratings = Object.values(ratingsObj);
 
-  function formatShortDate(dateStr) {
-    const date = new Date(dateStr);
-    const month = date.toLocaleString("en-us", { month: "short" });
-    const year = date.getUTCFullYear();
-    return `${month} ${year}`;
-  }
-
   const handleFavorite = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -78,6 +81,10 @@ export const VanDetail = () => {
   const handleBeforeChange = (currentSlide) => {
     setCurrentSlide(currentSlide);
   };
+
+  const handleBookingSubmit = (e) => {
+    formRef.current.handleSubmit(e);
+  }
 
   const responsive = {
     desktop: {
@@ -97,7 +104,7 @@ export const VanDetail = () => {
     }
   };
 
-  const joinedDate = formatShortDate(van.owner.createdAt);
+  const joinedDate = format(van.owner.createdAt, 'MMM yyyy');
   const owner = user?.id == van.owner.id;
 
   let favorited;
@@ -163,7 +170,7 @@ export const VanDetail = () => {
           )}
 
         <div className="van-detail-inner-right-div-repeat">
-          {!owner && <DateInput van={van}/>}
+          {!owner && <DateInput van={van} ref={formRef}/>}
           <div className="van-detail-distance-right-div">
             <span>Distance included</span>
             <span>
@@ -347,6 +354,7 @@ export const VanDetail = () => {
               <button
                 className="submit-btn"
                 id="van-booking-submit-price-div"
+                onClick={handleBookingSubmit}
               >
                 Continue
               </button>
@@ -355,7 +363,7 @@ export const VanDetail = () => {
           </div>
 
           <div className="van-detail-inner-right-div">
-          {!owner && <DateInput van={van}/>}
+          {!owner && <DateInput van={van} ref={formRef}/>}
           <div className="van-detail-distance-right-div">
             <span>Distance included</span>
             <span>

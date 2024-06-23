@@ -6,9 +6,7 @@ import { thunkLogout } from "../../redux/session";
 import OpenModalMenuItem from "./OpenModalMenuItem";
 import LoginFormModal from "../Auth/LoginFormModal";
 import SignupFormModal from "../Auth/SignupFormModal";
-import { CamperVan } from "../Icons/CamperVan";
-import { Logout } from "../Icons/Logout";
-import { Heart } from "../Icons/Heart";
+import { CamperVan, Heart, Road, Logout } from "../Icons";
 
 function ProfileButton() {
   const navigate = useNavigate()
@@ -67,10 +65,10 @@ function ProfileButton() {
               onClick={toggleMenu}>
                 <li><Heart />  Favorites</li>
               </NavLink>
-              {/* <NavLink to={`trips`} onClick={toggleMenu}>
-                <li>Trips</li>
+              <NavLink to={`trips`} onClick={toggleMenu}>
+                <li><Road /> Trips</li>
               </NavLink>
-              <NavLink to={`/notifications`} onClick={toggleMenu}>
+              {/* <NavLink to={`/notifications`} onClick={toggleMenu}>
                 <li>Notifications</li>
               </NavLink> */}
             </div>

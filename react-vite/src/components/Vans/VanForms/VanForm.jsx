@@ -38,6 +38,13 @@ export const VanForm = ({ type }) => {
   } = useVanFormContext();
 
   useEffect(() => {
+    document.title = type === "update" ? "Update van | Advanture" : "Add a van | Advanture";
+    return () => {
+      document.title = "Advanture";
+    };  
+  }, [type])
+
+  useEffect(() => {
     if (type === "update") {
       if (!van) {
         dispatch(thunkGetOneVan(vanId));

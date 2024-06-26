@@ -26,10 +26,11 @@ export const Trips = () => {
   }
 
   return (
-    <div>
+    <div className='trips-content'>
       <h1>Trips</h1>
       <div>
-
+        <img src="https://resources.turo.com/client/v2/builds/assets/il_car_on_the_desert_@2xc6729191106bba04b948.png" alt="" />
+        <h2>feature coming soon</h2>
       </div>
     </div>
   )

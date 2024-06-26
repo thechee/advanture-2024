@@ -26,8 +26,20 @@ jobs:
         rm -rf node_modules
         npm install
 
+    - name: List dist directory before build
+      run: ls dist
+
     - name: Run Build
       run: npm run build:ci --if-present
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-files
+        path: dist/**
+
+    - name: List dist directory after build + upload build artifact
+      run: ls dist
 
     - name: Run Tests
       run: npm test --if-present

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import './Trips.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetUserBookings } from '../../../redux/session';
+import './Trips.css';
 
 export const Trips = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ export const Trips = () => {
       <h1>Not logged in</h1>
     )
   }
-
+  
   return (
     <div className='trips-content'>
       <h1>Trips</h1>

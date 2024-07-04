@@ -40,8 +40,9 @@ export const Rating = ({ vanId, setViewNewReview }) => {
         accuracy,
         review
       }
-      dispatch(thunkCreateVanRating(vanId, rating))
-      dispatch(thunkGetOneVan(vanId))
+      dispatch(thunkCreateVanRating(vanId, rating)).then(() => {
+        dispatch(thunkGetOneVan(vanId))
+      })
 
       setViewNewReview(false)
     }

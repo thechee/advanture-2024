@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { thunkGetUserBookings } from '../../../redux/session';
@@ -28,23 +28,35 @@ export const Trips = () => {
     }
   }, [user])
 
+  const now = new Date();
+  const pastBookings = useMemo(() => 
+    user && user.bookings ? Object.values(user.bookings).filter(booking => new Date(booking.startDate) < now) : [],
+    [user.bookings]
+  );
+  const futureBookings = useMemo(() => 
+    user && user.bookings ? Object.values(user.bookings).filter(booking => new Date(booking.startDate) >= now) : [],
+    [user.bookings]
+  );
+
   if (!user) {
     return null;
   }
 
-  const separateBookings = (bookings) => {
-    const now = new Date();
-    return Object.values(bookings).reduce((acc, booking) => {
-      if (new Date(booking.startDate) < now) {
-        acc.past.push(booking);
-      } else {
-        acc.future.push(booking);
-      }
-      return acc;
-    }, { past: [], future: [] });
-  };
-  
-  const { past: pastBookings, future: futureBookings } = separateBookings(user.bookings);
+  if (!user.bookings) {
+    return (
+      <div className='trips-content'>
+      <h1>Trips</h1>
+        <div>
+          <img src="https://resources.turo.com/client/v2/builds/assets/il_car_on_the_desert_@2xc6729191106bba04b948.png" alt="" />
+          <h2>No trips yet</h2>
+          <p>Explore incredible camper vans and book your next trip.</p>
+          <button className='submit-btn' onClick={() => navigate('/')}>Start searching</button>
+        </div>
+    </div>
+    )
+  }
+
+
   console.log("past:", pastBookings, "future:", futureBookings)
   
   return (

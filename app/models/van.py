@@ -41,6 +41,8 @@ class Van(db.Model):
   bookings = db.relationship("Booking", back_populates="van", cascade='all, delete-orphan')
 
   def to_dict(self):
+    preview_image = next((image.image_url for image in self.images if image.preview), None)
+
     ratings = {rating.id: rating.to_dict() for rating in self.ratings}
     num_ratings = len(ratings)
 
@@ -70,6 +72,7 @@ class Van(db.Model):
         "distanceAllowed": self.distance_allowed,
         "features": [feature.name for feature in self.features],
         "fuelType": self.fuel_type.fuel_type,
+        "previewImage": preview_image,
         "images": {image.id: image.to_dict() for image in self.images},
         "bookings": {booking.id: booking.to_dict() for booking in self.bookings},
         "ratings": ratings,

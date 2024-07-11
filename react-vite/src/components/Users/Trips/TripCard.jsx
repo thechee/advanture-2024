@@ -1,9 +1,14 @@
+import { dateRangeFormatter } from "../../../utils/dateRangeFormatter"
+
 export const TripCard = ({ booking }) => {
     console.log(booking)
+
+    const dateRange = dateRangeFormatter(booking.startDate, booking.endDate)
+
     return (
     <li>
         <div>
-            <p>{booking.startDate} - {booking.endDate}</p>
+            <p>{dateRange}</p>
             <h2>{booking.vanInfo.make} {booking.vanInfo.model} {booking.vanInfo.year}</h2>
             <p>{booking.vanInfo.city}, {booking.vanInfo.state}</p>
             <p>{booking.status}</p>

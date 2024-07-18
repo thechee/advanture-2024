@@ -11,7 +11,7 @@
   align-self: flex-start;
 }
 
-.trips-content img {
+#trip-img {
   width: 50%;
   height: 100%;
   object-fit: cover;
@@ -24,4 +24,11 @@
 .trips-content button {
   width: fit-content;
   padding: .85rem 1rem;
+}
+
+.trips-content ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }

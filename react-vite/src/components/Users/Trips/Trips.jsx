@@ -28,33 +28,34 @@ export const Trips = () => {
     }
   }, [user])
 
-  const now = new Date();
+  const now = useMemo(() => new Date(), []);
+  
   const pastBookings = useMemo(() => 
     user && user.bookings ? Object.values(user.bookings).filter(booking => new Date(booking.startDate) < now) : [],
-    [user.bookings]
+    [user, now]
   );
-  const futureBookings = useMemo(() => 
-    user && user.bookings ? Object.values(user.bookings).filter(booking => new Date(booking.startDate) >= now) : [],
-    [user.bookings]
+  const futureBookings = useMemo(() =>
+      user && user.bookings ? Object.values(user.bookings).filter(booking => new Date(booking.startDate) >= now) : [],
+    [user, now]
   );
 
   if (!user) {
     return null;
   }
 
-  if (!user.bookings) {
-    return (
-      <div className='trips-content'>
-      <h1>Trips</h1>
-        <div>
-          <img src="https://resources.turo.com/client/v2/builds/assets/il_car_on_the_desert_@2xc6729191106bba04b948.png" alt="" />
-          <h2>No trips yet</h2>
-          <p>Explore incredible camper vans and book your next trip.</p>
-          <button className='submit-btn' onClick={() => navigate('/')}>Start searching</button>
-        </div>
-    </div>
-    )
-  }
+  // if (!user.bookings) {
+  //   return (
+  //     <div className='trips-content'>
+  //     <h1>Trips</h1>
+  //       <div>
+  //         <img src="https://resources.turo.com/client/v2/builds/assets/il_car_on_the_desert_@2xc6729191106bba04b948.png" alt="" />
+  //         <h2>No trips yet</h2>
+  //         <p>Explore incredible camper vans and book your next trip.</p>
+  //         <button className='submit-btn' onClick={() => navigate('/')}>Start searching</button>
+  //       </div>
+  //   </div>
+  //   )
+  // }
 
 
   console.log("past:", pastBookings, "future:", futureBookings)
@@ -64,20 +65,20 @@ export const Trips = () => {
       <h1>Trips</h1>
       {!futureBookings.length && 
         <div>
-          <img src="https://resources.turo.com/client/v2/builds/assets/il_car_on_the_desert_@2xc6729191106bba04b948.png" alt="" />
+          <img id='trip-img' src="https://resources.turo.com/client/v2/builds/assets/il_car_on_the_desert_@2xc6729191106bba04b948.png" alt="" />
           <h2>No upcoming trips yet</h2>
           <p>Explore incredible camper vans and book your next trip.</p>
           <button className='submit-btn' onClick={() => navigate('/')}>Start searching</button>
         </div>}
       {pastBookings.length && 
-      <div>
+      <>
         <h3>History</h3>
           <ul>
             {pastBookings.map(booking => (
               <TripCard key={booking.id} booking={booking} />
             ))}
           </ul>
-      </div>}
+      </>}
     </div>
   )
 }

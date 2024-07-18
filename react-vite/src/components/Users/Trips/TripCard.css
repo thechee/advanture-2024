@@ -5,7 +5,6 @@
   height: 100%;
   padding: 1rem;
   border-radius: 1rem;
-  background-color: #F4F4F4;
   border: 1px solid #E0E0E0;
 }
 
@@ -24,6 +23,13 @@
   align-items: center;
 }
 
+.trip-card-owner p {
+  font-size: 11px;
+  font-weight: 500;
+  color: gray;
+  margin-left: 0.5rem !important;
+}
+
 .trip-card-owner-img {
   width: 30px;
   height: 30px;
@@ -37,12 +43,17 @@
 }
 
 .trip-card-info p,
-.trip-card-info h3 {
+.trip-card-info h4 {
   margin: 0;
   text-align: left;
 }
 
+.trip-card-info h4 {
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .trip-card-info > p {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
 }

@@ -369,12 +369,13 @@ export const vanReducer = (state = initialState, action) => {
       return newState
     }
     case CREATE_VAN_BOOKING: {
+
       const newState = { 
         ...state,
-        [action.payload.vanId]: {
-          ...state[action.payload.vanId],
+        [action.payload.vanInfo.id]: {
+          ...state[action.payload.vanInfo.id],
           bookings: {
-            ...state[action.payload.vanId].bookings,
+            ...state[action.payload.vanInfo.id].bookings || {},
             [action.payload.id]: action.payload
           }
         }

@@ -2,20 +2,18 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
-  height: 100%;
+  height: 120px;
   padding: 1rem;
-  border-radius: 1rem;
+  border-radius: .5rem;
   border: 1px solid #E0E0E0;
+  box-sizing: border-box;
 }
 
-/* .trip-card-img {
-  height: 100%;
-} */
-
 .trip-card-img img {
-  width: 8rem;
+  width: 7rem;
   height: 100%;
   object-fit: contain;
+  border-radius: .5rem;
 }
 
 .trip-card-owner {

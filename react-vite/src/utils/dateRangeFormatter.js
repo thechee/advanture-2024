@@ -8,7 +8,7 @@ export const dateRangeFormatter = (start, end) => {
     const endYear = getYear(endDateObj);
 
     const startDate = format(startDateObj, 'MMM dd');
-    const endDate = format(endDateObj, 'MMM dd yyyy');
+    const endDate = format(endDateObj, 'MMM dd, yyyy');
 
     // Include the start year in the startDate string if different from the end year
     const startDateString = `${startDate}${startYear < endYear ? `, ${startYear}` : ''}`;

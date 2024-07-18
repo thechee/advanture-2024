@@ -26,6 +26,7 @@ class Booking(db.Model):
     previewImage = [image for image in self.van.images if image.preview == True][0].to_dict()["imageUrl"]
 
     vanInfo = {
+      "id": self.van.id,
       "make": self.van.make,
       "model": self.van.model,
       "year": self.van.year,

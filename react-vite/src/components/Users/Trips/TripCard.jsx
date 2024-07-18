@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import './TripCard.css';
 
 export const TripCard = ({ booking }) => {
-  console.log(booking)
+  // console.log(booking)
   const cancelled = booking.status == 'cancelled';
   const dateRange = dateRangeFormatter(booking.startDate, booking.endDate)
 

@@ -8,7 +8,7 @@
 
 .trips-content h1,
 .trips-content h3 {
-  align-self: flex-start;
+  text-align: left;
 }
 
 #trip-img {

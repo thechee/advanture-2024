@@ -35,7 +35,11 @@ export const Trips = () => {
     [user, now]
   );
   const futureBookings = useMemo(() =>
-      user && user.bookings ? Object.values(user.bookings).filter(booking => new Date(booking.startDate) >= now) : [],
+      user && user.bookings ? Object.values(user.bookings).filter(booking => new Date(booking.startDate) > now) : [],
+    [user, now]
+  );
+  const currentTrip = useMemo(() =>
+    user && user.bookings ? Object.values(user.bookings).find(booking => new Date(booking.startDate) < now && new Date(booking.endDate) > now) : null,
     [user, now]
   );
 
@@ -58,12 +62,27 @@ export const Trips = () => {
   // }
 
 
-  console.log("past:", pastBookings, "future:", futureBookings)
+  // console.log("past:", pastBookings, "future:", futureBookings)
   
   return (
     <div className='trips-content'>
       <h1>Trips</h1>
-      {!futureBookings.length && 
+      {currentTrip && 
+        <div className='current-trip'>
+          <h3>Your current trip</h3>
+          <TripCard booking={currentTrip} />
+        </div>
+      }
+      {futureBookings.length ?
+        <div className='upcoming-trips'>
+          <h3>Upcoming trips</h3>
+          <ul>
+            {futureBookings.map(booking => (
+              <TripCard key={booking.id} booking={booking} />
+            ))}
+          </ul>
+        </div>
+        :
         <div>
           <img id='trip-img' src="https://resources.turo.com/client/v2/builds/assets/il_car_on_the_desert_@2xc6729191106bba04b948.png" alt="" />
           <h2>No upcoming trips yet</h2>
@@ -71,14 +90,14 @@ export const Trips = () => {
           <button className='submit-btn' onClick={() => navigate('/')}>Start searching</button>
         </div>}
       {pastBookings.length && 
-      <>
+      <div className='past-trips'>
         <h3>History</h3>
           <ul>
             {pastBookings.map(booking => (
               <TripCard key={booking.id} booking={booking} />
             ))}
           </ul>
-      </>}
+      </div>}
     </div>
   )
 }

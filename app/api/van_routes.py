@@ -323,13 +323,22 @@ def create_booking(vanId):
 
   if form.validate_on_submit():
     # check for overlapping bookings
-    overlapping_bookings = Booking.query.filter(
+    overlapping_bookings_for_van = Booking.query.filter(
       Booking.van_id == vanId,
       Booking.start_date <= form.data["end_date"],
       Booking.end_date >= form.data["start_date"]
     ).first()
     
-    if overlapping_bookings:
+    if overlapping_bookings_for_van:
+      return {"errors": {"message": "Booking conflicts with existing booking"}}, 400
+
+    overlapping_bookings_for_user = Booking.query.filter(
+      Booking.user_id == current_user.id,
+      Booking.start_date <= form.data["end_date"],
+      Booking.end_date >= form.data["start_date"]
+    ).first()
+
+    if overlapping_bookings_for_user:
       return {"errors": {"message": "Booking conflicts with existing booking"}}, 400
 
     new_booking = Booking(

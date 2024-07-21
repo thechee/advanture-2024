@@ -21,10 +21,31 @@ class Booking(db.Model):
   van = db.relationship("Van", back_populates="bookings")
 
   def to_dict(self):
+
+    owner = self.van.owner.to_dict()
+    previewImage = [image for image in self.van.images if image.preview == True][0].to_dict()["imageUrl"]
+
+    vanInfo = {
+      "id": self.van.id,
+      "make": self.van.make,
+      "model": self.van.model,
+      "year": self.van.year,
+      "previewImage": previewImage,
+      "city": self.van.city,
+      "state": self.van.state
+    }
+
+    ownerInfo = {
+      "firstName": owner["firstName"],
+      "lastName": owner["lastName"],
+      "profileImage": owner["profileImage"]
+    }
+
     return {
       "id": self.id,
       "userId": self.user_id,
-      "vanId": self.van_id,
+      "ownerInfo": ownerInfo,
+      "vanInfo": vanInfo,
       "startDate": self.start_date,
       "endDate": self.end_date,
       "status": self.status,

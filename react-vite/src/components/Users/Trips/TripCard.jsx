@@ -3,7 +3,6 @@ import { format } from 'date-fns'
 import './TripCard.css';
 
 export const TripCard = ({ booking }) => {
-  // console.log(booking)
   const cancelled = booking.status == 'cancelled';
   const dateRange = dateRangeFormatter(booking.startDate, booking.endDate)
 
@@ -13,7 +12,7 @@ export const TripCard = ({ booking }) => {
           <p style={cancelled ? {textDecorationLine: 'line-through'}: {}}>{dateRange}</p>
           <h4>{booking.vanInfo.make} {booking.vanInfo.model} {booking.vanInfo.year}</h4>
           <p>{booking.vanInfo.city}, {booking.vanInfo.state}</p>
-          {/* <p>{booking.status}</p> */}
+          <p>{booking.status}</p>
       {!cancelled ? 
         <div className="trip-card-owner">
           <img className="trip-card-owner-img" src={booking.ownerInfo.profileImage} alt="" />

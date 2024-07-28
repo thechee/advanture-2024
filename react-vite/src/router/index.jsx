@@ -1,16 +1,16 @@
-import { Outlet, createBrowserRouter } from 'react-router-dom';
-import Layout from './Layout';
-import { HomePage } from '../components/HomePage/HomePage';
-import { LoginFormPage } from '../components/Auth/LoginFormPage/LoginFormPage';
-import { VanList } from '../components/Vans/VanList/VanList';
-import { VanDetail } from '../components/Vans/VanDetail/VanDetail';
-import { Favorites } from '../components/Users/Favorites/Favorites';
-import { Errors } from '../components/Errors/Errors';
-import { Profile } from '../components/Users/Profile/Profile';
-import { VanForm } from '../components/Vans/VanForms/VanForm';
-import { VanFormProvider } from '../context/VanFormContext';
-import { Trips } from '../components/Users/Trips/Trips';
-
+import { Outlet, createBrowserRouter } from "react-router-dom";
+import Layout from "./Layout";
+import { HomePage } from "../components/HomePage/HomePage";
+import { LoginFormPage } from "../components/Auth/LoginFormPage/LoginFormPage";
+import { VanList } from "../components/Vans/VanList/VanList";
+import { VanDetail } from "../components/Vans/VanDetail/VanDetail";
+import { Favorites } from "../components/Users/Favorites/Favorites";
+import { Errors } from "../components/Errors/Errors";
+import { Profile } from "../components/Users/Profile/Profile";
+import { VanForm } from "../components/Vans/VanForms/VanForm";
+import { VanFormProvider } from "../context/VanFormContext";
+import { Trips } from "../components/Users/Trips/Trips";
+import { Trip } from "../components/Users/Trips/Trip";
 
 export const router = createBrowserRouter([
   {
@@ -23,51 +23,68 @@ export const router = createBrowserRouter([
       },
       {
         path: "account",
-        element: <h1>Feature coming soon!</h1>
+        element: <h1>Feature coming soon!</h1>,
       },
       {
         path: "login",
-        element: <LoginFormPage />
+        element: <LoginFormPage />,
       },
       {
         path: "notifications",
-        element: <h1>Feature coming soon!</h1>
+        element: <h1>Feature coming soon!</h1>,
       },
       {
         path: "trips",
-        element: <Trips />
-      },
-      {
-        path: "vans",
-        element: 
-          <VanFormProvider>
-            <Outlet />
-          </VanFormProvider>,
+        element: <Outlet />,
         children: [
           {
             index: true,
-            element: <VanList />
+            element: <Trips />,
+          },
+          {
+            path: ":bookingId",
+            element: <Trip />,
+          },
+        ],
+      },
+      {
+        path: "vans",
+        element: (
+          <VanFormProvider>
+            <Outlet />
+          </VanFormProvider>
+        ),
+        children: [
+          {
+            index: true,
+            element: <VanList />,
           },
           {
             path: ":vanId",
             element: <Outlet />,
-            loader: async ({params}) => {
+            loader: async ({ params }) => {
               if (!Number(params.vanId)) {
-                throw new Response(`${params.vanId} is not a valid identifier`, {status: 400})
+                throw new Response(
+                  `${params.vanId} is not a valid identifier`,
+                  { status: 400 }
+                );
               }
 
-              const response = await fetch(`/api/vans/${params.vanId}`)
+              const response = await fetch(`/api/vans/${params.vanId}`);
 
               if (response.status === 404) {
-                throw new Response("This van doesn't exist", { status: 404 })
+                throw new Response("This van doesn't exist", { status: 404 });
               }
 
               if (response.status === 500) {
-                throw new Response(`${params.vanId} is not a valid identifier`, {status: 500})
+                throw new Response(
+                  `${params.vanId} is not a valid identifier`,
+                  { status: 500 }
+                );
               }
 
-              const page = await response.json()
-              return page
+              const page = await response.json();
+              return page;
             },
             children: [
               {
@@ -76,15 +93,15 @@ export const router = createBrowserRouter([
               },
               {
                 path: "update",
-                element: <VanForm type={"update"}/>
-              }
-            ]
+                element: <VanForm type={"update"} />,
+              },
+            ],
           },
           {
             path: "new",
-            element: <VanForm />
+            element: <VanForm />,
           },
-        ]
+        ],
       },
       {
         path: "users",
@@ -96,15 +113,15 @@ export const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <Profile />
+                element: <Profile />,
               },
               {
                 path: "favorites",
-                element: <Favorites />
-              }
-            ]
-          }
-        ]
+                element: <Favorites />,
+              },
+            ],
+          },
+        ],
       },
       // {
       //   path: "*",

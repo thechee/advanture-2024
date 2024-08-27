@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { thunkGetUserBookings } from "../../../../redux/session";
 import { TripCard } from "../TripCard/TripCard";
-import "./Trips.css";
+import "./TripsList.css";
 
-export const Trips = () => {
+export const TripsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.session.user);

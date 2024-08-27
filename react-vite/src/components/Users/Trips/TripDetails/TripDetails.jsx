@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { thunkGetUserBookings } from "../../../../redux/session";
 
-export const TripDetail = () => {
+export const TripDetails = () => {
   const dispatch = useDispatch();
   const { bookingId } = useParams();
   const booking = useSelector(
@@ -14,7 +14,6 @@ export const TripDetail = () => {
     dispatch(thunkGetUserBookings());
   }, [dispatch]);
 
-  console.log(booking);
   if (!booking) return null;
 
   const now = new Date();

@@ -9,8 +9,8 @@ import { Errors } from "../components/Errors/Errors";
 import { Profile } from "../components/Users/Profile/Profile";
 import { VanForm } from "../components/Vans/VanForms/VanForm";
 import { VanFormProvider } from "../context/VanFormContext";
-import { Trips } from "../components/Users/Trips/Trips";
-import { TripDetail } from "../components/Users/Trips/TripDetail";
+import { TripsList } from "../components/Users/Trips/TripsList/TripsList";
+import { TripDetails } from "../components/Users/Trips/TripDetails/TripDetails";
 
 export const router = createBrowserRouter([
   {
@@ -39,11 +39,11 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Trips />,
+            element: <TripsList />,
           },
           {
             path: ":bookingId",
-            element: <TripDetail />,
+            element: <TripDetails />,
           },
         ],
       },

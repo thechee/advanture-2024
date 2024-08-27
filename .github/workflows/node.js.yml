@@ -37,6 +37,9 @@ jobs:
     - name: Fetch remote branch
       run: git fetch origin dev
 
+    - name: Rebase changes
+      run: git rebase origin/dev
+
     - name: Commit and push changes
       run: |
         git add .

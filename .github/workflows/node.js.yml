@@ -36,7 +36,7 @@ jobs:
         git add -A
         git commit -m "update build files" || echo "No changes to commit"
         git remote set-url origin https://${{ secrets.MY_GITHUB_TOKEN }}@github.com/${{ github.repository }}
-        git push
+        git push origin HEAD:dev
 
     - name: Run Tests
       run: npm test --if-present

@@ -1,4 +1,4 @@
-import { dateRangeFormatter } from "../../../utils/dateRangeFormatter";
+import { dateRangeFormatter } from "../../../../utils/dateRangeFormatter";
 import { format } from "date-fns";
 import "./TripCard.css";
 import { useNavigate } from "react-router-dom";

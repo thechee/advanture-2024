@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 
 import { thunkGetOneVan } from "../../../redux/van";
-import { thunkAddFavorite, thunkDeleteFavorite } from "../../../redux/session.js";
+import {
+  thunkAddFavorite,
+  thunkDeleteFavorite,
+} from "../../../redux/session.js";
 
 import { DeleteVanModal } from "../DeleteVanModal/DeleteVanModal.jsx";
 import { RatingsBar } from "../../Ratings/RatingsBar/RatingsBar.jsx";
@@ -13,7 +16,14 @@ import LoginFormModal from "../../Auth/LoginFormModal";
 import OpenModalButton from "../../OpenModalButton";
 import { OpenModalDiv } from "../../OpenModalDiv/OpenModalDiv.jsx";
 import { VanFeature } from "../VanFeature/VanFeature.jsx";
-import { CarDoor, GasStation, CarSeat, Gasoline, Hybrid, Electric } from '../../Icons'
+import {
+  CarDoor,
+  GasStation,
+  CarSeat,
+  Gasoline,
+  Hybrid,
+  Electric,
+} from "../../Icons";
 
 import { AdvancedMarker, Map, useApiIsLoaded } from "@vis.gl/react-google-maps";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
@@ -37,7 +47,7 @@ export const VanDetail = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showDescription, setShowDescription] = useState(false);
   const [showDescriptionButton, setShowDescriptionButton] = useState(true);
-  
+
   const descriptionRef = useRef();
   const formRef = useRef();
   const apiIsLoaded = useApiIsLoaded();
@@ -59,7 +69,7 @@ export const VanDetail = () => {
   useEffect(() => {
     if (van && descriptionRef.current.offsetHeight < 96) {
       setShowDescription(true);
-      setShowDescriptionButton(false)
+      setShowDescriptionButton(false);
     }
   }, [van]);
 
@@ -86,27 +96,27 @@ export const VanDetail = () => {
 
   const handleBookingSubmit = (e) => {
     formRef.current.handleSubmit(e);
-  }
+  };
 
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 1,
-      slidesToSlide: 1 // optional, default to 1.
+      slidesToSlide: 1, // optional, default to 1.
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
       items: 1,
-      slidesToSlide: 1 // optional, default to 1.
+      slidesToSlide: 1, // optional, default to 1.
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
       items: 1,
-      slidesToSlide: 1 // optional, default to 1.
-    }
+      slidesToSlide: 1, // optional, default to 1.
+    },
   };
 
-  const joinedDate = format(van.owner.createdAt, 'MMM yyyy');
+  const joinedDate = format(van.owner.createdAt, "MMM yyyy");
   const owner = user?.id == van.owner.id;
 
   let favorited;
@@ -115,15 +125,14 @@ export const VanDetail = () => {
   return (
     <div>
       <div className="van-images-div">
-        <Carousel
-        responsive={responsive}
-        beforeChange={handleBeforeChange}
-        >
+        <Carousel responsive={responsive} beforeChange={handleBeforeChange}>
           {Object.values(van.images).map((image) => (
             <img key={image.id} src={image.imageUrl} alt="" />
           ))}
         </Carousel>
-        <div className="current-slide-display">{currentSlide + 1} of {Object.values(van.images).length}</div>
+        <div className="current-slide-display">
+          {currentSlide + 1} of {Object.values(van.images).length}
+        </div>
       </div>
       {!owner && (
         <div>
@@ -154,7 +163,7 @@ export const VanDetail = () => {
           <h1>
             {van.make} {van.model} {van.year}
           </h1>
-          {van.avgRating && (
+          {van.avgRating !== 0 && (
             <div className="van-overall-ratings-div">
               <span id="van-overall-stars">
                 {van.avgRating.toString().length <= 3
@@ -171,76 +180,117 @@ export const VanDetail = () => {
             </div>
           )}
 
-        <div className="van-detail-inner-right-div-repeat">
-          {!owner && <DateInput van={van} ref={formRef}/>}
-          <div className="van-detail-distance-right-div">
-            <span>Distance included</span>
-            <span>
-              {van.distanceAllowed
-                ? van.distanceAllowed + " miles"
-                : "Unlimited"}
-            </span>
-          </div>
-
-          {owner ? (
-            <div className="owner-div">
-              <button onClick={() => navigate(`/vans/${vanId}/update`)}>
-                Update Van
-              </button>
-              <OpenModalButton
-                buttonText="Remove Van"
-                modalComponent={<DeleteVanModal van={van} />}
-              />
+          <div className="van-detail-inner-right-div-repeat">
+            {!owner && <DateInput van={van} ref={formRef} />}
+            <div className="van-detail-distance-right-div">
+              <span>Distance included</span>
+              <span>
+                {van.distanceAllowed
+                  ? van.distanceAllowed + " miles"
+                  : "Unlimited"}
+              </span>
             </div>
-          ) : (
-            <div className="favorite-div">
-              {favorited ? (
-                <button className="add-to-favorites" onClick={handleUnfavorite}>
-                  <span>
-                    <FaHeart style={{ color: "red" }} />
-                  </span>
-                  Remove from favorites
+
+            {owner ? (
+              <div className="owner-div">
+                <button onClick={() => navigate(`/vans/${vanId}/update`)}>
+                  Update Van
                 </button>
-              ) : (
-                <>
-                  {user && (
-                    <button
-                      className="add-to-favorites"
-                      onClick={handleFavorite}
-                    >
-                      <span><FaRegHeart /></span>
-                      Add to Favorites
-                    </button>
-                  )}
-                  {!user && (
-                    <OpenModalButton
-                      modalComponent={<LoginFormModal />}
-                      buttonText={
-                        <>
-                          <span><FaRegHeart /></span>
-                          Add to Favorites
-                        </>
-                      }
-                      className={"add-to-favorites"}
-                    />
-                  )}
-                </>
-              )}
-            </div>
-          )}
+                <OpenModalButton
+                  buttonText="Remove Van"
+                  modalComponent={<DeleteVanModal van={van} />}
+                />
+              </div>
+            ) : (
+              <div className="favorite-div">
+                {favorited ? (
+                  <button
+                    className="add-to-favorites"
+                    onClick={handleUnfavorite}
+                  >
+                    <span>
+                      <FaHeart style={{ color: "red" }} />
+                    </span>
+                    Remove from favorites
+                  </button>
+                ) : (
+                  <>
+                    {user && (
+                      <button
+                        className="add-to-favorites"
+                        onClick={handleFavorite}
+                      >
+                        <span>
+                          <FaRegHeart />
+                        </span>
+                        Add to Favorites
+                      </button>
+                    )}
+                    {!user && (
+                      <OpenModalButton
+                        modalComponent={<LoginFormModal />}
+                        buttonText={
+                          <>
+                            <span>
+                              <FaRegHeart />
+                            </span>
+                            Add to Favorites
+                          </>
+                        }
+                        className={"add-to-favorites"}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
-
 
           <div className="van-detail-details">
             <ul className="details-ul">
-              {van.mpg && <li><GasStation /> {van.mpg} MPG</li>}
-              {van.fuelType == 'Gasoline' && <li><Gasoline />{van.fuelType}</li>}
-              {van.fuelType == 'Diesel' && <li><Gasoline />{van.fuelType}</li>}
-              {van.fuelType == 'Bio-Diesel' && <li><Gasoline />{van.fuelType}</li>}
-              {van.fuelType == 'Electric' && <li><Electric />{van.fuelType}</li>}
-              {van.fuelType == 'Hybrid' && <li><Hybrid />{van.fuelType}</li>}
-              <li><CarDoor />{van.doors} doors</li>
-              <li><CarSeat />{van.seats} seats</li>
+              {van.mpg && (
+                <li>
+                  <GasStation /> {van.mpg} MPG
+                </li>
+              )}
+              {van.fuelType == "Gasoline" && (
+                <li>
+                  <Gasoline />
+                  {van.fuelType}
+                </li>
+              )}
+              {van.fuelType == "Diesel" && (
+                <li>
+                  <Gasoline />
+                  {van.fuelType}
+                </li>
+              )}
+              {van.fuelType == "Bio-Diesel" && (
+                <li>
+                  <Gasoline />
+                  {van.fuelType}
+                </li>
+              )}
+              {van.fuelType == "Electric" && (
+                <li>
+                  <Electric />
+                  {van.fuelType}
+                </li>
+              )}
+              {van.fuelType == "Hybrid" && (
+                <li>
+                  <Hybrid />
+                  {van.fuelType}
+                </li>
+              )}
+              <li>
+                <CarDoor />
+                {van.doors} doors
+              </li>
+              <li>
+                <CarSeat />
+                {van.seats} seats
+              </li>
             </ul>
           </div>
           <h4>HOSTED BY</h4>
@@ -255,30 +305,34 @@ export const VanDetail = () => {
           </div>
 
           <h4>DESCRIPTION</h4>
-          <div style={{position: "relative"}}>
-          {!showDescription && <div className="gradient-overlay"></div>}
-          <p 
-            className={`van-description ${showDescription ? "show" : "hide"}`}
-            ref={descriptionRef}
-          >
-            {van.description}</p>
+          <div style={{ position: "relative" }}>
+            {!showDescription && <div className="gradient-overlay"></div>}
+            <p
+              className={`van-description ${showDescription ? "show" : "hide"}`}
+              ref={descriptionRef}
+            >
+              {van.description}
+            </p>
           </div>
-          {showDescriptionButton && <button 
-            className="collapse-btn white-square-btn" 
-            onClick={() => setShowDescription(!showDescription)}
-          >
-            {showDescription ? "Less" : "More"}
-          </button>}
+          {showDescriptionButton && (
+            <button
+              className="collapse-btn white-square-btn"
+              onClick={() => setShowDescription(!showDescription)}
+            >
+              {showDescription ? "Less" : "More"}
+            </button>
+          )}
 
           {!!Object.values(van.features).length && (
-          <div className="van-details-features">
-          <h4>FEATURES</h4>
-            <ul className="feature-ul">
-              {van.features.map((feature) => 
-                <VanFeature key={feature} feature={feature} />
-              )}
-            </ul>
-          </div>)}
+            <div className="van-details-features">
+              <h4>FEATURES</h4>
+              <ul className="feature-ul">
+                {van.features.map((feature) => (
+                  <VanFeature key={feature} feature={feature} />
+                ))}
+              </ul>
+            </div>
+          )}
 
           <h4>RATINGS AND REVIEWS</h4>
 
@@ -286,11 +340,9 @@ export const VanDetail = () => {
             <div>
               <div className="overall-ratings-stars-div">
                 <span>
-                  {van.avgRating
-                  .toString().length == 1
+                  {van.avgRating.toString().length == 1
                     ? van.avgRating.toFixed(1)
-                    : van.avgRating
-                    }
+                    : van.avgRating}
                   <StarRatings
                     rating={van.avgRating}
                     starRatedColor="rgb(89, 60, 251)"
@@ -302,11 +354,14 @@ export const VanDetail = () => {
                 <span>({ratings.length} ratings)</span>
               </div>
               <div>
-                <RatingsBar ratingAvg={van.avgCleanliness} name="Cleanliness"/>
-                <RatingsBar ratingAvg={van.avgMaintenance} name="Maintenance"/>
-                <RatingsBar ratingAvg={van.avgCommunication} name="Communication"/>
-                <RatingsBar ratingAvg={van.avgConvenience} name="Convenience"/>
-                <RatingsBar ratingAvg={van.avgAccuracy} name="Accuracy"/>
+                <RatingsBar ratingAvg={van.avgCleanliness} name="Cleanliness" />
+                <RatingsBar ratingAvg={van.avgMaintenance} name="Maintenance" />
+                <RatingsBar
+                  ratingAvg={van.avgCommunication}
+                  name="Communication"
+                />
+                <RatingsBar ratingAvg={van.avgConvenience} name="Convenience" />
+                <RatingsBar ratingAvg={van.avgAccuracy} name="Accuracy" />
               </div>
               <div>
                 <h4 style={{ color: "#808080" }}>REVIEWS</h4>
@@ -319,15 +374,21 @@ export const VanDetail = () => {
             </div>
           ) : (
             <div>
-              <div style={{marginBottom: "1rem"}}>
+              <div style={{ marginBottom: "1rem" }}>
                 <span>(0 ratings)</span>
               </div>
-              <RatingsBar ratingAvg={0} name="Cleanliness"/>
-              <RatingsBar ratingAvg={0} name="Maintenance"/>
-              <RatingsBar ratingAvg={0} name="Communication"/>
-              <RatingsBar ratingAvg={0} name="Convenience"/>
-              <RatingsBar ratingAvg={0} name="Accuracy"/>
-              <div style={{marginBottom: "2rem", fontSize: "12px", color: "gray"}}>
+              <RatingsBar ratingAvg={0} name="Cleanliness" />
+              <RatingsBar ratingAvg={0} name="Maintenance" />
+              <RatingsBar ratingAvg={0} name="Communication" />
+              <RatingsBar ratingAvg={0} name="Convenience" />
+              <RatingsBar ratingAvg={0} name="Accuracy" />
+              <div
+                style={{
+                  marginBottom: "2rem",
+                  fontSize: "12px",
+                  color: "gray",
+                }}
+              >
                 <span>More guest ratings needed</span>
               </div>
               <p>Book this van and be the first to review it.</p>
@@ -365,89 +426,94 @@ export const VanDetail = () => {
           </div>
 
           <div className="van-detail-inner-right-div">
-          {!owner && <DateInput van={van} ref={formRef}/>}
-          <div className="van-detail-distance-right-div">
-            <span>Distance included</span>
-            <span>
-              {van.distanceAllowed
-                ? van.distanceAllowed + " mi"
-                : "Unlimited"}
-            </span>
-          </div>
+            {!owner && <DateInput van={van} ref={formRef} />}
+            <div className="van-detail-distance-right-div">
+              <span>Distance included</span>
+              <span>
+                {van.distanceAllowed
+                  ? van.distanceAllowed + " mi"
+                  : "Unlimited"}
+              </span>
+            </div>
 
-          {owner ? (
-            <div className="owner-div">
-              <button onClick={() => navigate(`/vans/${vanId}/update`)}>
-                Update Van
-              </button>
-              <OpenModalButton
-                buttonText="Remove Van"
-                modalComponent={<DeleteVanModal van={van} />}
-              />
-            </div>
-          ) : (
-            <div className="favorite-div">
-              {favorited ? (
-                <button className="add-to-favorites" onClick={handleUnfavorite}>
-                  <span>
-                    <FaHeart style={{ color: "red" }} />
-                  </span>
-                  Remove from favorites
+            {owner ? (
+              <div className="owner-div">
+                <button onClick={() => navigate(`/vans/${vanId}/update`)}>
+                  Update Van
                 </button>
-              ) : (
-                <>
-                  {user && (
-                    <button
-                      className="add-to-favorites"
-                      onClick={handleFavorite}
-                    >
-                      <span>
-                        <FaRegHeart />
-                      </span>
-                      Add to Favorites
-                    </button>
-                  )}
-                  {!user && (
-                    <OpenModalButton
-                      modalComponent={<LoginFormModal />}
-                      buttonText={
-                        <>
-                          <span>
-                            <FaRegHeart />
-                          </span>
-                          Add to Favorites
-                        </>
-                      }
-                      className={"add-to-favorites"}
-                    />
-                  )}
-                </>
-              )}
-            </div>
-          )}
+                <OpenModalButton
+                  buttonText="Remove Van"
+                  modalComponent={<DeleteVanModal van={van} />}
+                />
+              </div>
+            ) : (
+              <div className="favorite-div">
+                {favorited ? (
+                  <button
+                    className="add-to-favorites"
+                    onClick={handleUnfavorite}
+                  >
+                    <span>
+                      <FaHeart style={{ color: "red" }} />
+                    </span>
+                    Remove from favorites
+                  </button>
+                ) : (
+                  <>
+                    {user && (
+                      <button
+                        className="add-to-favorites"
+                        onClick={handleFavorite}
+                      >
+                        <span>
+                          <FaRegHeart />
+                        </span>
+                        Add to Favorites
+                      </button>
+                    )}
+                    {!user && (
+                      <OpenModalButton
+                        modalComponent={<LoginFormModal />}
+                        buttonText={
+                          <>
+                            <span>
+                              <FaRegHeart />
+                            </span>
+                            Add to Favorites
+                          </>
+                        }
+                        className={"add-to-favorites"}
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
       <div className="van-detail-map-div">
-        {van && (
-          !apiIsLoaded ? (
+        {van &&
+          (!apiIsLoaded ? (
             <div>Loading...</div>
           ) : (
-          <Map
-            center={{lat: van.lat, lng: van.lng }}
-            zoom={13}
-            gestureHandling={"greedy"}
-            controlled={true}
-            disableDefaultUI={true}
-            style={{ height: "700px" }}
-            mapId={mapId}
-          >
-            <AdvancedMarker position={{lat: van.lat, lng: van.lng }} className={"custom-marker"}>
-              <div></div>
-            </AdvancedMarker>
-          </Map>
-        )
-        )}
+            <Map
+              center={{ lat: van.lat, lng: van.lng }}
+              zoom={13}
+              gestureHandling={"greedy"}
+              controlled={true}
+              disableDefaultUI={true}
+              style={{ height: "700px" }}
+              mapId={mapId}
+            >
+              <AdvancedMarker
+                position={{ lat: van.lat, lng: van.lng }}
+                className={"custom-marker"}
+              >
+                <div></div>
+              </AdvancedMarker>
+            </Map>
+          ))}
       </div>
     </div>
   );

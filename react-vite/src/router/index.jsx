@@ -10,7 +10,7 @@ import { Profile } from "../components/Users/Profile/Profile";
 import { VanForm } from "../components/Vans/VanForms/VanForm";
 import { VanFormProvider } from "../context/VanFormContext";
 import { Trips } from "../components/Users/Trips/Trips";
-import { Trip } from "../components/Users/Trips/Trip";
+import { TripDetail } from "../components/Users/Trips/TripDetail";
 
 export const router = createBrowserRouter([
   {
@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
           },
           {
             path: ":bookingId",
-            element: <Trip />,
+            element: <TripDetail />,
           },
         ],
       },

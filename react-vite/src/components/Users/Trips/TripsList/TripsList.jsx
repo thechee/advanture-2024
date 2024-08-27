@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { thunkGetUserBookings } from "../../../redux/session";
-import { TripCard } from "./TripCard";
+import { thunkGetUserBookings } from "../../../../redux/session";
+import { TripCard } from "../TripCard/TripCard";
 import "./Trips.css";
 
 export const Trips = () => {

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { thunkGetUserBookings } from "../../../redux/session";
+import { thunkGetUserBookings } from "../../../../redux/session";
 
 export const TripDetail = () => {
   const dispatch = useDispatch();

@@ -34,18 +34,12 @@ jobs:
         git config --global user.name "${{ github.actor }}"
         git config --global user.email "${{ github.actor }}@users.noreply.github.com"
 
-    - name: Fetch remote branch
-      run: git fetch origin dev
-
-    - name: Rebase changes
-      run: git rebase origin/dev
-
     - name: Commit and push changes
       run: |
         git add .
         git commit -m "update build files" || echo "No changes to commit"
         git remote set-url origin https://${{ secrets.MY_GITHUB_TOKEN }}@github.com/${{ github.repository }}
-        git push origin HEAD:dev
+        git push
 
     - name: Run Tests
       run: npm test --if-present
